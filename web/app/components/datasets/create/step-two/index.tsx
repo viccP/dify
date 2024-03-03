@@ -10,7 +10,6 @@ import Link from 'next/link'
 import { groupBy } from 'lodash-es'
 import RetrievalMethodInfo from '../../common/retrieval-method-info'
 import PreviewItem, { PreviewType } from './preview-item'
-import LanguageSelect from './language-select'
 import s from './index.module.css'
 import type { CreateDocumentReq, CustomFile, FileIndexingEstimateResponse, FullDocumentDetail, IndexingEstimateParams, IndexingEstimateResponse, NotionInfo, PreProcessingRule, ProcessRule, Rules, createDocumentResponse } from '@/models/datasets'
 import {
@@ -711,7 +710,7 @@ const StepTwo = ({
                     <div className='mb-[2px] text-md font-medium text-gray-900'>{t('datasetCreation.stepTwo.QATitle')}</div>
                     <div className='inline-flex items-center text-[13px] leading-[18px] text-gray-500'>
                       <span className='pr-1'>{t('datasetCreation.stepTwo.QALanguage')}</span>
-                      <LanguageSelect currentLanguage={docLanguage} onSelect={handleSelect} />
+                      {/* <LanguageSelect currentLanguage={docLanguage} onSelect={handleSelect} /> */}
                     </div>
                   </div>
                   <div className='shrink-0'>
