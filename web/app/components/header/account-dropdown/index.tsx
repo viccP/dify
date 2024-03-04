@@ -3,9 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Fragment, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useContext } from 'use-context-selector'
-import classNames from 'classnames'
 import { Menu, Transition } from '@headlessui/react'
-import Indicator from '../indicator'
 import AccountAbout from '../account-about'
 import WorkplaceSelector from './workplace-selector'
 import I18n from '@/context/i18n'
@@ -128,7 +126,7 @@ export default function AppSelector({ isMobile }: IAppSelecotr) {
                       </Link>
                     </Menu.Item> */}
                     {
-                      document?.body?.getAttribute('data-public-site-about') !== 'hide' && (
+                      /*  document?.body?.getAttribute('data-public-site-about') !== 'hide' && (
                         <Menu.Item>
                           <div className={classNames(itemClassName, 'justify-between')} onClick={() => setAboutVisible(true)}>
                             <div>{t('common.userProfile.about')}</div>
@@ -138,7 +136,7 @@ export default function AppSelector({ isMobile }: IAppSelecotr) {
                             </div>
                           </div>
                         </Menu.Item>
-                      )
+                      ) */
                     }
                   </div>
                   <Menu.Item>
