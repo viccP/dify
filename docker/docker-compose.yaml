@@ -2,7 +2,7 @@ version: '3.1'
 services:
   # API service
   api:
-    image: langgenius/dify-api:0.5.6
+    image: langgenius/dify-api:0.5.10
     restart: always
     privileged: true
     environment:
@@ -136,7 +136,7 @@ services:
   # worker service
   # The Celery worker for processing the queue.
   worker:
-    image: langgenius/dify-api:0.5.6
+    image: langgenius/dify-api:0.5.10
     restart: always
     privileged: true
     environment:
