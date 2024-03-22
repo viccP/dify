@@ -208,9 +208,7 @@ services:
 
   # Frontend web application.
   web:
-    build:
-      context: ../web
-      dockerfile: Dockerfile
+    image: bonclops-web-1.0
     restart: always
     environment:
       EDITION: SELF_HOSTED
