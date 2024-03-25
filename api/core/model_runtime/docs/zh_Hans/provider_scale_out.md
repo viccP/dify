@@ -123,9 +123,9 @@ model_credential_schema:
 
 我们需要在`model_providers`下创建一个同名的python文件，如`anthropic.py`，并实现一个`class`，继承`__base.provider.Provider`基类，如`AnthropicProvider`。
 
-##### 自定义模型供应商
+##### 自定义模型库
 
-当供应商为Xinference等自定义模型供应商时，可跳过该步骤，仅创建一个空的`XinferenceProvider`类即可，并实现一个空的`validate_provider_credentials`方法，该方法并不会被实际使用，仅用作避免抽象类无法实例化。
+当供应商为Xinference等自定义模型库时，可跳过该步骤，仅创建一个空的`XinferenceProvider`类即可，并实现一个空的`validate_provider_credentials`方法，该方法并不会被实际使用，仅用作避免抽象类无法实例化。
 
 ```python
 class XinferenceProvider(Provider):
@@ -133,7 +133,7 @@ class XinferenceProvider(Provider):
         pass
 ```
 
-##### 预定义模型供应商
+##### 预定义模型库
 
 供应商需要继承 `__base.model_provider.ModelProvider` 基类，实现 `validate_provider_credentials` 供应商统一凭据校验方法即可，可参考 [AnthropicProvider](https://github.com/langgenius/dify-runtime/blob/main/lib/model_providers/anthropic/anthropic.py)。
 

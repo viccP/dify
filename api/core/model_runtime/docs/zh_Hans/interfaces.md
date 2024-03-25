@@ -25,7 +25,7 @@ def validate_provider_credentials(self, credentials: dict) -> None:
 
 验证失败请抛出 `errors.validate.CredentialsValidateFailedError` 错误。
 
-**注：预定义模型需完整实现该接口，自定义模型供应商只需要如下简单实现即可**
+**注：预定义模型需完整实现该接口，自定义模型库只需要如下简单实现即可**
 
 ```python
 class XinferenceProvider(Provider):
