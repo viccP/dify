@@ -208,7 +208,7 @@ services:
 
   # Frontend web application.
   web:
-    image: bonclops-web-1.0
+    image: bonclops-web-1.1
     restart: always
     environment:
       EDITION: SELF_HOSTED
