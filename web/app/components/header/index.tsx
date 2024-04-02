@@ -5,6 +5,7 @@ import { useBoolean, useClickAway } from 'ahooks'
 import { useSelectedLayoutSegment } from 'next/navigation'
 import { Bars3Icon } from '@heroicons/react/20/solid'
 import HeaderBillingBtn from '../billing/header-billing-btn'
+import ToolsNav from './tools-nav'
 import AccountDropdown from './account-dropdown'
 import AppNav from './app-nav'
 import DatasetNav from './dataset-nav'
@@ -69,7 +70,7 @@ const Header = () => {
           {/* <ExploreNav className={navClassName} /> */}
           <AppNav />
           {isCurrentWorkspaceManager && <DatasetNav />}
-          {/* <ToolsNav className={navClassName} /> */}
+          <ToolsNav className={navClassName} />
         </div>
       )}
       <div className='flex items-center flex-shrink-0'>
@@ -96,7 +97,7 @@ const Header = () => {
           {/* <ExploreNav className={navClassName} /> */}
           <AppNav />
           {isCurrentWorkspaceManager && <DatasetNav />}
-          {/* <ToolsNav className={navClassName} /> */}
+          <ToolsNav className={navClassName} />
         </div>
       )}
     </div>
