@@ -31,7 +31,7 @@ import VariableBlock from './plugins/variable-block'
 import VariableValueBlock from './plugins/variable-value-block'
 import { VariableValueBlockNode } from './plugins/variable-value-block/node'
 import { CustomTextNode } from './plugins/custom-text/node'
-import OnBlurBlock from './plugins/on-blur-block'
+import OnBlurBlock from './plugins/on-blur-or-focus-block'
 import UpdateBlock from './plugins/update-block'
 import { textToEditorState } from './utils'
 import type { Dataset } from './plugins/context-block'
@@ -45,10 +45,14 @@ import { useEventEmitterContextContext } from '@/context/event-emitter'
 
 export type PromptEditorProps = {
   className?: string
+  style?: React.CSSProperties
   value?: string
   editable?: boolean
+  outToolDisabled?: boolean
+  canNotAddContext?: boolean
   onChange?: (text: string) => void
   onBlur?: () => void
+  onFocus?: () => void
   contextBlock?: {
     show?: boolean
     selectable?: boolean
@@ -81,17 +85,21 @@ export type PromptEditorProps = {
 
 const PromptEditor: FC<PromptEditorProps> = ({
   className,
+  style,
   value,
   editable = true,
+  outToolDisabled = false,
+  canNotAddContext = false,
   onChange,
   onBlur,
+  onFocus,
   contextBlock = {
     show: true,
     selectable: true,
     datasets: [],
-    onAddContext: () => {},
-    onInsert: () => {},
-    onDelete: () => {},
+    onAddContext: () => { },
+    onInsert: () => { },
+    onDelete: () => { },
   },
   historyBlock = {
     show: true,
@@ -100,9 +108,9 @@ const PromptEditor: FC<PromptEditorProps> = ({
       user: '',
       assistant: '',
     },
-    onEditRole: () => {},
-    onInsert: () => {},
-    onDelete: () => {},
+    onEditRole: () => { },
+    onInsert: () => { },
+    onDelete: () => { },
   },
   variableBlock = {
     variables: [],
@@ -110,8 +118,8 @@ const PromptEditor: FC<PromptEditorProps> = ({
   queryBlock = {
     show: true,
     selectable: true,
-    onInsert: () => {},
-    onDelete: () => {},
+    onInsert: () => { },
+    onDelete: () => { },
   },
 }) => {
   const { eventEmitter } = useEventEmitterContextContext()
@@ -157,7 +165,7 @@ const PromptEditor: FC<PromptEditorProps> = ({
     <LexicalComposer initialConfig={{ ...initialConfig, editable }}>
       <div className='relative'>
         <RichTextPlugin
-          contentEditable={<ContentEditable className={`${className} outline-none text-sm text-gray-700 leading-6`} />}
+          contentEditable={<ContentEditable className={`${className} outline-none text-sm text-gray-700 leading-6`} style={style || {}} />}
           placeholder={<Placeholder />}
           ErrorBoundary={LexicalErrorBoundary}
         />
@@ -168,11 +176,13 @@ const PromptEditor: FC<PromptEditorProps> = ({
           historyShow={historyBlock.show}
           queryDisabled={!queryBlock.selectable}
           queryShow={queryBlock.show}
+          outToolDisabled={outToolDisabled}
         />
         <VariablePicker
           items={variableBlock.variables}
           externalTools={variableBlock.externalTools}
           onAddExternalTool={variableBlock.onAddExternalTool}
+          outToolDisabled={outToolDisabled}
         />
         {
           contextBlock.show && (
@@ -182,11 +192,13 @@ const PromptEditor: FC<PromptEditorProps> = ({
                 onAddContext={contextBlock.onAddContext}
                 onInsert={contextBlock.onInsert}
                 onDelete={contextBlock.onDelete}
+                canNotAddContext={canNotAddContext}
               />
               <ContextBlockReplacementBlock
                 datasets={contextBlock.datasets}
                 onAddContext={contextBlock.onAddContext}
                 onInsert={contextBlock.onInsert}
+                canNotAddContext={canNotAddContext}
               />
             </>
           )
@@ -222,7 +234,7 @@ const PromptEditor: FC<PromptEditorProps> = ({
         }
         <VariableValueBlock />
         <OnChangePlugin onChange={handleEditorChange} />
-        <OnBlurBlock onBlur={onBlur} />
+        <OnBlurBlock onBlur={onBlur} onFocus={onFocus} />
         <UpdateBlock />
         {/* <TreeView /> */}
       </div>
