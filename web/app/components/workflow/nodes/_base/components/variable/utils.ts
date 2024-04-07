@@ -1,4 +1,5 @@
 import produce from 'immer'
+import { isArray } from 'lodash-es'
 import type { CodeNodeType } from '../../../code/types'
 import type { EndNodeType } from '../../../end/types'
 import type { AnswerNodeType } from '../../../answer/types'
@@ -7,9 +8,6 @@ import type { KnowledgeRetrievalNodeType } from '../../../knowledge-retrieval/ty
 import type { IfElseNodeType } from '../../../if-else/types'
 import type { TemplateTransformNodeType } from '../../../template-transform/types'
 import type { QuestionClassifierNodeType } from '../../../question-classifier/types'
-import type { HttpNodeType } from '../../../http/types'
-import type { ToolNodeType } from '../../../tool/types'
-import { VarType as VarKindType } from '../../../tool/types'
 import { BlockEnum, InputVarType, VarType } from '@/app/components/workflow/types'
 import type { StartNodeType } from '@/app/components/workflow/nodes/start/types'
 import type { Node, NodeOutPutVar, ValueSelector, Var } from '@/app/components/workflow/types'
@@ -177,6 +175,12 @@ export const isSystemVar = (valueSelector: ValueSelector) => {
   return valueSelector[0] === 'sys' || valueSelector[1] === 'sys'
 }
 
+export const getNodeInfoById = (nodes: any, id: string) => {
+  if (!isArray(nodes))
+    return
+  return nodes.find((node: any) => node.id === id)
+}
+
 export const getVarType = (value: ValueSelector, availableNodes: any[], isChatMode: boolean): VarType | undefined => {
   const isSystem = isSystemVar(value)
   const startNode = availableNodes.find((node: any) => {
@@ -229,9 +233,8 @@ export const getNodeUsedVars = (node: Node): ValueSelector[] => {
       break
     }
     case BlockEnum.LLM: {
-      const inputVars = (data as LLMNodeType)?.variables.map((v) => {
-        return v.value_selector
-      })
+      // TODO: get var in inputs
+      const inputVars: ValueSelector[] = []
 
       const contextVar = (data as LLMNodeType).context?.variable_selector ? [(data as LLMNodeType).context?.variable_selector] : []
       res = [...inputVars, ...contextVar]
@@ -264,17 +267,11 @@ export const getNodeUsedVars = (node: Node): ValueSelector[] => {
       break
     }
     case BlockEnum.HttpRequest: {
-      res = (data as HttpNodeType).variables?.map((v) => {
-        return v.value_selector
-      })
+      // TODO: get var in inputs
       break
     }
     case BlockEnum.Tool: {
-      res = (data as ToolNodeType).tool_parameters?.filter((v) => {
-        return v.variable_type === VarKindType.selector
-      }).map((v) => {
-        return v.value_selector || []
-      })
+      // TODO: get var in inputs
       break
     }
 
@@ -324,13 +321,14 @@ export const updateNodeVars = (oldNode: Node, oldVarSelector: ValueSelector, new
       }
       case BlockEnum.LLM: {
         const payload = data as LLMNodeType
-        if (payload.variables) {
-          payload.variables = payload.variables.map((v) => {
-            if (v.value_selector.join('.') === oldVarSelector.join('.'))
-              v.value_selector = newVarSelector
-            return v
-          })
-        }
+        // TODO: update in inputs
+        // if (payload.variables) {
+        //   payload.variables = payload.variables.map((v) => {
+        //     if (v.value_selector.join('.') === oldVarSelector.join('.'))
+        //       v.value_selector = newVarSelector
+        //     return v
+        //   })
+        // }
         if (payload.context?.variable_selector?.join('.') === oldVarSelector.join('.'))
           payload.context.variable_selector = newVarSelector
 
@@ -382,28 +380,30 @@ export const updateNodeVars = (oldNode: Node, oldVarSelector: ValueSelector, new
         break
       }
       case BlockEnum.HttpRequest: {
-        const payload = data as HttpNodeType
-        if (payload.variables) {
-          payload.variables = payload.variables.map((v) => {
-            if (v.value_selector.join('.') === oldVarSelector.join('.'))
-              v.value_selector = newVarSelector
-            return v
-          })
-        }
+        // TODO: update in inputs
+        // const payload = data as HttpNodeType
+        // if (payload.variables) {
+        //   payload.variables = payload.variables.map((v) => {
+        //     if (v.value_selector.join('.') === oldVarSelector.join('.'))
+        //       v.value_selector = newVarSelector
+        //     return v
+        //   })
+        // }
         break
       }
       case BlockEnum.Tool: {
-        const payload = data as ToolNodeType
-        if (payload.tool_parameters) {
-          payload.tool_parameters = payload.tool_parameters.map((v) => {
-            if (v.variable_type === VarKindType.static)
-              return v
+        // TODO: update in inputs
+        // const payload = data as ToolNodeType
+        // if (payload.tool_parameters) {
+        //   payload.tool_parameters = payload.tool_parameters.map((v) => {
+        //     if (v.type === VarKindType.static)
+        //       return v
 
-            if (v.value_selector?.join('.') === oldVarSelector.join('.'))
-              v.value_selector = newVarSelector
-            return v
-          })
-        }
+        //     if (v.value_selector?.join('.') === oldVarSelector.join('.'))
+        //       v.value_selector = newVarSelector
+        //     return v
+        //   })
+        // }
         break
       }
       case BlockEnum.VariableAssigner: {
@@ -442,10 +442,6 @@ const varsToValueSelectorList = (vars: Var | Var[], parentValueSelector: ValueSe
   }
   varToValueSelectorList(vars as Var, parentValueSelector, res)
 }
-
-// const test: ValueSelector[] = []
-// varsToValueSelectorList(LLM_OUTPUT_STRUCT, ['ttt'], test)
-// console.log(test)
 
 export const getNodeOutputVars = (node: Node, isChatMode: boolean): ValueSelector[] => {
   const { data, id } = node

@@ -1,14 +1,17 @@
 from os import path
 from typing import cast
 
+from core.callback_handler.workflow_tool_callback_handler import DifyWorkflowCallbackHandler
 from core.file.file_obj import FileTransferMethod, FileType, FileVar
 from core.tools.entities.tool_entities import ToolInvokeMessage
+from core.tools.tool_engine import ToolEngine
 from core.tools.tool_manager import ToolManager
 from core.tools.utils.message_transformer import ToolFileMessageTransformer
-from core.workflow.entities.node_entities import NodeRunResult, NodeType
+from core.workflow.entities.node_entities import NodeRunMetadataKey, NodeRunResult, NodeType
 from core.workflow.entities.variable_pool import VariablePool
 from core.workflow.nodes.base_node import BaseNode
 from core.workflow.nodes.tool.entities import ToolNodeData
+from core.workflow.utils.variable_template_parser import VariableTemplateParser
 from models.workflow import WorkflowNodeExecutionStatus
 
 
@@ -26,24 +29,42 @@ class ToolNode(BaseNode):
 
         node_data = cast(ToolNodeData, self.node_data)
 
+        # fetch tool icon
+        tool_info = {
+            'provider_type': node_data.provider_type,
+            'provider_id': node_data.provider_id
+        }
+
         # get parameters
         parameters = self._generate_parameters(variable_pool, node_data)
         # get tool runtime
         try:
-            tool_runtime = ToolManager.get_workflow_tool_runtime(self.tenant_id, node_data, None)
+            tool_runtime = ToolManager.get_workflow_tool_runtime(self.tenant_id, node_data)
         except Exception as e:
             return NodeRunResult(
                 status=WorkflowNodeExecutionStatus.FAILED,
                 inputs=parameters,
+                metadata={
+                    NodeRunMetadataKey.TOOL_INFO: tool_info
+                },
                 error=f'Failed to get tool runtime: {str(e)}'
             )
 
         try:
-            messages = tool_runtime.invoke(self.user_id, parameters)
+            messages = ToolEngine.workflow_invoke(
+                tool=tool_runtime,
+                tool_parameters=parameters,
+                user_id=self.user_id,
+                workflow_id=self.workflow_id, 
+                workflow_tool_callback=DifyWorkflowCallbackHandler()
+            )
         except Exception as e:
             return NodeRunResult(
                 status=WorkflowNodeExecutionStatus.FAILED,
                 inputs=parameters,
+                metadata={
+                    NodeRunMetadataKey.TOOL_INFO: tool_info
+                },
                 error=f'Failed to invoke tool: {str(e)}',
             )
 
@@ -56,6 +77,9 @@ class ToolNode(BaseNode):
                 'text': plain_text,
                 'files': files
             },
+            metadata={
+                NodeRunMetadataKey.TOOL_INFO: tool_info
+            },
             inputs=parameters
         )
 
@@ -63,12 +87,28 @@ class ToolNode(BaseNode):
         """
             Generate parameters
         """
-        return {
-            k.variable:
-                k.value if k.variable_type == 'static' else
-                variable_pool.get_variable_value(k.value_selector) if k.variable_type == 'selector' else ''
-            for k in node_data.tool_parameters
-        }
+        result = {}
+        for parameter_name in node_data.tool_parameters:
+            input = node_data.tool_parameters[parameter_name]
+            if input.type == 'mixed':
+                result[parameter_name] = self._format_variable_template(input.value, variable_pool)
+            elif input.type == 'variable':
+                result[parameter_name] = variable_pool.get_variable_value(input.value)
+            elif input.type == 'constant':
+                result[parameter_name] = input.value
+
+        return result
+    
+    def _format_variable_template(self, template: str, variable_pool: VariablePool) -> str:
+        """
+        Format variable template
+        """
+        inputs = {}
+        template_parser = VariableTemplateParser(template)
+        for selector in template_parser.extract_variable_selectors():
+            inputs[selector.variable] = variable_pool.get_variable_value(selector.value_selector)
+        
+        return template_parser.format(inputs)
 
     def _convert_tool_messages(self, messages: list[ToolInvokeMessage]) -> tuple[str, list[FileVar]]:
         """
@@ -143,9 +183,19 @@ class ToolNode(BaseNode):
     def _extract_variable_selector_to_variable_mapping(cls, node_data: ToolNodeData) -> dict[str, list[str]]:
         """
         Extract variable selector to variable mapping
+        :param node_data: node data
+        :return:
         """
-        return {
-            k.variable: k.value_selector
-            for k in node_data.tool_parameters
-            if k.variable_type == 'selector'
-        }
+        result = {}
+        for parameter_name in node_data.tool_parameters:
+            input = node_data.tool_parameters[parameter_name]
+            if input.type == 'mixed':
+                selectors = VariableTemplateParser(input.value).extract_variable_selectors()
+                for selector in selectors:
+                    result[selector.variable] = selector.value_selector
+            elif input.type == 'variable':
+                result[parameter_name] = input.value
+            elif input.type == 'constant':
+                pass
+
+        return result

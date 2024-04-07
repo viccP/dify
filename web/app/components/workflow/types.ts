@@ -45,6 +45,7 @@ export type CommonNodeType<T = {}> = {
 export type CommonEdgeType = {
   _hovering?: boolean
   _connectedNodeIsHovering?: boolean
+  _connectedNodeIsSelected?: boolean
   _runned?: boolean
   sourceType: BlockEnum
   targetType: BlockEnum
@@ -63,6 +64,11 @@ export type ValueSelector = string[] // [nodeId, key | obj key path]
 
 export type Variable = {
   variable: string
+  label?: string | {
+    nodeType: BlockEnum
+    nodeName: string
+    variable: string
+  }
   value_selector: ValueSelector
   variable_type?: VarKindType
   value?: string
@@ -89,7 +95,11 @@ export enum InputVarType {
 
 export type InputVar = {
   type: InputVarType
-  label: string
+  label: string | {
+    nodeType: BlockEnum
+    nodeName: string
+    variable: string
+  }
   variable: string
   max_length?: number
   default?: string

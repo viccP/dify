@@ -166,6 +166,7 @@ const Prompt: FC<ISimplePromptInput> = ({
         >
           <PromptEditor
             className='min-h-[210px]'
+            compact
             value={promptTemplate}
             contextBlock={{
               show: false,
@@ -178,10 +179,14 @@ const Prompt: FC<ISimplePromptInput> = ({
               onAddContext: showSelectDataSet,
             }}
             variableBlock={{
+              show: true,
               variables: modelConfig.configs.prompt_variables.filter(item => item.type !== 'api').map(item => ({
                 name: item.name,
                 value: item.key,
               })),
+            }}
+            externalToolBlock={{
+              show: true,
               externalTools: modelConfig.configs.prompt_variables.filter(item => item.type === 'api').map(item => ({
                 name: item.name,
                 variableName: item.key,

@@ -29,16 +29,16 @@ const AppCard = ({
           <AppIcon size='large' icon={app.app.icon} background={app.app.icon_background} />
           <span className='absolute bottom-[-3px] right-[-3px] w-4 h-4 p-0.5 bg-white rounded border-[0.5px] border-[rgba(0,0,0,0.02)] shadow-sm'>
             {appBasicInfo.mode === 'advanced-chat' && (
-              <ChatBot className='w-3 h-3 text-blue-600' />
+              <ChatBot className='w-3 h-3 text-[#1570EF]' />
             )}
             {appBasicInfo.mode === 'agent-chat' && (
               <CuteRobote className='w-3 h-3 text-indigo-600' />
             )}
             {appBasicInfo.mode === 'chat' && (
-              <ChatBot className='w-3 h-3 text-blue-600' />
+              <ChatBot className='w-3 h-3 text-[#1570EF]' />
             )}
             {appBasicInfo.mode === 'completion' && (
-              <AiText className='w-3 h-3 text-gray-500' />
+              <AiText className='w-3 h-3 text-[#0E9384]' />
             )}
             {appBasicInfo.mode === 'workflow' && (
               <Route className='w-3 h-3 text-[#f79009]' />
@@ -49,22 +49,12 @@ const AppCard = ({
           <div className='flex items-center text-sm leading-5 font-semibold text-gray-800'>
             <div className='truncate' title={appBasicInfo.name}>{appBasicInfo.name}</div>
           </div>
-          <div className='flex items-center text-[10px] leading-[18px] text-gray-500'>
-            {appBasicInfo.mode === 'advanced-chat' && (
-              <div className='truncate'>{t('app.types.chatbot').toUpperCase()}</div>
-            )}
-            {appBasicInfo.mode === 'agent-chat' && (
-              <div className='truncate'>{t('app.types.agent').toUpperCase()}</div>
-            )}
-            {appBasicInfo.mode === 'chat' && (
-              <div className='truncate'>{t('app.types.chatbot').toUpperCase()}</div>
-            )}
-            {appBasicInfo.mode === 'completion' && (
-              <div className='truncate'>{t('app.types.completion').toUpperCase()}</div>
-            )}
-            {appBasicInfo.mode === 'workflow' && (
-              <div className='truncate'>{t('app.types.workflow').toUpperCase()}</div>
-            )}
+          <div className='flex items-center text-[10px] leading-[18px] text-gray-500 font-medium'>
+            {appBasicInfo.mode === 'advanced-chat' && <div className='truncate'>{t('app.types.chatbot').toUpperCase()}</div>}
+            {appBasicInfo.mode === 'chat' && <div className='truncate'>{t('app.types.chatbot').toUpperCase()}</div>}
+            {appBasicInfo.mode === 'agent-chat' && <div className='truncate'>{t('app.types.agent').toUpperCase()}</div>}
+            {appBasicInfo.mode === 'workflow' && <div className='truncate'>{t('app.types.workflow').toUpperCase()}</div>}
+            {appBasicInfo.mode === 'completion' && <div className='truncate'>{t('app.types.completion').toUpperCase()}</div>}
           </div>
         </div>
       </div>

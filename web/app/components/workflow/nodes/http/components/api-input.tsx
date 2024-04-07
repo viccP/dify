@@ -1,10 +1,16 @@
 'use client'
 import type { FC } from 'react'
-import React, { useCallback } from 'react'
+import React, { useState } from 'react'
 import cn from 'classnames'
+import { useTranslation } from 'react-i18next'
 import { Method } from '../types'
 import Selector from '../../_base/components/selector'
+import useAvailableVarList from '../../_base/hooks/use-available-var-list'
+import { VarType } from '../../../types'
+import type { Var } from '../../../types'
+import Input from '@/app/components/workflow/nodes/_base/components/input-support-select-var'
 import { ChevronDown } from '@/app/components/base/icons/src/vender/line/arrows'
+
 const MethodOptions = [
   { label: 'GET', value: Method.get },
   { label: 'POST', value: Method.post },
@@ -14,6 +20,7 @@ const MethodOptions = [
   { label: 'DELETE', value: Method.delete },
 ]
 type Props = {
+  nodeId: string
   readonly: boolean
   method: Method
   onMethodChange: (method: Method) => void
@@ -22,23 +29,31 @@ type Props = {
 }
 
 const ApiInput: FC<Props> = ({
+  nodeId,
   readonly,
   method,
   onMethodChange,
   url,
   onUrlChange,
 }) => {
-  const handleUrlChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    onUrlChange(e.target.value)
-  }, [onUrlChange])
+  const { t } = useTranslation()
+
+  const [isFocus, setIsFocus] = useState(false)
+  const availableVarList = useAvailableVarList(nodeId, {
+    onlyLeafNodeVar: false,
+    filterVar: (varPayload: Var) => {
+      return [VarType.string, VarType.number].includes(varPayload.type)
+    },
+  })
+
   return (
-    <div className='flex items-center h-8 rounded-lg bg-white border border-gray-200 shadow-xs'>
+    <div className='flex items-start  space-x-1'>
       <Selector
         value={method}
         onChange={onMethodChange}
         options={MethodOptions}
         trigger={
-          <div className={cn(readonly && 'cursor-pointer', 'h-8 shrink-0 flex items-center px-2.5 border-r border-black/5')} >
+          <div className={cn(readonly && 'cursor-pointer', 'h-8 shrink-0 flex items-center px-2.5 bg-gray-100 border-black/5 rounded-lg')} >
             <div className='w-12 pl-0.5 leading-[18px] text-xs font-medium text-gray-900 uppercase'>{method}</div>
             {!readonly && <ChevronDown className='ml-1 w-3.5 h-3.5 text-gray-700' />}
           </div>
@@ -47,12 +62,17 @@ const ApiInput: FC<Props> = ({
         showChecked
         readonly={readonly}
       />
-      <input
-        type='text'
-        readOnly={readonly}
+
+      <Input
+        instanceId='http-api-url'
+        className={cn(isFocus ? 'shadow-xs bg-gray-50 border-gray-300' : 'bg-gray-100 border-gray-100', 'w-0 grow rounded-lg px-3 py-[6px] border')}
         value={url}
-        onChange={handleUrlChange}
-        className='w-0 grow h-6 leading-6 px-2.5 border-0  text-gray-900 text-[13px]  placeholder:text-gray-400 focus:outline-none'
+        onChange={onUrlChange}
+        readOnly={readonly}
+        nodesOutputVars={availableVarList}
+        onFocusChange={setIsFocus}
+        placeholder={!readonly ? t('workflow.nodes.http.apiPlaceholder')! : ''}
+        placeholderClassName='!leading-[21px]'
       />
     </div >
   )

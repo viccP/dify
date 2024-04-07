@@ -1,11 +1,16 @@
+'use client'
+
 import type { FC } from 'react'
 import {
   memo,
+  useCallback,
   useEffect,
   useMemo,
 } from 'react'
 import { setAutoFreeze } from 'immer'
-import { useKeyPress } from 'ahooks'
+import {
+  useKeyPress,
+} from 'ahooks'
 import ReactFlow, {
   Background,
   ReactFlowProvider,
@@ -64,7 +69,10 @@ const Workflow: FC<WorkflowProps> = memo(({
 }) => {
   const showFeaturesPanel = useStore(state => state.showFeaturesPanel)
   const nodeAnimation = useStore(s => s.nodeAnimation)
-  const { handleSyncWorkflowDraft } = useNodesSyncDraft()
+  const {
+    handleSyncWorkflowDraft,
+    syncWorkflowDraftWhenPageClose,
+  } = useNodesSyncDraft()
   const { workflowReadOnly } = useWorkflowReadOnly()
   const { nodesReadOnly } = useNodesReadOnly()
 
@@ -75,6 +83,25 @@ const Workflow: FC<WorkflowProps> = memo(({
       setAutoFreeze(true)
     }
   }, [])
+
+  useEffect(() => {
+    return () => {
+      handleSyncWorkflowDraft(true)
+    }
+  }, [])
+
+  const handleSyncWorkflowDraftWhenPageClose = useCallback(() => {
+    if (document.visibilityState === 'hidden')
+      syncWorkflowDraftWhenPageClose()
+  }, [syncWorkflowDraftWhenPageClose])
+
+  useEffect(() => {
+    document.addEventListener('visibilitychange', handleSyncWorkflowDraftWhenPageClose)
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleSyncWorkflowDraftWhenPageClose)
+    }
+  }, [handleSyncWorkflowDraftWhenPageClose])
 
   const {
     handleNodeDragStart,
@@ -122,8 +149,8 @@ const Workflow: FC<WorkflowProps> = memo(({
       <ReactFlow
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        defaultNodes={nodes}
-        defaultEdges={edges}
+        nodes={nodes}
+        edges={edges}
         onNodeDragStart={handleNodeDragStart}
         onNodeDrag={handleNodeDrag}
         onNodeDragStop={handleNodeDragStop}
@@ -159,11 +186,13 @@ const Workflow: FC<WorkflowProps> = memo(({
     </div>
   )
 })
-
 Workflow.displayName = 'Workflow'
 
 const WorkflowWrap = memo(() => {
-  const data = useWorkflowInit()
+  const {
+    data,
+    isLoading,
+  } = useWorkflowInit()
 
   const nodesData = useMemo(() => {
     if (data)
@@ -178,7 +207,7 @@ const WorkflowWrap = memo(() => {
     return []
   }, [data])
 
-  if (!data) {
+  if (!data || isLoading) {
     return (
       <div className='flex justify-center items-center relative w-full h-full bg-[#F0F2F7]'>
         <Loading />

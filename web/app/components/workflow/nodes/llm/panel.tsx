@@ -7,9 +7,7 @@ import useConfig from './use-config'
 import ResolutionPicker from './components/resolution-picker'
 import type { LLMNodeType } from './types'
 import ConfigPrompt from './components/config-prompt'
-import VarList from '@/app/components/workflow/nodes/_base/components/variable/var-list'
 import Field from '@/app/components/workflow/nodes/_base/components/field'
-import AddButton from '@/app/components/base/button/add-button'
 import Split from '@/app/components/workflow/nodes/_base/components/split'
 import ModelParameterModal from '@/app/components/header/account-setting/model-provider-page/model-parameter-modal'
 import OutputVars, { VarItem } from '@/app/components/workflow/nodes/_base/components/output-vars'
@@ -18,7 +16,9 @@ import { InputVarType, type NodePanelProps } from '@/app/components/workflow/typ
 import BeforeRunForm from '@/app/components/workflow/nodes/_base/components/before-run-form'
 import type { Props as FormProps } from '@/app/components/workflow/nodes/_base/components/before-run-form/form'
 import ResultPanel from '@/app/components/workflow/run/result-panel'
-
+import TooltipPlus from '@/app/components/base/tooltip-plus'
+import { HelpCircle } from '@/app/components/base/icons/src/vender/line/general'
+import Editor from '@/app/components/workflow/nodes/_base/components/prompt/editor'
 const i18nPrefix = 'workflow.nodes.llm'
 
 const Panel: FC<NodePanelProps<LLMNodeType>> = ({
@@ -37,8 +37,6 @@ const Panel: FC<NodePanelProps<LLMNodeType>> = ({
     handleModelChanged,
     hasSetBlockStatus,
     handleCompletionParamsChange,
-    handleVarListChange,
-    handleAddVariable,
     handleContextVarChange,
     filterInputVar,
     filterVar,
@@ -133,21 +131,6 @@ const Panel: FC<NodePanelProps<LLMNodeType>> = ({
           />
         </Field>
 
-        <Field
-          title={t(`${i18nPrefix}.variables`)}
-          operations={
-            !readOnly ? <AddButton onClick={handleAddVariable} /> : undefined
-          }
-        >
-          <VarList
-            readonly={readOnly}
-            nodeId={id}
-            list={inputs.variables}
-            onChange={handleVarListChange}
-            filterVar={filterInputVar}
-          />
-        </Field>
-
         {/* knowledge */}
         <Field
           title={t(`${i18nPrefix}.context`)}
@@ -168,59 +151,98 @@ const Panel: FC<NodePanelProps<LLMNodeType>> = ({
         {model.name && (
           <ConfigPrompt
             readOnly={readOnly}
+            nodeId={id}
+            filterVar={filterInputVar}
             isChatModel={isChatModel}
             isChatApp={isChatMode}
             isShowContext
             payload={inputs.prompt_template}
-            variables={inputs.variables.map(item => item.variable)}
             onChange={handlePromptChange}
             hasSetBlockStatus={hasSetBlockStatus}
           />
         )}
 
-        {/* Memory examples. Wait for design */}
-        {/* {isChatModel && (
-          <div className='text-xs text-gray-300'>Memory examples(Designing)</div>
-        )} */}
+        {/* Memory put place examples. */}
+        {isChatMode && isChatModel && !!inputs.memory && (
+          <div className='mt-4'>
+            <div className='flex justify-between items-center h-8 pl-3 pr-2 rounded-lg bg-gray-100'>
+              <div className='flex items-center space-x-1'>
+                <div className='text-xs font-semibold text-gray-700 uppercase'>{t('workflow.nodes.common.memories.title')}</div>
+                <TooltipPlus
+                  popupContent={t('workflow.nodes.common.memories.tip')}
+                >
+                  <HelpCircle className='w-3.5 h-3.5 text-gray-400' />
+                </TooltipPlus>
+              </div>
+              <div className='flex items-center h-[18px] px-1 rounded-[5px] border border-black/8 text-xs font-semibold text-gray-500 uppercase'>{t('workflow.nodes.common.memories.builtIn')}</div>
+            </div>
+            {/* Readonly User Query */}
+            <div className='mt-4'>
+              <Editor
+                title={<div className='flex items-center space-x-1'>
+                  <div className='text-xs font-semibold text-gray-700 uppercase'>user</div>
+                  <TooltipPlus
+                    popupContent={
+                      <div className='max-w-[180px]'>{t('workflow.nodes.llm.roleDescription.user')}</div>
+                    }
+                  >
+                    <HelpCircle className='w-3.5 h-3.5 text-gray-400' />
+                  </TooltipPlus>
+                </div>}
+                value={'{{#sys.query#}}'}
+                onChange={() => { }}
+                readOnly
+                isShowContext={false}
+                isChatApp
+                isChatModel={false}
+                hasSetBlockStatus={{
+                  query: false,
+                  history: true,
+                  context: true,
+                }}
+              />
+            </div>
+          </div>
+        )}
+
         {/* Memory */}
         {isChatMode && (
           <>
+            <Split />
             <MemoryConfig
               readonly={readOnly}
               config={{ data: inputs.memory }}
               onChange={handleMemoryChange}
               canSetRoleName={isCompletionModel}
             />
-            <Split />
           </>
         )}
 
         {/* Vision: GPT4-vision and so on */}
         {isShowVisionConfig && (
-          <Field
-            title={t(`${i18nPrefix}.vision`)}
-            tooltip={t('appDebug.vision.description')!}
-            operations={
-              <ResolutionPicker
-                value={inputs.vision.configs?.detail || Resolution.high}
-                onChange={handleVisionResolutionChange}
-              />
-            }
-          />
+          <>
+            <Split />
+            <Field
+              title={t(`${i18nPrefix}.vision`)}
+              tooltip={t('appDebug.vision.description')!}
+              operations={
+                <ResolutionPicker
+                  value={inputs.vision.configs?.detail || Resolution.high}
+                  onChange={handleVisionResolutionChange}
+                />
+              }
+            />
+          </>
         )}
       </div>
+      <Split />
       <div className='px-4 pt-4 pb-2'>
         <OutputVars>
           <>
             <VarItem
-              name='output'
+              name='text'
               type='string'
               description={t(`${i18nPrefix}.outputVars.output`)}
-            />
-            <VarItem
-              name='usage'
-              type='object'
-              description={t(`${i18nPrefix}.outputVars.usage`)}
             />
           </>
         </OutputVars>

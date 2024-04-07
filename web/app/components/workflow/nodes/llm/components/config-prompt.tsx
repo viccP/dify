@@ -3,22 +3,23 @@ import type { FC } from 'react'
 import React, { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import produce from 'immer'
-import type { PromptItem } from '../../../types'
+import type { PromptItem, ValueSelector, Var } from '../../../types'
 import { PromptRole } from '../../../types'
+import useAvailableVarList from '../../_base/hooks/use-available-var-list'
 import Editor from '@/app/components/workflow/nodes/_base/components/prompt/editor'
 import AddButton from '@/app/components/workflow/nodes/_base/components/add-button'
 import TypeSelector from '@/app/components/workflow/nodes/_base/components/selector'
 import TooltipPlus from '@/app/components/base/tooltip-plus'
 import { HelpCircle } from '@/app/components/base/icons/src/vender/line/general'
-
 const i18nPrefix = 'workflow.nodes.llm'
 
 type Props = {
   readOnly: boolean
+  nodeId: string
+  filterVar: (payload: Var, selector: ValueSelector) => boolean
   isChatModel: boolean
   isChatApp: boolean
   payload: PromptItem | PromptItem[]
-  variables: string[]
   onChange: (payload: PromptItem | PromptItem[]) => void
   isShowContext: boolean
   hasSetBlockStatus: {
@@ -30,15 +31,20 @@ type Props = {
 
 const ConfigPrompt: FC<Props> = ({
   readOnly,
+  nodeId,
+  filterVar,
   isChatModel,
   isChatApp,
   payload,
-  variables,
   onChange,
   isShowContext,
   hasSetBlockStatus,
 }) => {
   const { t } = useTranslation()
+  const availableVarList = useAvailableVarList(nodeId, {
+    onlyLeafNodeVar: false,
+    filterVar,
+  })
 
   const handleChatModePromptChange = useCallback((index: number) => {
     return (prompt: string) => {
@@ -97,6 +103,8 @@ const ConfigPrompt: FC<Props> = ({
     onChange(newPrompt)
   }, [onChange, payload])
 
+  // console.log(getInputVars((payload as PromptItem).text))
+
   return (
     <div>
       {(isChatModel && Array.isArray(payload))
@@ -107,6 +115,7 @@ const ConfigPrompt: FC<Props> = ({
                 (payload as PromptItem[]).map((item, index) => {
                   return (
                     <Editor
+                      instanceId={`${nodeId}-chat-workflow-llm-prompt-editor-${item.role}-${index}`}
                       key={index}
                       title={
                         <div className='relative left-1 flex items-center'>
@@ -119,7 +128,7 @@ const ConfigPrompt: FC<Props> = ({
                           />
                           <TooltipPlus
                             popupContent={
-                              <div>{t(`${i18nPrefix}.roleDescription`)}</div>
+                              <div className='max-w-[180px]'>{t(`${i18nPrefix}.roleDescription.${item.role}`)}</div>
                             }
                           >
                             <HelpCircle className='w-3.5 h-3.5 text-gray-400' />
@@ -128,7 +137,6 @@ const ConfigPrompt: FC<Props> = ({
                       }
                       value={item.text}
                       onChange={handleChatModePromptChange(index)}
-                      variables={variables}
                       readOnly={readOnly}
                       showRemove={(payload as PromptItem[]).length > 1}
                       onRemove={handleRemove(index)}
@@ -136,6 +144,7 @@ const ConfigPrompt: FC<Props> = ({
                       isChatApp={isChatApp}
                       isShowContext={isShowContext}
                       hasSetBlockStatus={hasSetBlockStatus}
+                      nodesOutputVars={availableVarList}
                     />
                   )
                 })
@@ -152,15 +161,16 @@ const ConfigPrompt: FC<Props> = ({
         : (
           <div>
             <Editor
+              instanceId={`${nodeId}-chat-workflow-llm-prompt-editor`}
               title={<span className='capitalize'>{t(`${i18nPrefix}.prompt`)}</span>}
               value={(payload as PromptItem).text}
               onChange={handleCompletionPromptChange}
-              variables={variables}
               readOnly={readOnly}
               isChatModel={isChatModel}
               isChatApp={isChatApp}
               isShowContext={isShowContext}
               hasSetBlockStatus={hasSetBlockStatus}
+              nodesOutputVars={availableVarList}
             />
           </div>
         )}

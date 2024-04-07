@@ -58,7 +58,7 @@ const BeforeRunForm: FC<BeforeRunFormProps> = ({
       form.inputs.forEach((input) => {
         const value = form.values[input.variable]
         if (!errMsg && input.required && (value === '' || value === undefined || value === null || (input.type === InputVarType.files && value.length === 0)))
-          errMsg = t('workflow.errorMsg.fieldRequired', { field: input.label })
+          errMsg = t('workflow.errorMsg.fieldRequired', { field: typeof input.label === 'object' ? input.label.variable : input.label })
       })
     })
     if (errMsg) {
@@ -129,7 +129,7 @@ const BeforeRunForm: FC<BeforeRunFormProps> = ({
                 <StopCircle className='w-4 h-4 text-gray-500' />
               </div>
             )}
-            <Button disabled={isRunning} type='primary' className='w-0 grow !h-8 flex items-center space-x-2' onClick={handleRun}>
+            <Button disabled={isRunning} type='primary' className='w-0 grow !h-8 flex items-center space-x-2 text-[13px]' onClick={handleRun}>
               {isRunning && <Loading02 className='animate-spin w-4 h-4 text-white' />}
               <div>{t(`${i18nPrefix}.${isRunning ? 'running' : 'startRun'}`)}</div>
             </Button>

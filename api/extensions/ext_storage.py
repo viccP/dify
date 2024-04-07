@@ -7,6 +7,7 @@ from typing import Union
 
 import boto3
 from azure.storage.blob import AccountSasPermissions, BlobServiceClient, ResourceTypes, generate_account_sas
+from botocore.client import Config
 from botocore.exceptions import ClientError
 from flask import Flask
 
@@ -27,7 +28,8 @@ class Storage:
                 aws_secret_access_key=app.config.get('S3_SECRET_KEY'),
                 aws_access_key_id=app.config.get('S3_ACCESS_KEY'),
                 endpoint_url=app.config.get('S3_ENDPOINT'),
-                region_name=app.config.get('S3_REGION')
+                region_name=app.config.get('S3_REGION'),
+                config=Config(s3={'addressing_style': app.config.get('S3_ADDRESS_STYLE')})
             )
         elif self.storage_type == 'azure-blob':
             self.bucket_name = app.config.get('AZURE_BLOB_CONTAINER_NAME')
@@ -169,6 +171,20 @@ class Storage:
                 filename = self.folder + '/' + filename
 
             return os.path.exists(filename)
+
+    def delete(self, filename):
+        if self.storage_type == 's3':
+            self.client.delete_object(Bucket=self.bucket_name, Key=filename)
+        elif self.storage_type == 'azure-blob':
+            blob_container = self.client.get_container_client(container=self.bucket_name)
+            blob_container.delete_blob(filename)
+        else:
+            if not self.folder or self.folder.endswith('/'):
+                filename = self.folder + filename
+            else:
+                filename = self.folder + '/' + filename
+            if os.path.exists(filename):
+                os.remove(filename)
 
 
 storage = Storage()

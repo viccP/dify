@@ -1,9 +1,7 @@
 import { useCallback } from 'react'
 import produce from 'immer'
-import {
-  useReactFlow,
-  useStoreApi,
-} from 'reactflow'
+import { useStoreApi } from 'reactflow'
+import { useParams } from 'next/navigation'
 import {
   useStore,
   useWorkflowStore,
@@ -12,25 +10,26 @@ import { BlockEnum } from '../types'
 import { useNodesReadOnly } from './use-workflow'
 import { syncWorkflowDraft } from '@/service/workflow'
 import { useFeaturesStore } from '@/app/components/base/features/hooks'
-import { useStore as useAppStore } from '@/app/components/app/store'
+import { API_PREFIX } from '@/config'
 
 export const useNodesSyncDraft = () => {
   const store = useStoreApi()
   const workflowStore = useWorkflowStore()
-  const reactFlow = useReactFlow()
   const featuresStore = useFeaturesStore()
   const { getNodesReadOnly } = useNodesReadOnly()
   const debouncedSyncWorkflowDraft = useStore(s => s.debouncedSyncWorkflowDraft)
+  const params = useParams()
 
-  const doSyncWorkflowDraft = useCallback(async () => {
+  const getPostParams = useCallback((appIdParams?: string) => {
     const {
       getNodes,
       edges,
+      transform,
     } = store.getState()
-    const { getViewport } = reactFlow
-    const appId = useAppStore.getState().appDetail?.id
+    const [x, y, zoom] = transform
+    const appId = workflowStore.getState().appId
 
-    if (appId) {
+    if (appId || appIdParams) {
       const nodes = getNodes()
       const hasStartNode = nodes.find(node => node.data.type === BlockEnum.Start)
 
@@ -54,13 +53,17 @@ export const useNodesSyncDraft = () => {
           })
         })
       })
-      syncWorkflowDraft({
-        url: `/apps/${appId}/workflows/draft`,
+      return {
+        url: `/apps/${appId || appIdParams}/workflows/draft`,
         params: {
           graph: {
             nodes: producedNodes,
             edges: producedEdges,
-            viewport: getViewport(),
+            viewport: {
+              x,
+              y,
+              zoom,
+            },
           },
           features: {
             opening_statement: features.opening?.opening_statement || '',
@@ -73,18 +76,36 @@ export const useNodesSyncDraft = () => {
             file_upload: features.file,
           },
         },
-      }).then((res) => {
-        workflowStore.getState().setDraftUpdatedAt(res.updated_at)
-      })
+      }
     }
-  }, [store, reactFlow, featuresStore, workflowStore])
+  }, [store, featuresStore, workflowStore])
 
-  const handleSyncWorkflowDraft = useCallback((sync?: boolean) => {
+  const syncWorkflowDraftWhenPageClose = useCallback(() => {
+    const postParams = getPostParams()
+
+    if (postParams) {
+      navigator.sendBeacon(
+        `${API_PREFIX}/apps/${params.appId}/workflows/draft?_token=${localStorage.getItem('console_token')}`,
+        JSON.stringify(postParams.params),
+      )
+    }
+  }, [getPostParams, params.appId])
+
+  const doSyncWorkflowDraft = useCallback(async (appId?: string) => {
+    const postParams = getPostParams(appId)
+
+    if (postParams) {
+      const res = await syncWorkflowDraft(postParams)
+      workflowStore.getState().setDraftUpdatedAt(res.updated_at)
+    }
+  }, [workflowStore, getPostParams])
+
+  const handleSyncWorkflowDraft = useCallback((sync?: boolean, appId?: string) => {
     if (getNodesReadOnly())
       return
 
     if (sync)
-      doSyncWorkflowDraft()
+      doSyncWorkflowDraft(appId)
     else
       debouncedSyncWorkflowDraft(doSyncWorkflowDraft)
   }, [debouncedSyncWorkflowDraft, doSyncWorkflowDraft, getNodesReadOnly])
@@ -92,5 +113,6 @@ export const useNodesSyncDraft = () => {
   return {
     doSyncWorkflowDraft,
     handleSyncWorkflowDraft,
+    syncWorkflowDraftWhenPageClose,
   }
 }

@@ -10,7 +10,6 @@ import {
   useState,
 } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useThrottleEffect } from 'ahooks'
 import { debounce } from 'lodash-es'
 import type {
   ChatConfig,
@@ -51,6 +50,7 @@ export type ChatProps = {
   onAnnotationRemoved?: (index: number) => void
   chatNode?: ReactNode
   onFeedback?: (messageId: string, feedback: Feedback) => void
+  chatAnswerContainerInner?: string
 }
 const Chat: FC<ChatProps> = ({
   config,
@@ -74,6 +74,7 @@ const Chat: FC<ChatProps> = ({
   onAnnotationRemoved,
   chatNode,
   onFeedback,
+  chatAnswerContainerInner,
 }) => {
   const { t } = useTranslation()
   const { currentLogItem, setCurrentLogItem, showPromptLogModal, setShowPromptLogModal } = useAppStore()
@@ -100,10 +101,19 @@ const Chat: FC<ChatProps> = ({
       chatFooterInnerRef.current.style.width = `${chatContainerInnerRef.current.clientWidth}px`
   }, [])
 
-  useThrottleEffect(() => {
+  useEffect(() => {
     handleScrolltoBottom()
     handleWindowResize()
-  }, [chatList], { wait: 500 })
+  }, [handleScrolltoBottom, handleWindowResize])
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      requestAnimationFrame(() => {
+        handleScrolltoBottom()
+        handleWindowResize()
+      })
+    }
+  })
 
   useEffect(() => {
     window.addEventListener('resize', debounce(handleWindowResize))
@@ -183,6 +193,7 @@ const Chat: FC<ChatProps> = ({
                       responding={isLast && isResponding}
                       allToolIcons={allToolIcons}
                       showPromptLog={showPromptLog}
+                      chatAnswerContainerInner={chatAnswerContainerInner}
                     />
                   )
                 }

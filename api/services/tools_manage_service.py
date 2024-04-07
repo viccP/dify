@@ -1,7 +1,9 @@
 import json
+import logging
 
 from httpx import get
 
+from core.model_runtime.utils.encoders import jsonable_encoder
 from core.tools.entities.common_entities import I18nObject
 from core.tools.entities.tool_bundle import ApiBasedToolBundle
 from core.tools.entities.tool_entities import (
@@ -17,12 +19,13 @@ from core.tools.provider.builtin._positions import BuiltinToolProviderSort
 from core.tools.provider.tool_provider import ToolProviderController
 from core.tools.tool_manager import ToolManager
 from core.tools.utils.configuration import ToolConfigurationManager
-from core.tools.utils.encoder import serialize_base_model_array, serialize_base_model_dict
 from core.tools.utils.parser import ApiBasedToolSchemaParser
 from extensions.ext_database import db
 from models.tools import ApiToolProvider, BuiltinToolProvider
 from services.model_provider_service import ModelProviderService
 from services.tools_transform_service import ToolTransformService
+
+logger = logging.getLogger(__name__)
 
 
 class ToolManageService:
@@ -86,9 +89,9 @@ class ToolManageService:
             :return: the list of tool providers
         """
         provider = ToolManager.get_builtin_provider(provider_name)
-        return json.loads(serialize_base_model_array([
+        return jsonable_encoder([
             v for _, v in (provider.credentials_schema or {}).items()
-        ]))
+        ])
 
     @staticmethod
     def parser_api_schema(schema: str) -> list[ApiBasedToolBundle]:
@@ -149,14 +152,12 @@ class ToolManageService:
                 ),
             ]
 
-            return json.loads(serialize_base_model_dict(
-                {
-                    'schema_type': schema_type,
-                    'parameters_schema': tool_bundles,
-                    'credentials_schema': credentials_schema,
-                    'warning': warnings
-                }
-            ))
+            return jsonable_encoder({
+                'schema_type': schema_type,
+                'parameters_schema': tool_bundles,
+                'credentials_schema': credentials_schema,
+                'warning': warnings
+            })
         except Exception as e:
             raise ValueError(f'invalid schema: {str(e)}')
 
@@ -210,7 +211,7 @@ class ToolManageService:
             schema=schema,
             description=extra_info.get('description', ''),
             schema_type_str=schema_type,
-            tools_str=serialize_base_model_array(tool_bundles),
+            tools_str=json.dumps(jsonable_encoder(tool_bundles)),
             credentials_str={},
             privacy_policy=privacy_policy
         )
@@ -257,6 +258,7 @@ class ToolManageService:
             # try to parse schema, avoid SSRF attack
             ToolManageService.parser_api_schema(schema)
         except Exception as e:
+            logger.error(f"parse api schema error: {str(e)}")
             raise ValueError('invalid schema, please check the url you provided')
         
         return {
@@ -279,19 +281,7 @@ class ToolManageService:
             raise ValueError(f'you have not added provider {provider}')
         
         return [
-            UserTool(
-                author=tool_bundle.author,
-                name=tool_bundle.operation_id,
-                label=I18nObject(
-                    en_US=tool_bundle.operation_id,
-                    zh_Hans=tool_bundle.operation_id
-                ),
-                description=I18nObject(
-                    en_US=tool_bundle.summary or '',
-                    zh_Hans=tool_bundle.summary or ''
-                ),
-                parameters=tool_bundle.parameters
-            ) for tool_bundle in provider.tools
+            ToolTransformService.tool_to_user_tool(tool_bundle) for tool_bundle in provider.tools
         ]
 
     @staticmethod
@@ -351,6 +341,27 @@ class ToolManageService:
         return { 'result': 'success' }
     
     @staticmethod
+    def get_builtin_tool_provider_credentials(
+        user_id: str, tenant_id: str, provider: str
+    ):
+        """
+            get builtin tool provider credentials
+        """
+        provider: BuiltinToolProvider = db.session.query(BuiltinToolProvider).filter(
+            BuiltinToolProvider.tenant_id == tenant_id,
+            BuiltinToolProvider.provider == provider,
+        ).first()
+
+        if provider is None:
+            return {}
+        
+        provider_controller = ToolManager.get_builtin_provider(provider.provider)
+        tool_configuration = ToolConfigurationManager(tenant_id=tenant_id, provider_controller=provider_controller)
+        credentials = tool_configuration.decrypt_tool_credentials(provider.credentials)
+        credentials = tool_configuration.mask_tool_credentials(credentials)
+        return credentials
+
+    @staticmethod
     def update_api_tool_provider(
         user_id: str, tenant_id: str, provider_name: str, original_provider: str, icon: dict, credentials: dict, 
         schema_type: str, schema: str, privacy_policy: str
@@ -381,7 +392,7 @@ class ToolManageService:
         provider.schema = schema
         provider.description = extra_info.get('description', '')
         provider.schema_type_str = ApiProviderSchemaType.OPENAPI.value
-        provider.tools_str = serialize_base_model_array(tool_bundles)
+        provider.tools_str = json.dumps(jsonable_encoder(tool_bundles))
         provider.privacy_policy = privacy_policy
 
         if 'auth_type' not in credentials:
@@ -490,9 +501,7 @@ class ToolManageService:
             ) for tool in tools
         ]
 
-        return json.loads(
-            serialize_base_model_array(result)
-        )
+        return jsonable_encoder(result)
     
     @staticmethod
     def delete_api_tool_provider(
@@ -561,7 +570,7 @@ class ToolManageService:
                 schema=schema,
                 description='',
                 schema_type_str=ApiProviderSchemaType.OPENAPI.value,
-                tools_str=serialize_base_model_array(tool_bundles),
+                tools_str=json.dumps(jsonable_encoder(tool_bundles)),
                 credentials_str=json.dumps(credentials),
             )
 
@@ -627,7 +636,8 @@ class ToolManageService:
             # convert provider controller to user provider
             user_builtin_provider = ToolTransformService.builtin_provider_to_user_provider(
                 provider_controller=provider_controller,
-                db_provider=find_provider(provider_controller.identity.name)
+                db_provider=find_provider(provider_controller.identity.name),
+                decrypt_credentials=True
             )
 
             # add icon
@@ -664,7 +674,8 @@ class ToolManageService:
             provider_controller = ToolTransformService.api_provider_to_controller(db_provider=provider)
             user_provider = ToolTransformService.api_provider_to_user_provider(
                 provider_controller,
-                db_provider=provider
+                db_provider=provider,
+                decrypt_credentials=True
             )
 
             # add icon

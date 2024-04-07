@@ -83,7 +83,7 @@ const CustomEdge = ({
       <EdgeLabelRenderer>
         <div
           className={`
-            nopan nodrag hover:scale-150 transition-all
+            nopan nodrag hover:scale-150
             ${data?._hovering ? 'block' : 'hidden'}
             ${open && '!block'}
           `}

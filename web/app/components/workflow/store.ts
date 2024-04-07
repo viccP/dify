@@ -20,6 +20,7 @@ import type {
 import { WorkflowContext } from './context'
 
 type Shape = {
+  appId: string
   workflowRunningData?: WorkflowRunningData
   setWorkflowRunningData: (workflowData: WorkflowRunningData) => void
   historyWorkflowData?: HistoryWorkflowData
@@ -65,6 +66,7 @@ type Shape = {
 
 export const createWorkflowStore = () => {
   return create<Shape>(set => ({
+    appId: '',
     workflowData: undefined,
     setWorkflowRunningData: workflowRunningData => set(() => ({ workflowRunningData })),
     historyWorkflowData: undefined,

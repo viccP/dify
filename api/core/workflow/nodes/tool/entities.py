@@ -1,4 +1,4 @@
-from typing import Literal, Optional, Union
+from typing import Literal, Union
 
 from pydantic import BaseModel, validator
 
@@ -16,24 +16,22 @@ class ToolEntity(BaseModel):
 
 class ToolNodeData(BaseNodeData, ToolEntity):
     class ToolInput(BaseModel):
-        variable: str
-        variable_type: Literal['selector', 'static']
-        value_selector: Optional[list[str]]
-        value: Optional[str]
+        value: Union[ToolParameterValue, list[str]]
+        type: Literal['mixed', 'variable', 'constant']
 
-        @validator('value')
-        def check_value(cls, value, values, **kwargs):
-            if values['variable_type'] == 'static' and value is None:
-                raise ValueError('value is required for static variable')
-            return value
-        
-        @validator('value_selector')
-        def check_value_selector(cls, value_selector, values, **kwargs):
-            if values['variable_type'] == 'selector' and value_selector is None:
-                raise ValueError('value_selector is required for selector variable')
-            return value_selector
-    
+        @validator('type', pre=True, always=True)
+        def check_type(cls, value, values):
+            typ = value
+            value = values.get('value')
+            if typ == 'mixed' and not isinstance(value, str):
+                raise ValueError('value must be a string')
+            elif typ == 'variable' and not isinstance(value, list):
+                raise ValueError('value must be a list')
+            elif typ == 'constant' and not isinstance(value, ToolParameterValue):
+                raise ValueError('value must be a string, int, float, or bool')
+            return typ
+            
     """
     Tool Node Schema
     """
-    tool_parameters: list[ToolInput]
+    tool_parameters: dict[str, ToolInput]

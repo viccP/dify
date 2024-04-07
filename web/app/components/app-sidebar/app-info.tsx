@@ -128,6 +128,7 @@ const AppInfo = ({ expand }: IAppInfoProps) => {
       notify({ type: 'success', message: t('app.appDeleted') })
       mutateApps()
       onPlanInfoChanged()
+      setAppDetail()
       replace('/apps')
     }
     catch (e: any) {
@@ -296,7 +297,7 @@ const AppInfo = ({ expand }: IAppInfoProps) => {
                   {t('app.newApp.advanced')}
                   <span className='px-1 rounded-[5px] bg-white border border-black/8 text-gray-500 text-[10px] leading-[18px] font-medium'>BETA</span>
                 </div>
-                <div className='text-orange-500 text-xs leading-[18px] font-medium'>{t('app.newApp.advancedFor')}</div>
+                <div className='text-orange-500 text-xs leading-[18px] font-medium'>{t('app.newApp.advancedFor').toLocaleUpperCase()}</div>
                 <div className='mt-1 text-gray-500 text-sm leading-5'>{t('app.newApp.advancedDescription')}</div>
               </div>
             </div>

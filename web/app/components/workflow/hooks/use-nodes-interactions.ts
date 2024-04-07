@@ -246,6 +246,8 @@ export const useNodesInteractions = () => {
     const {
       getNodes,
       setNodes,
+      edges,
+      setEdges,
     } = store.getState()
 
     const nodes = getNodes()
@@ -263,6 +265,26 @@ export const useNodesInteractions = () => {
       })
     })
     setNodes(newNodes)
+
+    const connectedEdges = getConnectedEdges([{ id: nodeId } as Node], edges).map(edge => edge.id)
+    const newEdges = produce(edges, (draft) => {
+      draft.forEach((edge) => {
+        if (connectedEdges.includes(edge.id)) {
+          edge.data = {
+            ...edge.data,
+            _connectedNodeIsSelected: !cancelSelection,
+          }
+        }
+        else {
+          edge.data = {
+            ...edge.data,
+            _connectedNodeIsSelected: false,
+          }
+        }
+      })
+    })
+    setEdges(newEdges)
+
     handleSyncWorkflowDraft()
   }, [store, handleSyncWorkflowDraft, getNodesReadOnly, workflowStore])
 
@@ -289,7 +311,21 @@ export const useNodesInteractions = () => {
       setEdges,
     } = store.getState()
     const nodes = getNodes()
-    const needDeleteEdges = edges.filter(edge => (edge.source === source && edge.sourceHandle === sourceHandle) || (edge.target === target && edge.targetHandle === targetHandle))
+    const needDeleteEdges = edges.filter((edge) => {
+      if (edge.source === source) {
+        if (edge.sourceHandle)
+          return edge.sourceHandle === sourceHandle
+        else
+          return true
+      }
+      if (edge.target === target) {
+        if (edge.targetHandle)
+          return edge.targetHandle === targetHandle
+        else
+          return true
+      }
+      return false
+    })
     const needDeleteEdgesIds = needDeleteEdges.map(edge => edge.id)
     const newEdge = {
       id: `${source}-${target}`,
@@ -441,6 +477,7 @@ export const useNodesInteractions = () => {
         data: {
           sourceType: prevNode.data.type,
           targetType: newNode.data.type,
+          _connectedNodeIsSelected: true,
         },
       }
       const newNodes = produce(nodes, (draft: Node[]) => {
@@ -454,6 +491,12 @@ export const useNodesInteractions = () => {
       })
       setNodes(newNodes)
       const newEdges = produce(edges, (draft) => {
+        draft.forEach((item) => {
+          item.data = {
+            ...item.data,
+            _connectedNodeIsSelected: false,
+          }
+        })
         draft.push(newEdge)
       })
       setEdges(newEdges)
@@ -478,6 +521,7 @@ export const useNodesInteractions = () => {
         data: {
           sourceType: newNode.data.type,
           targetType: nextNode.data.type,
+          _connectedNodeIsSelected: true,
         },
       }
       const afterNodesInSameBranch = getAfterNodesInSameBranch(nextNodeId!)
@@ -496,6 +540,12 @@ export const useNodesInteractions = () => {
       })
       setNodes(newNodes)
       const newEdges = produce(edges, (draft) => {
+        draft.forEach((item) => {
+          item.data = {
+            ...item.data,
+            _connectedNodeIsSelected: false,
+          }
+        })
         draft.push(newEdge)
       })
       setEdges(newEdges)
@@ -521,6 +571,7 @@ export const useNodesInteractions = () => {
         data: {
           sourceType: prevNode.data.type,
           targetType: newNode.data.type,
+          _connectedNodeIsSelected: true,
         },
       }
       let newNextEdge: Edge | null = null
@@ -535,6 +586,7 @@ export const useNodesInteractions = () => {
           data: {
             sourceType: newNode.data.type,
             targetType: nextNode.data.type,
+            _connectedNodeIsSelected: true,
           },
         }
       }
@@ -544,7 +596,7 @@ export const useNodesInteractions = () => {
           { type: 'add', edge: newPrevEdge },
           ...(newNextEdge ? [{ type: 'add', edge: newNextEdge }] : []),
         ],
-        nodes,
+        [...nodes, newNode],
       )
 
       const afterNodesInSameBranch = getAfterNodesInSameBranch(nextNodeId!)
@@ -567,6 +619,12 @@ export const useNodesInteractions = () => {
       setNodes(newNodes)
       const newEdges = produce(edges, (draft) => {
         draft.splice(currentEdgeIndex, 1)
+        draft.forEach((item) => {
+          item.data = {
+            ...item.data,
+            _connectedNodeIsSelected: false,
+          }
+        })
         draft.push(newPrevEdge)
 
         if (newNextEdge)

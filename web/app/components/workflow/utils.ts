@@ -1,12 +1,18 @@
 import {
   Position,
   getConnectedEdges,
+  getOutgoers,
 } from 'reactflow'
 import dagre from 'dagre'
-import { cloneDeep } from 'lodash-es'
+import {
+  cloneDeep,
+  uniqBy,
+} from 'lodash-es'
 import type {
   Edge,
+  InputVar,
   Node,
+  ToolWithProvider,
 } from './types'
 import { BlockEnum } from './types'
 import {
@@ -14,6 +20,9 @@ import {
   START_INITIAL_POSITION,
 } from './constants'
 import type { QuestionClassifierNodeType } from './nodes/question-classifier/types'
+import type { ToolNodeType } from './nodes/tool/types'
+import { CollectionType } from '@/app/components/tools/types'
+import { toolParametersToFormSchemas } from '@/app/components/tools/utils/to-form-schema'
 
 export const initialNodes = (nodes: Node[], edges: Edge[]) => {
   const firstNode = nodes[0]
@@ -57,20 +66,44 @@ export const initialNodes = (nodes: Node[], edges: Edge[]) => {
 }
 
 export const initialEdges = (edges: Edge[], nodes: Node[]) => {
+  let selectedNode: Node | null = null
   const nodesMap = nodes.reduce((acc, node) => {
     acc[node.id] = node
+
+    if (node.data?.selected)
+      selectedNode = node
 
     return acc
   }, {} as Record<string, Node>)
   return edges.map((edge) => {
     edge.type = 'custom'
 
-    if (!edge.data?.sourceType)
-      edge.data = { ...edge.data, sourceType: nodesMap[edge.source].data.type! } as any
+    if (!edge.sourceHandle)
+      edge.sourceHandle = 'source'
 
-    if (!edge.data?.targetType)
-      edge.data = { ...edge.data, targetType: nodesMap[edge.target].data.type! } as any
+    if (!edge.targetHandle)
+      edge.targetHandle = 'target'
 
+    if (!edge.data?.sourceType) {
+      edge.data = {
+        ...edge.data,
+        sourceType: nodesMap[edge.source].data.type!,
+      } as any
+    }
+
+    if (!edge.data?.targetType) {
+      edge.data = {
+        ...edge.data,
+        targetType: nodesMap[edge.target].data.type!,
+      } as any
+    }
+
+    if (selectedNode) {
+      edge.data = {
+        ...edge.data,
+        _connectedNodeIsSelected: edge.source === selectedNode.id || edge.target === selectedNode.id,
+      } as any
+    }
     return edge
   })
 }
@@ -121,49 +154,115 @@ export const getNodesConnectedSourceOrTargetHandleIdsMap = (changes: ConnectedSo
       edge,
       type,
     } = change
-    const sourceNode = nodes.find(node => node.id === edge.source)
-    const sourceNodeConnectedSourceHandleIds = sourceNode?.data._connectedSourceHandleIds || []
-    const targetNode = nodes.find(node => node.id === edge.target)
-    const targetNodeConnectedTargetHandleIds = targetNode?.data._connectedTargetHandleIds || []
+    const sourceNode = nodes.find(node => node.id === edge.source)!
+    nodesConnectedSourceOrTargetHandleIdsMap[sourceNode.id] = nodesConnectedSourceOrTargetHandleIdsMap[sourceNode.id] || {
+      _connectedSourceHandleIds: sourceNode?.data._connectedSourceHandleIds || [],
+      _connectedTargetHandleIds: sourceNode?.data._connectedTargetHandleIds || [],
+    }
+    const targetNode = nodes.find(node => node.id === edge.target)!
+    nodesConnectedSourceOrTargetHandleIdsMap[targetNode.id] = nodesConnectedSourceOrTargetHandleIdsMap[targetNode.id] || {
+      _connectedSourceHandleIds: targetNode?.data._connectedSourceHandleIds || [],
+      _connectedTargetHandleIds: targetNode?.data._connectedTargetHandleIds || [],
+    }
 
     if (sourceNode) {
-      const newSourceNodeConnectedSourceHandleIds = type === 'remove'
-        ? sourceNodeConnectedSourceHandleIds.filter(handleId => handleId !== edge.sourceHandle)
-        : sourceNodeConnectedSourceHandleIds.concat(edge.sourceHandle || 'source')
-      if (!nodesConnectedSourceOrTargetHandleIdsMap[sourceNode.id]) {
-        nodesConnectedSourceOrTargetHandleIdsMap[sourceNode.id] = {
-          _connectedSourceHandleIds: newSourceNodeConnectedSourceHandleIds,
-        }
-      }
-      else {
-        nodesConnectedSourceOrTargetHandleIdsMap[sourceNode.id]._connectedSourceHandleIds = newSourceNodeConnectedSourceHandleIds
-      }
+      if (type === 'remove')
+        nodesConnectedSourceOrTargetHandleIdsMap[sourceNode.id]._connectedSourceHandleIds = nodesConnectedSourceOrTargetHandleIdsMap[sourceNode.id]._connectedSourceHandleIds.filter((handleId: string) => handleId !== edge.sourceHandle)
+
+      if (type === 'add')
+        nodesConnectedSourceOrTargetHandleIdsMap[sourceNode.id]._connectedSourceHandleIds.push(edge.sourceHandle || 'source')
     }
+
     if (targetNode) {
-      const newTargetNodeConnectedTargetHandleIds = type === 'remove'
-        ? targetNodeConnectedTargetHandleIds.filter(handleId => handleId !== edge.targetHandle)
-        : targetNodeConnectedTargetHandleIds.concat(edge.targetHandle || 'target')
-      if (!nodesConnectedSourceOrTargetHandleIdsMap[targetNode.id]) {
-        nodesConnectedSourceOrTargetHandleIdsMap[targetNode.id] = {
-          _connectedTargetHandleIds: newTargetNodeConnectedTargetHandleIds,
-        }
-      }
-      else {
-        nodesConnectedSourceOrTargetHandleIdsMap[targetNode.id]._connectedTargetHandleIds = newTargetNodeConnectedTargetHandleIds
-      }
+      if (type === 'remove')
+        nodesConnectedSourceOrTargetHandleIdsMap[targetNode.id]._connectedTargetHandleIds = nodesConnectedSourceOrTargetHandleIdsMap[targetNode.id]._connectedTargetHandleIds.filter((handleId: string) => handleId !== edge.targetHandle)
+
+      if (type === 'add')
+        nodesConnectedSourceOrTargetHandleIdsMap[targetNode.id]._connectedTargetHandleIds.push(edge.targetHandle || 'target')
     }
   })
 
   return nodesConnectedSourceOrTargetHandleIdsMap
 }
 
-export const generateNewNode = ({ data, position }: Pick<Node, 'data' | 'position'>) => {
+export const generateNewNode = ({ data, position, id }: Pick<Node, 'data' | 'position'> & { id?: string }) => {
   return {
-    id: `${Date.now()}`,
+    id: id || `${Date.now()}`,
     type: 'custom',
     data,
     position,
     targetPosition: Position.Left,
     sourcePosition: Position.Right,
   } as Node
+}
+
+export const getValidTreeNodes = (nodes: Node[], edges: Edge[]) => {
+  const startNode = nodes.find(node => node.data.type === BlockEnum.Start)
+
+  if (!startNode) {
+    return {
+      validNodes: [],
+      maxDepth: 0,
+    }
+  }
+
+  const list: Node[] = [startNode]
+  let maxDepth = 1
+
+  const traverse = (root: Node, depth: number) => {
+    if (depth > maxDepth)
+      maxDepth = depth
+
+    const outgoers = getOutgoers(root, nodes, edges)
+
+    if (outgoers.length) {
+      outgoers.forEach((outgoer) => {
+        list.push(outgoer)
+        traverse(outgoer, depth + 1)
+      })
+    }
+    else {
+      list.push(root)
+    }
+  }
+
+  traverse(startNode, maxDepth)
+
+  return {
+    validNodes: uniqBy(list, 'id'),
+    maxDepth,
+  }
+}
+
+export const getToolCheckParams = (
+  toolData: ToolNodeType,
+  buildInTools: ToolWithProvider[],
+  customTools: ToolWithProvider[],
+  language: string,
+) => {
+  const { provider_id, provider_type, tool_name } = toolData
+  const isBuiltIn = provider_type === CollectionType.builtIn
+  const currentTools = isBuiltIn ? buildInTools : customTools
+  const currCollection = currentTools.find(item => item.id === provider_id)
+  const currTool = currCollection?.tools.find(tool => tool.name === tool_name)
+  const formSchemas = currTool ? toolParametersToFormSchemas(currTool.parameters) : []
+  const toolInputVarSchema = formSchemas.filter((item: any) => item.form === 'llm')
+  const toolSettingSchema = formSchemas.filter((item: any) => item.form !== 'llm')
+
+  return {
+    toolInputsSchema: (() => {
+      const formInputs: InputVar[] = []
+      toolInputVarSchema.forEach((item: any) => {
+        formInputs.push({
+          label: item.label[language] || item.label.en_US,
+          variable: item.variable,
+          type: item.type,
+          required: item.required,
+        })
+      })
+      return formInputs
+    })(),
+    toolSettingSchema,
+    language,
+  }
 }

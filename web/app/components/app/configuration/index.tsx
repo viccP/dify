@@ -1,16 +1,16 @@
 'use client'
 import type { FC } from 'react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useContext } from 'use-context-selector'
 import { usePathname } from 'next/navigation'
 import produce from 'immer'
 import { useBoolean, useGetState } from 'ahooks'
-import cn from 'classnames'
 import { clone, isEqual } from 'lodash-es'
 import { CodeBracketIcon } from '@heroicons/react/20/solid'
 import Button from '../../base/button'
 import Loading from '../../base/loading'
+import AppPublisher from '../app-publisher'
 import AgentSettingButton from './config/agent-setting-button'
 import useAdvancedPromptConfig from './hooks/use-advanced-prompt-config'
 import EditHistoryModal from './config-prompt/conversation-histroy/edit-modal'
@@ -19,7 +19,6 @@ import {
   useFormattingChangedDispatcher,
 } from './debug/hooks'
 import type { ModelAndParameter } from './debug/types'
-import PublishWithMultipleModel from './debug/debug-with-multiple-model/publish-with-multiple-model'
 import type {
   AnnotationReplyConfig,
   DatasetConfigs,
@@ -66,7 +65,7 @@ type PublichConfig = {
 const Configuration: FC = () => {
   const { t } = useTranslation()
   const { notify } = useContext(ToastContext)
-  const { setAppSiderbarExpand } = useAppStore()
+  const { appDetail, setAppSiderbarExpand } = useAppStore()
   const [formattingChanged, setFormattingChanged] = useState(false)
   const { setShowAccountSettingModal } = useModalContext()
   const [hasFetchedDetail, setHasFetchedDetail] = useState(false)
@@ -77,6 +76,7 @@ const Configuration: FC = () => {
   const [mode, setMode] = useState('')
   const [publishedConfig, setPublishedConfig] = useState<PublichConfig | null>(null)
 
+  const modalConfig = useMemo(() => appDetail?.model_config || {} as BackendModelConfig, [appDetail])
   const [conversationId, setConversationId] = useState<string | null>('')
 
   const media = useBreakpoints()
@@ -130,7 +130,7 @@ const Configuration: FC = () => {
   const [inputs, setInputs] = useState<Inputs>({})
   const [query, setQuery] = useState('')
   const [completionParams, doSetCompletionParams] = useState<FormValue>({})
-  const [tempStop, setTempStop, getTempStop] = useGetState<string[]>([])
+  const [_, setTempStop, getTempStop] = useGetState<string[]>([])
   const setCompletionParams = (value: FormValue) => {
     const params = { ...value }
 
@@ -347,11 +347,11 @@ const Configuration: FC = () => {
 
       if (modeMode === ModelModeType.completion) {
         if (appMode !== AppType.completion) {
-          if (!completionPromptConfig.prompt.text || !completionPromptConfig.conversation_histories_role.assistant_prefix || !completionPromptConfig.conversation_histories_role.user_prefix)
+          if (!completionPromptConfig.prompt?.text || !completionPromptConfig.conversation_histories_role.assistant_prefix || !completionPromptConfig.conversation_histories_role.user_prefix)
             await migrateToDefaultPrompt(true, ModelModeType.completion)
         }
         else {
-          if (!completionPromptConfig.prompt.text)
+          if (!completionPromptConfig.prompt?.text)
             await migrateToDefaultPrompt(true, ModelModeType.completion)
         }
       }
@@ -508,6 +508,7 @@ const Configuration: FC = () => {
         setHasFetchedDetail(true)
       })
     })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appId])
 
   const promptEmpty = (() => {
@@ -519,7 +520,7 @@ const Configuration: FC = () => {
         return chatPromptConfig.prompt.every(({ text }: any) => !text)
 
       else
-        return !completionPromptConfig.prompt.text
+        return !completionPromptConfig.prompt?.text
     }
 
     else { return !modelConfig.configs.prompt_template }
@@ -541,7 +542,7 @@ const Configuration: FC = () => {
     else { return promptEmpty }
   })()
   const contextVarEmpty = mode === AppType.completion && dataSets.length > 0 && !hasSetContextVar
-  const handlePublish = async (isSilence?: boolean, modelAndParameter?: ModelAndParameter) => {
+  const onPublish = async (modelAndParameter?: ModelAndParameter) => {
     const modelId = modelAndParameter?.model || modelConfig.model_id
     const promptTemplate = modelConfig.configs.prompt_template
     const promptVariables = modelConfig.configs.prompt_variables
@@ -630,17 +631,16 @@ const Configuration: FC = () => {
       modelConfig: newModelConfig,
       completionParams,
     })
-    if (!isSilence)
-      notify({ type: 'success', message: t('common.api.success'), duration: 3000 })
+    notify({ type: 'success', message: t('common.api.success'), duration: 3000 })
 
     setCanReturnToSimpleMode(false)
     return true
   }
 
-  const [showConfirm, setShowConfirm] = useState(false)
+  const [restoreConfirmOpen, setRestoreConfirmOpen] = useState(false)
   const resetAppConfig = () => {
     syncToPublishedConfig(publishedConfig!)
-    setShowConfirm(false)
+    setRestoreConfirmOpen(false)
   }
 
   const [showUseGPT4Confirm, setShowUseGPT4Confirm] = useState(false)
@@ -663,7 +663,7 @@ const Configuration: FC = () => {
   }
 
   if (isLoading) {
-    return <div className='flex h-full items-center justify-center'>
+    return <div className='flex items-center justify-center h-full'>
       <Loading type='area' />
     </div>
   }
@@ -743,10 +743,10 @@ const Configuration: FC = () => {
         <div className="flex flex-col h-full">
           <div className='relative flex grow h-[200px] pt-14'>
             {/* Header */}
-            <div className='absolute top-0 left-0 w-full h-14 bg-white'>
-              <div className='flex justify-between items-center px-6 h-14'>
+            <div className='absolute top-0 left-0 w-full bg-white h-14'>
+              <div className='flex items-center justify-between px-6 h-14'>
                 <div className='flex items-center'>
-                  <div className='leading-6 text-base font-semibold text-gray-900'>{t('appDebug.orchestrate')}</div>
+                  <div className='text-base font-semibold leading-6 text-gray-900'>{t('appDebug.orchestrate')}</div>
                   <div className='flex items-center h-[14px] space-x-1 text-xs'>
                     {isAdvancedMode && (
                       <div className='ml-1 flex items-center h-5 px-1.5 border border-gray-100 rounded-md text-[11px] font-medium text-gray-500 uppercase'>{t('appDebug.promptMode.advanced')}</div>
@@ -788,33 +788,28 @@ const Configuration: FC = () => {
                       <div className='mx-2 w-[1px] h-[14px] bg-gray-200'></div>
                     </>
                   )}
-                  <Button onClick={() => setShowConfirm(true)} className='shrink-0 mr-2 w-[70px] !h-8 !text-[13px] font-medium text-gray-900'>{t('appDebug.operation.resetConfig')}</Button>
                   {isMobile && (
                     <Button className='!h-8 !text-[13px] font-medium' onClick={showDebugPanel}>
                       <span className='mr-1'>{t('appDebug.operation.debugConfig')}</span>
-                      <CodeBracketIcon className="h-4 w-4 text-gray-500" />
+                      <CodeBracketIcon className="w-4 h-4 text-gray-500" />
                     </Button>
                   )}
-                  {debugWithMultipleModel
-                    ? (<PublishWithMultipleModel
-                      multipleModelConfigs={multipleModelConfigs}
-                      onSelect={item => handlePublish(false, item)}
-                    />)
-                    : (<Button
-                      type='primary'
-                      onClick={() => handlePublish(false)}
-                      className={cn(cannotPublish && '!bg-primary-200 !cursor-not-allowed', 'shrink-0 w-[70px] !h-8 !text-[13px] font-medium')}
-                    >
-                      {t('appDebug.operation.applyConfig')}
-                    </Button>)}
+                  <AppPublisher {...{
+                    publishDisabled: cannotPublish,
+                    publishedAt: (modalConfig.created_at || 0) * 1000,
+                    debugWithMultipleModel,
+                    multipleModelConfigs,
+                    onPublish,
+                    onRestore: () => setRestoreConfirmOpen(true),
+                  }} />
                 </div>
               </div>
             </div>
             <div className={`w-full sm:w-1/2 shrink-0 flex flex-col h-full ${debugWithMultipleModel && 'max-w-[560px]'}`}>
               <Config />
             </div>
-            {!isMobile && <div className="grow relative w-1/2  h-full overflow-y-auto  flex flex-col " style={{ borderColor: 'rgba(0, 0, 0, 0.02)' }}>
-              <div className='flex flex-col grow h-0 rounded-tl-2xl border-t border-l bg-gray-50 '>
+            {!isMobile && <div className="relative flex flex-col w-1/2 h-full overflow-y-auto grow " style={{ borderColor: 'rgba(0, 0, 0, 0.02)' }}>
+              <div className='flex flex-col h-0 border-t border-l grow rounded-tl-2xl bg-gray-50 '>
                 <Debug
                   hasSetAPIKEY={hasSettedApiKey}
                   onSetting={() => setShowAccountSettingModal({ payload: 'provider' })}
@@ -831,14 +826,14 @@ const Configuration: FC = () => {
             </div>}
           </div>
         </div>
-        {showConfirm && (
+        {restoreConfirmOpen && (
           <Confirm
             title={t('appDebug.resetConfig.title')}
             content={t('appDebug.resetConfig.message')}
-            isShow={showConfirm}
-            onClose={() => setShowConfirm(false)}
+            isShow={restoreConfirmOpen}
+            onClose={() => setRestoreConfirmOpen(false)}
             onConfirm={resetAppConfig}
-            onCancel={() => setShowConfirm(false)}
+            onCancel={() => setRestoreConfirmOpen(false)}
           />
         )}
         {showUseGPT4Confirm && (

@@ -215,7 +215,7 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
           e.preventDefault()
           getRedirection(isCurrentWorkspaceManager, app, push)
         }}
-        className='group flex col-span-1 bg-white border-2 border-solid border-transparent rounded-lg shadow-sm min-h-[160px] flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg'
+        className='group flex col-span-1 bg-white border-2 border-solid border-transparent rounded-xl shadow-sm min-h-[160px] flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg'
       >
         <div className='flex pt-[14px] px-[14px] pb-3 h-[66px] items-center gap-3 grow-0 shrink-0'>
           <div className='relative shrink-0'>
@@ -226,16 +226,16 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
             />
             <span className='absolute bottom-[-3px] right-[-3px] w-4 h-4 p-0.5 bg-white rounded border-[0.5px] border-[rgba(0,0,0,0.02)] shadow-sm'>
               {app.mode === 'advanced-chat' && (
-                <ChatBot className='w-3 h-3 text-blue-600' />
+                <ChatBot className='w-3 h-3 text-[#1570EF]' />
               )}
               {app.mode === 'agent-chat' && (
                 <CuteRobote className='w-3 h-3 text-indigo-600' />
               )}
               {app.mode === 'chat' && (
-                <ChatBot className='w-3 h-3 text-blue-600' />
+                <ChatBot className='w-3 h-3 text-[#1570EF]' />
               )}
               {app.mode === 'completion' && (
-                <AiText className='w-3 h-3 text-gray-500' />
+                <AiText className='w-3 h-3 text-[#0E9384]' />
               )}
               {app.mode === 'workflow' && (
                 <Route className='w-3 h-3 text-[#f79009]' />
@@ -246,22 +246,12 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
             <div className='flex items-center text-sm leading-5 font-semibold text-gray-800'>
               <div className='truncate' title={app.name}>{app.name}</div>
             </div>
-            <div className='flex items-center text-[10px] leading-[18px] text-gray-500'>
-              {app.mode === 'advanced-chat' && (
-                <div className='truncate'>{t('app.types.chatbot').toUpperCase()}</div>
-              )}
-              {app.mode === 'agent-chat' && (
-                <div className='truncate'>{t('app.types.agent').toUpperCase()}</div>
-              )}
-              {app.mode === 'chat' && (
-                <div className='truncate'>{t('app.types.chatbot').toUpperCase()}</div>
-              )}
-              {app.mode === 'completion' && (
-                <div className='truncate'>{t('app.types.completion').toUpperCase()}</div>
-              )}
-              {app.mode === 'workflow' && (
-                <div className='truncate'>{t('app.types.workflow').toUpperCase()}</div>
-              )}
+            <div className='flex items-center text-[10px] leading-[18px] text-gray-500 font-medium'>
+              {app.mode === 'advanced-chat' && <div className='truncate'>{t('app.types.chatbot').toUpperCase()}</div>}
+              {app.mode === 'chat' && <div className='truncate'>{t('app.types.chatbot').toUpperCase()}</div>}
+              {app.mode === 'agent-chat' && <div className='truncate'>{t('app.types.agent').toUpperCase()}</div>}
+              {app.mode === 'workflow' && <div className='truncate'>{t('app.types.workflow').toUpperCase()}</div>}
+              {app.mode === 'completion' && <div className='truncate'>{t('app.types.completion').toUpperCase()}</div>}
             </div>
           </div>
           {isCurrentWorkspaceManager && <CustomPopover

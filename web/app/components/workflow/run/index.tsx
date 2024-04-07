@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useContext } from 'use-context-selector'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
+import OutputPanel from './output-panel'
 import ResultPanel from './result-panel'
 import TracingPanel from './tracing-panel'
 import { ToastContext } from '@/app/components/base/toast'
@@ -14,12 +15,13 @@ import type { WorkflowRunDetailResponse } from '@/models/log'
 import { useStore as useAppStore } from '@/app/components/app/store'
 
 export type RunProps = {
-  activeTab?: 'RESULT' | 'TRACING'
+  hideResult?: boolean
+  activeTab?: 'RESULT' | 'DETAIL' | 'TRACING'
   runID: string
   getResultCallback?: (result: WorkflowRunDetailResponse) => void
 }
 
-const RunPanel: FC<RunProps> = ({ activeTab = 'RESULT', runID, getResultCallback }) => {
+const RunPanel: FC<RunProps> = ({ hideResult, activeTab = 'RESULT', runID, getResultCallback }) => {
   const { t } = useTranslation()
   const { notify } = useContext(ToastContext)
   const [currentTab, setCurrentTab] = useState<string>(activeTab)
@@ -93,13 +95,22 @@ const RunPanel: FC<RunProps> = ({ activeTab = 'RESULT', runID, getResultCallback
     <div className='grow relative flex flex-col'>
       {/* tab */}
       <div className='shrink-0 flex items-center px-4 border-b-[0.5px] border-[rgba(0,0,0,0.05)]'>
+        {!hideResult && (
+          <div
+            className={cn(
+              'mr-6 py-3 border-b-2 border-transparent text-[13px] font-semibold leading-[18px] text-gray-400 cursor-pointer',
+              currentTab === 'RESULT' && '!border-[rgb(21,94,239)] text-gray-700',
+            )}
+            onClick={() => switchTab('RESULT')}
+          >{t('runLog.result')}</div>
+        )}
         <div
           className={cn(
             'mr-6 py-3 border-b-2 border-transparent text-[13px] font-semibold leading-[18px] text-gray-400 cursor-pointer',
-            currentTab === 'RESULT' && '!border-[rgb(21,94,239)] text-gray-700',
+            currentTab === 'DETAIL' && '!border-[rgb(21,94,239)] text-gray-700',
           )}
-          onClick={() => switchTab('RESULT')}
-        >{t('runLog.result')}</div>
+          onClick={() => switchTab('DETAIL')}
+        >{t('runLog.detail')}</div>
         <div
           className={cn(
             'mr-6 py-3 border-b-2 border-transparent text-[13px] font-semibold leading-[18px] text-gray-400 cursor-pointer',
@@ -109,13 +120,19 @@ const RunPanel: FC<RunProps> = ({ activeTab = 'RESULT', runID, getResultCallback
         >{t('runLog.tracing')}</div>
       </div>
       {/* panel detal */}
-      <div className={cn('grow bg-white h-0 overflow-y-auto rounded-b-2xl', currentTab === 'TRACING' && '!bg-gray-50')}>
+      <div className={cn('grow bg-white h-0 overflow-y-auto rounded-b-2xl', currentTab !== 'DETAIL' && '!bg-gray-50')}>
         {loading && (
           <div className='flex h-full items-center justify-center bg-white'>
             <Loading />
           </div>
         )}
         {!loading && currentTab === 'RESULT' && runDetail && (
+          <OutputPanel
+            outputs={runDetail.outputs}
+            error={runDetail.error}
+          />
+        )}
+        {!loading && currentTab === 'DETAIL' && runDetail && (
           <ResultPanel
             inputs={runDetail.inputs}
             outputs={runDetail.outputs}

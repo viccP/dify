@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { unionBy } from 'lodash-es'
 import {
   useIsChatMode,
   useNodeDataUpdate,
   useWorkflow,
 } from '@/app/components/workflow/hooks'
-import { toNodeOutputVars } from '@/app/components/workflow/nodes/_base/components/variable/utils'
+import { getNodeInfoById, isSystemVar, toNodeOutputVars } from '@/app/components/workflow/nodes/_base/components/variable/utils'
 
 import type { CommonNodeType, InputVar, ValueSelector, Var, Variable } from '@/app/components/workflow/types'
 import { BlockEnum, InputVarType, NodeRunningStatus, VarType } from '@/app/components/workflow/types'
 import { useStore as useAppStore } from '@/app/components/app/store'
 import { singleNodeRun } from '@/service/workflow'
 import Toast from '@/app/components/base/toast'
-
 import LLMDefault from '@/app/components/workflow/nodes/llm/default'
 import KnowledgeRetrievalDefault from '@/app/components/workflow/nodes/knowledge-retrieval/default'
 import IfElseDefault from '@/app/components/workflow/nodes/if-else/default'
@@ -22,7 +22,7 @@ import QuestionClassifyDefault from '@/app/components/workflow/nodes/question-cl
 import HTTPDefault from '@/app/components/workflow/nodes/http/default'
 import ToolDefault from '@/app/components/workflow/nodes/tool/default'
 import VariableAssigner from '@/app/components/workflow/nodes/variable-assigner/default'
-
+import { getInputVars as doGetInputVars } from '@/app/components/base/prompt-editor/constants'
 const { checkValid: checkLLMValid } = LLMDefault
 const { checkValid: checkKnowledgeRetrievalValid } = KnowledgeRetrievalDefault
 const { checkValid: checkIfElseValid } = IfElseDefault
@@ -83,6 +83,7 @@ const useOneStepRun = <T>({
   const { getBeforeNodesInSameBranch } = useWorkflow() as any
   const isChatMode = useIsChatMode()
 
+  const availableNodes = getBeforeNodesInSameBranch(id)
   const allOutputVars = toNodeOutputVars(getBeforeNodesInSameBranch(id), isChatMode)
   const getVar = (valueSelector: ValueSelector): Var | undefined => {
     let res: Var | undefined
@@ -211,14 +212,14 @@ const useOneStepRun = <T>({
       const originalVar = getVar(item.value_selector)
       if (!originalVar) {
         return {
-          label: item.variable,
+          label: item.label || item.variable,
           variable: item.variable,
           type: InputVarType.textInput,
           required: true,
         }
       }
       return {
-        label: item.variable,
+        label: item.label || item.variable,
         variable: item.variable,
         type: varTypeToInputVarType(originalVar.type, {
           isSelect: !!originalVar.isSelect,
@@ -232,10 +233,35 @@ const useOneStepRun = <T>({
     return varInputs
   }
 
+  const getInputVars = (textList: string[]) => {
+    const valueSelectors: ValueSelector[] = []
+    textList.forEach((text) => {
+      valueSelectors.push(...doGetInputVars(text))
+    })
+
+    const variables = unionBy(valueSelectors, item => item.join('.')).map((item) => {
+      const varInfo = getNodeInfoById(availableNodes, item[0])?.data
+
+      return {
+        label: {
+          nodeType: varInfo?.type,
+          nodeName: varInfo?.title || availableNodes[0]?.data.title, // default start node title
+          variable: isSystemVar(item) ? item.join('.') : item[item.length - 1],
+        },
+        variable: `#${item.join('.')}#`,
+        value_selector: item,
+      }
+    })
+
+    const varInputs = toVarInputs(variables)
+    return varInputs
+  }
+
   return {
     isShowSingleRun,
     hideSingleRun,
     toVarInputs,
+    getInputVars,
     runningStatus,
     isCompleted,
     handleRun,

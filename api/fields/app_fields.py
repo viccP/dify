@@ -6,7 +6,7 @@ app_detail_kernel_fields = {
     'id': fields.String,
     'name': fields.String,
     'description': fields.String,
-    'mode': fields.String,
+    'mode': fields.String(attribute='mode_compatible_with_agent'),
     'icon': fields.String,
     'icon_background': fields.String,
 }
@@ -37,13 +37,14 @@ model_config_fields = {
     'completion_prompt_config': fields.Raw(attribute='completion_prompt_config_dict'),
     'dataset_configs': fields.Raw(attribute='dataset_configs_dict'),
     'file_upload': fields.Raw(attribute='file_upload_dict'),
+    'created_at': TimestampField
 }
 
 app_detail_fields = {
     'id': fields.String,
     'name': fields.String,
     'description': fields.String,
-    'mode': fields.String,
+    'mode': fields.String(attribute='mode_compatible_with_agent'),
     'icon': fields.String,
     'icon_background': fields.String,
     'enable_site': fields.Boolean,
@@ -65,7 +66,7 @@ app_partial_fields = {
     'id': fields.String,
     'name': fields.String,
     'description': fields.String(attribute='desc_or_prompt'),
-    'mode': fields.String,
+    'mode': fields.String(attribute='mode_compatible_with_agent'),
     'icon': fields.String,
     'icon_background': fields.String,
     'model_config': fields.Nested(model_config_partial_fields, attribute='app_model_config', allow_null=True),
@@ -113,7 +114,7 @@ app_detail_fields_with_site = {
     'id': fields.String,
     'name': fields.String,
     'description': fields.String,
-    'mode': fields.String,
+    'mode': fields.String(attribute='mode_compatible_with_agent'),
     'icon': fields.String,
     'icon_background': fields.String,
     'enable_site': fields.Boolean,

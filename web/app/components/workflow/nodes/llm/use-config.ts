@@ -195,7 +195,7 @@ const useConfig = (id: string, payload: LLMNodeType) => {
   const {
     isShowSingleRun,
     hideSingleRun,
-    toVarInputs,
+    getInputVars,
     runningStatus,
     handleRun,
     handleStop,
@@ -263,7 +263,15 @@ const useConfig = (id: string, payload: LLMNodeType) => {
     })
   }, [runInputData, setRunInputData])
 
-  const varInputs = toVarInputs(inputs.variables)
+  const allVarStrArr = (() => {
+    const arr = isChatModel ? (inputs.prompt_template as PromptItem[]).map(item => item.text) : [(inputs.prompt_template as PromptItem).text]
+    if (isChatMode && isChatModel && !!inputs.memory)
+      arr.push('{{#sys.query#}}')
+
+    return arr
+  })()
+
+  const varInputs = getInputVars(allVarStrArr)
 
   return {
     readOnly,

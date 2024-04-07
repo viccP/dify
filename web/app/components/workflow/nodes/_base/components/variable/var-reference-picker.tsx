@@ -3,10 +3,9 @@ import type { FC } from 'react'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
-import { isArray } from 'lodash-es'
 import produce from 'immer'
 import VarReferencePopup from './var-reference-popup'
-import { isSystemVar, toNodeOutputVars } from './utils'
+import { getNodeInfoById, isSystemVar, toNodeOutputVars } from './utils'
 import type { ValueSelector, Var } from '@/app/components/workflow/types'
 import { BlockEnum, VarType } from '@/app/components/workflow/types'
 import { VarBlockIcon } from '@/app/components/workflow/block-icon'
@@ -42,12 +41,6 @@ type Props = {
   filterVar?: (payload: Var, valueSelector: ValueSelector) => boolean
 }
 
-const getNodeInfoById = (nodes: any, id: string) => {
-  if (!isArray(nodes))
-    return
-  return nodes.find((node: any) => node.id === id)
-}
-
 const VarReferencePicker: FC<Props> = ({
   nodeId,
   readonly,
@@ -57,7 +50,7 @@ const VarReferencePicker: FC<Props> = ({
   onOpen = () => { },
   onChange,
   isSupportConstantValue,
-  defaultVarKindType = VarKindType.static,
+  defaultVarKindType = VarKindType.constant,
   onlyLeafNodeVar,
   filterVar = () => true,
 }) => {
@@ -72,7 +65,7 @@ const VarReferencePicker: FC<Props> = ({
 
   const isChatMode = useIsChatMode()
   const [varKindType, setVarKindType] = useState<VarKindType>(defaultVarKindType)
-  const isConstant = isSupportConstantValue && varKindType === VarKindType.static
+  const isConstant = isSupportConstantValue && varKindType === VarKindType.constant
   const { getTreeLeafNodes, getBeforeNodesInSameBranch } = useWorkflow()
   const availableNodes = onlyLeafNodeVar ? getTreeLeafNodes(nodeId) : getBeforeNodesInSameBranch(nodeId)
   const allOutputVars = toNodeOutputVars(availableNodes, isChatMode)
@@ -95,7 +88,7 @@ const VarReferencePicker: FC<Props> = ({
 
     return getNodeInfoById(availableNodes, outputVarNodeId)?.data
   })()
-  const varName = hasValue ? value[value.length - 1] : ''
+  const varName = hasValue ? `${isSystemVar(value as ValueSelector) ? 'sys.' : ''}${value[value.length - 1]}` : ''
 
   const getVarType = () => {
     if (isConstant)
@@ -131,17 +124,17 @@ const VarReferencePicker: FC<Props> = ({
   const varKindTypes = [
     {
       label: 'Variable',
-      value: VarKindType.selector,
+      value: VarKindType.variable,
     },
     {
       label: 'Constant',
-      value: VarKindType.static,
+      value: VarKindType.constant,
     },
   ]
 
   const handleVarKindTypeChange = useCallback((value: VarKindType) => {
     setVarKindType(value)
-    if (value === VarKindType.static)
+    if (value === VarKindType.constant)
       onChange('', value)
     else
       onChange([], value)
@@ -177,7 +170,7 @@ const VarReferencePicker: FC<Props> = ({
   }, [onChange, varKindType])
 
   const handleClearVar = useCallback(() => {
-    if (varKindType === VarKindType.static)
+    if (varKindType === VarKindType.constant)
       onChange('', varKindType)
     else
       onChange([], varKindType)

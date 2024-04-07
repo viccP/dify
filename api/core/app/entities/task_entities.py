@@ -179,6 +179,7 @@ class WorkflowStartStreamResponse(StreamResponse):
         id: str
         workflow_id: str
         sequence_number: int
+        inputs: dict
         created_at: int
 
     event: StreamEvent = StreamEvent.WORKFLOW_STARTED
@@ -229,6 +230,7 @@ class NodeStartStreamResponse(StreamResponse):
         predecessor_node_id: Optional[str] = None
         inputs: Optional[dict] = None
         created_at: int
+        extras: dict = {}
 
     event: StreamEvent = StreamEvent.NODE_STARTED
     workflow_run_id: str

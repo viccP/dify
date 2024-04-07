@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import cn from 'classnames'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
@@ -16,6 +16,7 @@ import { fetchAppDetail, fetchAppList } from '@/service/explore'
 import { importApp } from '@/service/apps'
 import { useTabSearchParams } from '@/hooks/use-tab-searchparams'
 import CreateAppModal from '@/app/components/explore/create-app-modal'
+import AppTypeSelector from '@/app/components/app/type-selector'
 import type { CreateAppModalProps } from '@/app/components/explore/create-app-modal'
 import Loading from '@/app/components/base/loading'
 import { NEED_REFRESH_APP_LIST_KEY } from '@/config'
@@ -24,6 +25,7 @@ import { getRedirection } from '@/utils/app-redirection'
 
 type AppsProps = {
   pageType?: PageType
+  onSuccess?: () => void
 }
 
 export enum PageType {
@@ -33,6 +35,7 @@ export enum PageType {
 
 const Apps = ({
   pageType = PageType.EXPLORE,
+  onSuccess,
 }: AppsProps) => {
   const { t } = useTranslation()
   const { isCurrentWorkspaceManager } = useAppContext()
@@ -40,6 +43,7 @@ const Apps = ({
   const { hasEditPermission } = useContext(ExploreContext)
   const allCategoriesEn = t('explore.apps.allCategories', { lng: 'en' })
 
+  const [currentType, setCurrentType] = useState<string>('')
   const [currCategory, setCurrCategory] = useTabSearchParams({
     defaultTab: allCategoriesEn,
     disableSearchParams: pageType !== PageType.EXPLORE,
@@ -62,10 +66,28 @@ const Apps = ({
     },
   )
 
-  const currList
-    = currCategory === allCategoriesEn
-      ? allList
-      : allList.filter(item => item.category === currCategory)
+  const filteredList = useMemo(() => {
+    if (currCategory === allCategoriesEn) {
+      if (!currentType)
+        return allList
+      else if (currentType === 'chatbot')
+        return allList.filter(item => (item.app.mode === 'chat' || item.app.mode === 'advanced-chat'))
+      else if (currentType === 'agent')
+        return allList.filter(item => (item.app.mode === 'agent-chat'))
+      else
+        return allList.filter(item => (item.app.mode === 'workflow'))
+    }
+    else {
+      if (!currentType)
+        return allList.filter(item => item.category === currCategory)
+      else if (currentType === 'chatbot')
+        return allList.filter(item => (item.app.mode === 'chat' || item.app.mode === 'advanced-chat') && item.category === currCategory)
+      else if (currentType === 'agent')
+        return allList.filter(item => (item.app.mode === 'agent-chat') && item.category === currCategory)
+      else
+        return allList.filter(item => (item.app.mode === 'workflow') && item.category === currCategory)
+    }
+  }, [currentType, currCategory, allCategoriesEn, allList])
 
   const [currApp, setCurrApp] = React.useState<App | null>(null)
   const [isShowCreateModal, setIsShowCreateModal] = React.useState(false)
@@ -91,6 +113,8 @@ const Apps = ({
         type: 'success',
         message: t('app.newApp.appCreated'),
       })
+      if (onSuccess)
+        onSuccess()
       localStorage.setItem(NEED_REFRESH_APP_LIST_KEY, '1')
       getRedirection(isCurrentWorkspaceManager, app, push)
     }
@@ -118,13 +142,23 @@ const Apps = ({
           <div className='text-gray-500 text-sm'>{t('explore.apps.description')}</div>
         </div>
       )}
-      <Category
-        className={cn(pageType === PageType.EXPLORE ? 'mt-6 px-12' : 'px-8 py-2')}
-        list={categories}
-        value={currCategory}
-        onChange={setCurrCategory}
-        allCategoriesEn={allCategoriesEn}
-      />
+      <div className={cn(
+        'flex items-center mt-6',
+        pageType === PageType.EXPLORE ? 'px-12' : 'px-8',
+      )}>
+        {pageType !== PageType.EXPLORE && (
+          <>
+            <AppTypeSelector value={currentType} onChange={setCurrentType} />
+            <div className='mx-2 w-[1px] h-3.5 bg-gray-200'/>
+          </>
+        )}
+        <Category
+          list={categories}
+          value={currCategory}
+          onChange={setCurrCategory}
+          allCategoriesEn={allCategoriesEn}
+        />
+      </div>
       <div className={cn(
         'relative flex flex-1 pb-6 flex-col overflow-auto bg-gray-100 shrink-0 grow',
         pageType === PageType.EXPLORE ? 'mt-6' : 'mt-0 pt-2',
@@ -133,9 +167,9 @@ const Apps = ({
           className={cn(
             s.appList,
             'grid content-start shrink-0',
-            pageType === PageType.EXPLORE ? 'gap-4 px-6 sm:px-12' : 'gap-3 px-8',
+            pageType === PageType.EXPLORE ? 'gap-4 px-6 sm:px-12' : 'gap-3 px-8  sm:!grid-cols-2 md:!grid-cols-3 lg:!grid-cols-4',
           )}>
-          {currList.map(app => (
+          {filteredList.map(app => (
             <AppCard
               key={app.app_id}
               isExplore={pageType === PageType.EXPLORE}
