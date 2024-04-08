@@ -1,10 +1,13 @@
 'use client'
 import type { FC } from 'react'
-import Editor from '@monaco-editor/react'
+import Editor, { loader } from '@monaco-editor/react'
 import React, { useRef } from 'react'
 import Base from '../base'
 import { CodeLanguage } from '@/app/components/workflow/nodes/code/types'
 import './style.css'
+
+// load file from local instead of cdn https://github.com/suren-atoyan/monaco-react/issues/482
+loader.config({ paths: { vs: '/vs' } })
 
 type Props = {
   value?: string | object
@@ -14,6 +17,7 @@ type Props = {
   headerRight?: JSX.Element
   readOnly?: boolean
   isJSONStringifyBeauty?: boolean
+  height?: number
 }
 
 const languageMap = {
@@ -30,6 +34,7 @@ const CodeEditor: FC<Props> = ({
   language,
   readOnly,
   isJSONStringifyBeauty,
+  height,
 }) => {
   const [isFocus, setIsFocus] = React.useState(false)
 
@@ -84,7 +89,7 @@ const CodeEditor: FC<Props> = ({
         value={outPutValue}
         headerRight={headerRight}
         isFocus={isFocus && !readOnly}
-        minHeight={200}
+        minHeight={height || 200}
       >
         <>
           {/* https://www.npmjs.com/package/@monaco-editor/react */}

@@ -1,5 +1,6 @@
 'use client'
 import type { FC } from 'react'
+import { useUnmount } from 'ahooks'
 import React, { useCallback, useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import cn from 'classnames'
@@ -76,12 +77,13 @@ const AppDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
 
   useEffect(() => {
     if (appDetail) {
-      document.title = `${(appDetail.name || 'App')} - BoncLops`
+      document.title = `${(appDetail.name || 'App')} - Dify`
       const localeMode = localStorage.getItem('app-detail-collapse-or-expand') || 'expand'
       const mode = isMobile ? 'collapse' : 'expand'
       setAppSiderbarExpand(isMobile ? mode : localeMode)
-      if ((appDetail.mode === 'advanced-chat' || appDetail.mode === 'workflow') && (pathname).endsWith('workflow'))
-        setAppSiderbarExpand('collapse')
+      // TODO: consider screen size and mode
+      // if ((appDetail.mode === 'advanced-chat' || appDetail.mode === 'workflow') && (pathname).endsWith('workflow'))
+      //   setAppSiderbarExpand('collapse')
     }
   }, [appDetail, isMobile])
 
@@ -102,6 +104,10 @@ const AppDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
     })
   }, [appId, isCurrentWorkspaceManager])
 
+  useUnmount(() => {
+    setAppDetail()
+  })
+
   if (!appDetail) {
     return (
       <div className='flex h-full items-center justify-center bg-white'>
@@ -109,6 +115,7 @@ const AppDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
       </div>
     )
   }
+
   return (
     <div className={cn(s.app, 'flex', 'overflow-hidden')}>
       {appDetail && (

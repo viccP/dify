@@ -9,12 +9,14 @@ type OutputPanelProps = {
   isRunning?: boolean
   outputs?: any
   error?: string
+  height?: number
 }
 
 const OutputPanel: FC<OutputPanelProps> = ({
   isRunning,
   outputs,
   error,
+  height,
 }) => {
   return (
     <div className='bg-gray-50 py-2'>
@@ -40,7 +42,7 @@ const OutputPanel: FC<OutputPanelProps> = ({
           <Markdown content={outputs[Object.keys(outputs)[0]] || ''} />
         </div>
       )}
-      {outputs && Object.keys(outputs).length > 1 && (
+      {outputs && Object.keys(outputs).length > 1 && height! > 0 && (
         <div className='px-4 py-2 flex flex-col gap-2'>
           <CodeEditor
             readOnly
@@ -48,6 +50,7 @@ const OutputPanel: FC<OutputPanelProps> = ({
             language={CodeLanguage.json}
             value={outputs}
             isJSONStringifyBeauty
+            height={height}
           />
         </div>
       )}

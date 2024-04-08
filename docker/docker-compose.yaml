@@ -2,9 +2,8 @@ version: '3'
 services:
   # API service
   api:
-    image: langgenius/dify-api:0.6.0-preview-workflow.2
+    image: langgenius/dify-api:0.6.0
     restart: always
-    privileged: true
     environment:
       # Startup mode, 'api' starts the API server.
       MODE: api
@@ -151,9 +150,8 @@ services:
   # worker service
   # The Celery worker for processing the queue.
   worker:
-    image: langgenius/dify-api:0.6.0-preview-workflow.2
+    image: langgenius/dify-api:0.6.0
     restart: always
-    privileged: true
     environment:
       # Startup mode, 'worker' starts the Celery worker for processing the queue.
       MODE: worker
@@ -234,7 +232,7 @@ services:
 
   # Frontend web application.
   web:
-    image: bonclops-web:2.2-preview
+    image: langgenius/dify-web:0.6.0
     restart: always
     environment:
       EDITION: SELF_HOSTED
@@ -325,8 +323,6 @@ services:
       API_KEY: dify-sandbox
       GIN_MODE: release
       WORKER_TIMEOUT: 15
-    ports:
-      - "8194:8194"
 
   # Qdrant vector store.
   # uncomment to use qdrant as vector store.
@@ -338,7 +334,7 @@ services:
   #   volumes:
   #     - ./volumes/qdrant:/qdrant/storage
   #   environment:
-  #     QDRANT__API_KEY: 'difyai123456'
+  #     QDRANT_API_KEY: 'difyai123456'
   #   # uncomment to expose qdrant port to host
   #   # ports:
   #   #  - "6333:6333"

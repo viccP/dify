@@ -11,7 +11,10 @@ import {
 import type { LLMNodeType } from './types'
 import { Resolution } from '@/types/app'
 import { useModelListAndDefaultModelAndCurrentProviderAndModel, useTextGenerationCurrentProviderAndModelAndModelList } from '@/app/components/header/account-setting/model-provider-page/hooks'
-import { ModelFeatureEnum } from '@/app/components/header/account-setting/model-provider-page/declarations'
+import {
+  ModelFeatureEnum,
+  ModelTypeEnum,
+} from '@/app/components/header/account-setting/model-provider-page/declarations'
 import useNodeCrud from '@/app/components/workflow/nodes/_base/hooks/use-node-crud'
 import useOneStepRun from '@/app/components/workflow/nodes/_base/hooks/use-one-step-run'
 import type { PromptItem } from '@/models/debug'
@@ -72,6 +75,8 @@ const useConfig = (id: string, payload: LLMNodeType) => {
     }
   })()
 
+  const shouldShowContextTip = !hasSetBlockStatus.context && inputs.context.enabled
+
   const appendDefaultPromptConfig = useCallback((draft: LLMNodeType, defaultConfig: any, passInIsChatMode?: boolean) => {
     const promptTemplates = defaultConfig.prompt_templates
     if (passInIsChatMode === undefined ? isChatModel : passInIsChatMode) {
@@ -101,7 +106,7 @@ const useConfig = (id: string, payload: LLMNodeType) => {
   const {
     currentProvider,
     currentModel,
-  } = useModelListAndDefaultModelAndCurrentProviderAndModel(1)
+  } = useModelListAndDefaultModelAndCurrentProviderAndModel(ModelTypeEnum.textGeneration)
 
   const handleModelChanged = useCallback((model: { provider: string; modelId: string; mode?: string }) => {
     const newInputs = produce(inputRef.current, (draft) => {
@@ -280,6 +285,7 @@ const useConfig = (id: string, payload: LLMNodeType) => {
     isChatModel,
     isCompletionModel,
     hasSetBlockStatus,
+    shouldShowContextTip,
     isShowVisionConfig,
     handleModelChanged,
     handleCompletionParamsChange,

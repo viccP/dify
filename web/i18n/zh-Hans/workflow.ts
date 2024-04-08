@@ -36,8 +36,8 @@ const translation = {
     setVarValuePlaceholder: '设置变量值',
     needConnecttip: '此节点尚未连接到其他节点',
     maxTreeDepth: '每个分支最大限制 {{depth}} 个节点',
-    needEndNode: '请添加结束节点',
-    needAnswerNode: '请添加直接回复节点',
+    needEndNode: '必须添加结束节点',
+    needAnswerNode: '必须添加直接回复节点',
     workflowProcess: '工作流',
     notRunning: '尚未运行',
     previewPlaceholder: '在下面的框中输入内容开始调试聊天机器人',
@@ -49,6 +49,7 @@ const translation = {
   },
   errorMsg: {
     fieldRequired: '{{field}} 不能为空',
+    authRequired: '请先授权',
     invalidJson: '{{field}} 是非法的 JSON',
     fields: {
       variable: '变量名',
@@ -57,6 +58,7 @@ const translation = {
       model: '模型',
       rerankModel: 'Rerank 模型',
     },
+    invalidVariable: '无效的变量',
   },
   singleRun: {
     testRun: '测试运行 ',
@@ -177,6 +179,7 @@ const translation = {
       variables: '变量',
       context: '上下文',
       contextTooltip: '您可以导入知识库作为上下文',
+      notSetContextInPromptTip: '要启用上下文功能，请在提示中填写上下文变量。',
       prompt: '提示词',
       addMessage: '添加消息',
       roleDescription: {

@@ -42,6 +42,7 @@ import Tooltip from '@/app/components/base/tooltip'
 import TooltipPlus from '@/app/components/base/tooltip-plus'
 import { useModelListAndDefaultModelAndCurrentProviderAndModel } from '@/app/components/header/account-setting/model-provider-page/hooks'
 import { LanguagesSupported } from '@/i18n/language'
+import { ModelTypeEnum } from '@/app/components/header/account-setting/model-provider-page/declarations'
 
 type ValueOf<T> = T[keyof T]
 type StepTwoProps = {
@@ -274,7 +275,7 @@ const StepTwo = ({
     modelList: rerankModelList,
     defaultModel: rerankDefaultModel,
     currentModel: isRerankDefaultModelVaild,
-  } = useModelListAndDefaultModelAndCurrentProviderAndModel(3)
+  } = useModelListAndDefaultModelAndCurrentProviderAndModel(ModelTypeEnum.rerank)
   const getCreationParams = () => {
     let params
     if (segmentationType === SegmentType.CUSTOM && overlap > max) {

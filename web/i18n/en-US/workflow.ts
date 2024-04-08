@@ -36,8 +36,8 @@ const translation = {
     setVarValuePlaceholder: 'Set variable',
     needConnecttip: 'This step is not connected to anything',
     maxTreeDepth: 'Maximum limit of {{depth}} nodes per branch',
-    needEndNode: 'Please add an end node',
-    needAnswerNode: 'Please add a answer node',
+    needEndNode: 'The End block must be added',
+    needAnswerNode: 'The Answer block must be added',
     workflowProcess: 'Workflow Process',
     notRunning: 'Not running yet',
     previewPlaceholder: 'Enter content in the box below to start debugging the Chatbot',
@@ -49,6 +49,7 @@ const translation = {
   },
   errorMsg: {
     fieldRequired: '{{field}} is required',
+    authRequired: 'Authorization is required',
     invalidJson: '{{field}} is invalid JSON',
     fields: {
       variable: 'Variable Name',
@@ -57,6 +58,7 @@ const translation = {
       model: 'Model',
       rerankModel: 'Rerank Model',
     },
+    invalidVariable: 'Invalid variable',
   },
   singleRun: {
     testRun: 'Test Run ',
@@ -177,6 +179,7 @@ const translation = {
       variables: 'variables',
       context: 'context',
       contextTooltip: 'You can import Knowledge as context',
+      notSetContextInPromptTip: 'To enable the context feature, please fill in the context variable in PROMPT.',
       prompt: 'prompt',
       roleDescription: {
         system: 'Give high level instructions for the conversation',

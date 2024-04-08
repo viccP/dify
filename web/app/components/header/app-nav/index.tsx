@@ -87,6 +87,7 @@ const AppNav = () => {
           icon: app.icon,
           icon_background: app.icon_background,
           name: app.name,
+          mode: app.mode,
           link,
         }
       })
@@ -110,6 +111,7 @@ const AppNav = () => {
   return (
     <>
       <Nav
+        isApp
         icon={<Robot className='w-4 h-4' />}
         activeIcon={<RobotActive className='w-4 h-4' />}
         text={t('common.menus.apps')}

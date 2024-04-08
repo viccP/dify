@@ -177,12 +177,13 @@ const VarReferencePicker: FC<Props> = ({
   }, [onChange, varKindType])
 
   const type = getVarType()
-  // 8(left/right-padding) + 14(icon) + 4 + 14 + 2 = 42 + 5 buff
-  const availableWidth = triggerWidth - 47
+  // 8(left/right-padding) + 14(icon) + 4 + 14 + 2 = 42 + 17 buff
+  const availableWidth = triggerWidth - 56
   const [maxNodeNameWidth, maxVarNameWidth, maxTypeWidth] = (() => {
     const totalTextLength = ((outputVarNode?.title || '') + (varName || '') + (type || '')).length
-    const maxNodeNameWidth = Math.floor((outputVarNode?.title?.length || 0) / totalTextLength * availableWidth)
-    const maxVarNameWidth = Math.floor((varName?.length || 0) / totalTextLength * availableWidth)
+    const PRIORITY_WIDTH = 15
+    const maxNodeNameWidth = PRIORITY_WIDTH + Math.floor((outputVarNode?.title?.length || 0) / totalTextLength * availableWidth)
+    const maxVarNameWidth = -PRIORITY_WIDTH + Math.floor((varName?.length || 0) / totalTextLength * availableWidth)
     const maxTypeWidth = Math.floor((type?.length || 0) / totalTextLength * availableWidth)
     return [maxNodeNameWidth, maxVarNameWidth, maxTypeWidth]
   })()
@@ -199,7 +200,7 @@ const VarReferencePicker: FC<Props> = ({
             return
           !isConstant ? setOpen(!open) : setControlFocus(Date.now())
         }} className='!flex'>
-          <div ref={triggerRef} className={cn((open || isFocus) && 'border border-gray-300', 'relative group/wrap flex items-center w-full h-8 p-1 rounded-lg bg-gray-100')}>
+          <div ref={triggerRef} className={cn((open || isFocus) ? 'border-gray-300' : 'border-gray-100', 'relative group/wrap flex items-center w-full h-8 p-1 rounded-lg bg-gray-100 border')}>
             {isSupportConstantValue
               ? <div onClick={(e) => {
                 e.stopPropagation()

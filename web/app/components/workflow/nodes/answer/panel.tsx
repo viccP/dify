@@ -21,20 +21,21 @@ const Panel: FC<NodePanelProps<AnswerNodeType>> = ({
     filterVar,
   } = useConfig(id, data)
 
-  const availableVarList = useAvailableVarList(id, {
+  const { availableVars, availableNodes } = useAvailableVarList(id, {
     onlyLeafNodeVar: false,
     filterVar,
   })
 
   return (
-    <div className='mt-2 px-4 space-y-4'>
+    <div className='mt-2 mb-2 px-4 space-y-4'>
       <Editor
         readOnly={readOnly}
         justVar
         title={t(`${i18nPrefix}.answer`)!}
         value={inputs.answer}
         onChange={handleAnswerChange}
-        nodesOutputVars={availableVarList}
+        nodesOutputVars={availableVars}
+        availableNodes={availableNodes}
       />
     </div>
   )
