@@ -1,5 +1,5 @@
 const translation = {
-  pageTitle: '嗨，近来可好 👋',
+  pageTitle: 'Hello，一起创造未来！',
   welcome: '欢迎来到 Bonc LOps, 登录以继续',
   email: '邮箱',
   emailPlaceholder: '输入邮箱地址',

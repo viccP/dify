@@ -234,7 +234,7 @@ services:
 
   # Frontend web application.
   web:
-    image: langgenius/dify-web:0.6.0-preview-workflow.2
+    image: bonclops-web:2.2-preview
     restart: always
     environment:
       EDITION: SELF_HOSTED
