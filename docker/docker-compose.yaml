@@ -234,7 +234,7 @@ services:
 
   # Frontend web application.
   web:
-    image: langgenius/dify-web:0.6.0
+    image: bonclops-web:2.3
     restart: always
     environment:
       EDITION: SELF_HOSTED
