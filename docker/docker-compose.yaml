@@ -2,7 +2,7 @@ version: '3'
 services:
   # API service
   api:
-    image: langgenius/dify-api:0.6.0
+    image: langgenius/dify-api:0.6.0-fix1
     privileged: true
     restart: always
     environment:
@@ -151,7 +151,7 @@ services:
   # worker service
   # The Celery worker for processing the queue.
   worker:
-    image: langgenius/dify-api:0.6.0
+    image: langgenius/dify-api:0.6.0-fix1
     privileged: true
     restart: always
     environment:
@@ -234,7 +234,7 @@ services:
 
   # Frontend web application.
   web:
-    image: bonclops-web:2.3
+    image: langgenius/dify-web:0.6.0-fix1
     restart: always
     environment:
       EDITION: SELF_HOSTED
