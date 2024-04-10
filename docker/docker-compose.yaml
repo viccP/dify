@@ -317,6 +317,7 @@ services:
   # The DifySandbox
   sandbox:
     image: langgenius/dify-sandbox:latest
+    privileged: true
     restart: always
     cap_add:
       - SYS_ADMIN
