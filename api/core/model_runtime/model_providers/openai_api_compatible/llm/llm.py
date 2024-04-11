@@ -167,23 +167,27 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
         """
             generate custom model entities from credentials
         """
-        support_function_call = False
         features = []
+
         function_calling_type = credentials.get('function_calling_type', 'no_call')
         if function_calling_type == 'function_call':
-            features = [ModelFeature.TOOL_CALL]
-            support_function_call = True
+            features.append(ModelFeature.TOOL_CALL)
         endpoint_url = credentials["endpoint_url"]
         # if not endpoint_url.endswith('/'):
         #     endpoint_url += '/'
         # if 'https://api.openai.com/v1/' == endpoint_url:
-        #     features = [ModelFeature.STREAM_TOOL_CALL]
+        #     features.append(ModelFeature.STREAM_TOOL_CALL)
+
+        vision_support = credentials.get('vision_support', 'not_support')
+        if vision_support == 'support':
+            features.append(ModelFeature.VISION)
+
         entity = AIModelEntity(
             model=model,
             label=I18nObject(en_US=model),
             model_type=ModelType.LLM,
             fetch_from=FetchFrom.CUSTOMIZABLE_MODEL,
-            features=features if support_function_call else [],
+            features=features,
             model_properties={
                 ModelPropertyKey.CONTEXT_SIZE: int(credentials.get('context_size', "4096")),
                 ModelPropertyKey.MODE: credentials.get('mode'),
@@ -412,7 +416,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
                 if chunk.startswith(':'):
                     continue
                 decoded_chunk = chunk.strip().lstrip('data: ').lstrip()
-                chunk_json = None
+
                 try:
                     chunk_json = json.loads(decoded_chunk)
                 # stream ended
@@ -616,7 +620,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
 
         return message_dict
 
-    def _num_tokens_from_string(self, model: str, text: str,
+    def _num_tokens_from_string(self, model: str, text: Union[str, list[PromptMessageContent]],
                                 tools: Optional[list[PromptMessageTool]] = None) -> int:
         """
         Approximate num tokens for model with gpt2 tokenizer.
@@ -626,7 +630,16 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
         :param tools: tools for tool calling
         :return: number of tokens
         """
-        num_tokens = self._get_num_tokens_by_gpt2(text)
+        if isinstance(text, str):
+            full_text = text
+        else:
+            full_text = ''
+            for message_content in text:
+                if message_content.type == PromptMessageContentType.TEXT:
+                    message_content = cast(PromptMessageContent, message_content)
+                    full_text += message_content.data
+
+        num_tokens = self._get_num_tokens_by_gpt2(full_text)
 
         if tools:
             num_tokens += self._num_tokens_for_tools(tools)
