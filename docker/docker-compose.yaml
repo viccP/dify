@@ -2,7 +2,7 @@ version: '3'
 services:
   # API service
   api:
-    image: bonclops-backend:2.0
+    image: bonclops-backend:2.1
     privileged: true
     restart: always
     environment:
@@ -151,7 +151,7 @@ services:
   # worker service
   # The Celery worker for processing the queue.
   worker:
-    image: bonclops-backend:2.0
+    image: bonclops-backend:2.1
     privileged: true
     restart: always
     environment:
@@ -225,6 +225,12 @@ services:
       # the api-key for resend (https://resend.com)
       RESEND_API_KEY: ''
       RESEND_API_URL: https://api.resend.com
+      # relyt configurations
+      RELYT_HOST: db
+      RELYT_PORT: 5432
+      RELYT_USER: postgres
+      RELYT_PASSWORD: difyai123456
+      RELYT_DATABASE: postgres
     depends_on:
       - db
       - redis
@@ -234,7 +240,7 @@ services:
 
   # Frontend web application.
   web:
-    image: bonclops-web:2.4.4
+    image: bonclops-web:2.5.0
     restart: always
     environment:
       EDITION: SELF_HOSTED
@@ -320,6 +326,8 @@ services:
     privileged: true
     restart: always
     cap_add:
+    # Why is sys_admin permission needed?
+    # https://docs.dify.ai/getting-started/install-self-hosted/install-faq#id-16.-why-is-sys_admin-permission-needed
       - SYS_ADMIN
     environment:
       # The DifySandbox configurations

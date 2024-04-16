@@ -390,7 +390,7 @@ const translation = {
     type: 'Type',
   },
   about: {
-    changeLog: 'Changlog',
+    changeLog: 'Changelog',
     updateNow: 'Update now',
     nowAvailable: 'Bonc LOps  {{version}} is now available.',
     latestAvailable: 'Bonc LOps  {{version}} is the latest version available.',
