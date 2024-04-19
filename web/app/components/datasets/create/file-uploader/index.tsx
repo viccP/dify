@@ -275,7 +275,7 @@ const FileUploader = ({
             className={cn(
               s.file,
               fileItem.progress < 100 && s.uploading,
-              '!bg-dark-120 !text-dark-0 !border-dark-120'
+              '!bg-dark-120 !text-dark-0 !border-dark-120',
             )}
           >
             {fileItem.progress < 100 && (

@@ -130,7 +130,7 @@ function AppCard({
   return (
     <div
       className={`shadow-xs border-[0.5px] rounded-lg border-gray-200 ${className ?? ''
-        }`}
+      }`}
     >
       <div className={`px-6 py-5 ${customBgColor ?? bgColor} rounded-lg`}>
         <div className="mb-2.5 flex flex-row items-start justify-between">
@@ -186,7 +186,7 @@ function AppCard({
                   >
                     <div
                       className={`w-full h-full ${style.refreshIcon} ${genLoading ? style.generateLogo : ''
-                        }`}
+                      }`}
                     ></div>
                   </div>
                 </Tooltip>

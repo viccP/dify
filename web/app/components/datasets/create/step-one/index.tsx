@@ -120,7 +120,7 @@ const StepOne = ({
                     s.dataSourceItem,
                     dataSourceType === DataSourceType.FILE && s.active,
                     dataSourceTypeDisable && dataSourceType !== DataSourceType.FILE && s.disabled,
-                    `!text-dark-0 !bg-dark-120  ${dataSourceType === DataSourceType.FILE ? s.active : '!border-dark-120'}`
+                    `!text-dark-0 !bg-dark-120  ${dataSourceType === DataSourceType.FILE ? s.active : '!border-dark-120'}`,
                   )}
                   onClick={() => {
                     if (dataSourceTypeDisable)
@@ -139,7 +139,7 @@ const StepOne = ({
                     dataSourceType === DataSourceType.NOTION && s.active,
                     dataSourceTypeDisable && dataSourceType !== DataSourceType.NOTION && s.disabled,
                     `!text-dark-0 !bg-dark-120  ${dataSourceType === DataSourceType.NOTION ? s.active : '!border-dark-120'}`,
-                    '!text-dark-0 !bg-dark-120  !hover:text-dark-0 !hover:bg-dark-120'
+                    '!text-dark-0 !bg-dark-120  !hover:text-dark-0 !hover:bg-dark-120',
                   )}
                   onClick={() => {
                     if (dataSourceTypeDisable)

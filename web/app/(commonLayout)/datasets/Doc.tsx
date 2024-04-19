@@ -2,12 +2,12 @@
 
 import type { FC } from 'react'
 import { useContext } from 'use-context-selector'
+import cn from 'classnames'
+import style from '../list.module.css'
 import TemplateEn from './template/template.en.mdx'
 import TemplateZh from './template/template.zh.mdx'
 import I18n from '@/context/i18n'
 import { LanguagesSupported } from '@/i18n/language'
-import cn from 'classnames'
-import style from '../list.module.css'
 type DocProps = {
   apiBaseUrl: string
 }

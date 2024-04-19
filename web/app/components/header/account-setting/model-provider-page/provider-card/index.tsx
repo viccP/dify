@@ -6,7 +6,6 @@ import type {
 } from '../declarations'
 import { ConfigurateMethodEnum } from '../declarations'
 import {
-  DEFAULT_BACKGROUND_COLOR,
   MODEL_PROVIDER_QUOTA_GET_FREE,
   modelTypeFormat,
 } from '../utils'

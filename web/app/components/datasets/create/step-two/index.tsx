@@ -535,7 +535,7 @@ const StepTwo = ({
                 s.radioItem,
                 s.segmentationItem,
                 segmentationType === SegmentType.AUTO && s.active,
-                '!bg-dark-200'
+                '!bg-dark-200',
               )}
               onClick={() => setSegmentationType(SegmentType.AUTO)}
             >
@@ -552,7 +552,7 @@ const StepTwo = ({
                 s.segmentationItem,
                 segmentationType === SegmentType.CUSTOM && s.active,
                 segmentationType === SegmentType.CUSTOM && s.custom,
-                '!bg-dark-200'
+                '!bg-dark-200',
               )}
               onClick={() => setSegmentationType(SegmentType.CUSTOM)}
             >
@@ -641,7 +641,7 @@ const StepTwo = ({
                     !hasSetIndexType && indexType === IndexingType.QUALIFIED && s.active,
                     hasSetIndexType && s.disabled,
                     hasSetIndexType && '!w-full',
-                    '!bg-dark-200'
+                    '!bg-dark-200',
                   )}
                   onClick={() => {
                     if (hasSetAPIKEY)
@@ -684,7 +684,7 @@ const StepTwo = ({
                     !hasSetIndexType && indexType === IndexingType.ECONOMICAL && s.active,
                     hasSetIndexType && s.disabled,
                     hasSetIndexType && '!w-full',
-                    '!bg-dark-200'
+                    '!bg-dark-200',
                   )}
                   onClick={changeToEconomicalType}
                 >

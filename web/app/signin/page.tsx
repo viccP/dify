@@ -2,7 +2,6 @@ import React from 'react'
 import cn from 'classnames'
 import Script from 'next/script'
 import Forms from './forms'
-import Header from './_header'
 import style from './page.module.css'
 import { IS_CE_EDITION } from '@/config'
 

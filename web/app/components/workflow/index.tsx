@@ -12,7 +12,6 @@ import {
   useKeyPress,
 } from 'ahooks'
 import ReactFlow, {
-  Background,
   ReactFlowProvider,
   useOnViewportChange,
 } from 'reactflow'
