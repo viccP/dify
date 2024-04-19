@@ -39,8 +39,8 @@ const StepsNavBar = ({
 
   return (
     <div className='w-full pt-4'>
-      <div className={cn(s.stepsHeader, isMobile && '!px-0 justify-center')}>
-        <div onClick={navBackHandle} className={cn(s.navBack, isMobile && '!mr-0')} />
+      <div className={cn(s.stepsHeader, isMobile && '!px-0 justify-center', '!text-dark-0')}>
+        <div onClick={navBackHandle} className={cn(s.navBack, isMobile && '!mr-0', '!border-dark-100')} />
         {!isMobile && (!datasetId ? t('datasetCreation.steps.header.creation') : t('datasetCreation.steps.header.update'))}
       </div>
       <div className={cn(s.stepList, isMobile && '!p-0')}>

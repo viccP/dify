@@ -25,16 +25,16 @@ const Operator = () => {
 
   return (
     <div className={`
-      absolute left-6 bottom-6 z-[9]
+      absolute left-6 bottom-6 z-[9] !bg-dark-200
     `}>
       <MiniMap
         style={{
           width: 128,
           height: 80,
         }}
-        className='!static !m-0 !w-[128px] !h-[80px] !border-[0.5px] !border-black/[0.08] !rounded-lg !shadow-lg'
+        className='!static !m-0 !w-[128px] !h-[80px] !border-[0.5px] !border-black/[0.08] !rounded-lg !shadow-lg !bg-dark-120'
       />
-      <div className='flex items-center mt-1 p-0.5 rounded-lg border-[0.5px] border-gray-100 bg-white shadow-lg text-gray-500'>
+      <div className='flex items-center mt-1 p-0.5 rounded-lg border-[0.5px] border-gray-100 bg-dark-200 shadow-lg text-gray-500'>
         <ZoomInOut />
         <TooltipPlus popupContent={t('workflow.panel.organizeBlocks')}>
           <div

@@ -148,7 +148,7 @@ const Workflow: FC<WorkflowProps> = memo(({
     <div
       id='workflow-container'
       className={`
-        relative w-full min-w-[960px] h-full bg-[#F0F2F7]
+        relative w-full min-w-[960px] h-full bg-dark-190
         ${workflowReadOnly && 'workflow-panel-animation'}
         ${nodeAnimation && 'workflow-node-animation'}
       `}
@@ -193,11 +193,11 @@ const Workflow: FC<WorkflowProps> = memo(({
         zoomOnDoubleClick={!workflowReadOnly}
         isValidConnection={isValidConnection}
       >
-        <Background
+        {/* <Background
           gap={[14, 14]}
           size={2}
           color='#E4E5E7'
-        />
+        /> */}
       </ReactFlow>
     </div>
   )

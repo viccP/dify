@@ -87,9 +87,9 @@ function AppCard({
   const appUrl = `${app_base_url}/${appMode}/${access_token}`
   const apiUrl = appInfo?.api_base_url
 
-  let bgColor = 'bg-primary-50 bg-opacity-40'
+  let bgColor = 'bg-dark-120  bg-opacity-100'
   if (cardType === 'api')
-    bgColor = 'bg-purple-50'
+    bgColor = 'bg-dark-120'
 
   const genClickFuncByName = (opName: string) => {
     switch (opName) {
@@ -129,9 +129,8 @@ function AppCard({
 
   return (
     <div
-      className={`shadow-xs border-[0.5px] rounded-lg border-gray-200 ${
-        className ?? ''
-      }`}
+      className={`shadow-xs border-[0.5px] rounded-lg border-gray-200 ${className ?? ''
+        }`}
     >
       <div className={`px-6 py-5 ${customBgColor ?? bgColor} rounded-lg`}>
         <div className="mb-2.5 flex flex-row items-start justify-between">
@@ -162,7 +161,7 @@ function AppCard({
                 ? t('appOverview.overview.appInfo.accessibleAddress')
                 : t('appOverview.overview.apiInfo.accessibleAddress')}
             </div>
-            <div className="w-full h-9 pl-2 pr-0.5 py-0.5 bg-black bg-opacity-[0.02] rounded-lg border border-black border-opacity-5 justify-start items-center inline-flex">
+            <div className="w-full h-9 pl-2 pr-0.5 py-0.5 bg-dark-200 bg-opacity-[0.02] rounded-lg border border-dark-30  justify-start items-center inline-flex">
               <div className="h-4 px-2 justify-start items-start gap-2 flex flex-1 min-w-0">
                 <div className="text-gray-700 text-xs font-medium text-ellipsis overflow-hidden whitespace-nowrap">
                   {isApp ? appUrl : apiUrl}
@@ -186,9 +185,8 @@ function AppCard({
                     onClick={onGenCode}
                   >
                     <div
-                      className={`w-full h-full ${style.refreshIcon} ${
-                        genLoading ? style.generateLogo : ''
-                      }`}
+                      className={`w-full h-full ${style.refreshIcon} ${genLoading ? style.generateLogo : ''
+                        }`}
                     ></div>
                   </div>
                 </Tooltip>

@@ -133,10 +133,10 @@ const Prompt: FC<ISimplePromptInput> = ({
 
   return (
     <div className={cn(!readonly ? `${s.gradientBorder}` : 'bg-gray-50', ' relative shadow-md')}>
-      <div className='rounded-xl bg-[#EEF4FF]'>
+      <div className='rounded-xl bg-dark-120 text-dark-0'>
         <div className="flex justify-between items-center h-11 px-3">
           <div className="flex items-center space-x-1">
-            <div className='h2'>{mode !== AppType.completion ? t('appDebug.chatSubTitle') : t('appDebug.completionSubTitle')}</div>
+            <div className='h2 !text-dark-0'>{mode !== AppType.completion ? t('appDebug.chatSubTitle') : t('appDebug.completionSubTitle')}</div>
             {!readonly && (
               <Tooltip
                 htmlContent={<div className='w-[180px]'>

@@ -63,38 +63,38 @@ const CreateAppModal = ({
     <>
       <Modal
         isShow={show}
-        onClose={() => {}}
+        onClose={() => { }}
         wrapperClassName='z-40'
-        className='relative !max-w-[480px] px-8'
+        className='relative !max-w-[480px] px-8 !bg-dark-120'
       >
         <div className='absolute right-4 top-4 p-2 cursor-pointer' onClick={onHide}>
           <XClose className='w-4 h-4 text-gray-500' />
         </div>
         {isEditModal && (
-          <div className='mb-9 font-semibold text-xl leading-[30px] text-gray-900'>{t('app.editAppTitle')}</div>
+          <div className='mb-9 font-semibold text-xl leading-[30px] text-dark-0'>{t('app.editAppTitle')}</div>
         )}
         {!isEditModal && (
-          <div className='mb-9 font-semibold text-xl leading-[30px] text-gray-900'>{t('explore.appCustomize.title', { name: appName })}</div>
+          <div className='mb-9 font-semibold text-xl leading-[30px] text-dark-0'>{t('explore.appCustomize.title', { name: appName })}</div>
         )}
         <div className='mb-9'>
           {/* icon & name */}
           <div className='pt-2'>
-            <div className='py-2 text-sm font-medium leading-[20px] text-gray-900'>{t('app.newApp.captionName')}</div>
+            <div className='py-2 text-sm font-medium leading-[20px] text-dark-0'>{t('app.newApp.captionName')}</div>
             <div className='flex items-center justify-between space-x-2'>
               <AppIcon size='large' onClick={() => { setShowEmojiPicker(true) }} className='cursor-pointer' icon={emoji.icon} background={emoji.icon_background} />
               <input
                 value={name}
                 onChange={e => setName(e.target.value)}
                 placeholder={t('app.newApp.appNamePlaceholder') || ''}
-                className='grow h-10 px-3 text-sm font-normal bg-gray-100 rounded-lg border border-transparent outline-none appearance-none caret-primary-600 placeholder:text-gray-400 hover:bg-gray-50 hover:border hover:border-gray-300 focus:bg-gray-50 focus:border focus:border-gray-300 focus:shadow-xs'
+                className='text-dark-0  grow h-10 px-3 text-sm font-normal bg-dark-200 rounded-lg border border-transparent outline-none appearance-none caret-dark-0 placeholder:text-dark-0  hover:border hover:border-dark-15   focus:border focus:border-dark-15 focus:shadow-xs'
               />
             </div>
           </div>
           {/* description */}
           <div className='pt-2'>
-            <div className='py-2 text-sm font-medium leading-[20px] text-gray-900'>{t('app.newApp.captionDescription')}</div>
+            <div className='py-2 text-sm font-medium leading-[20px] text-dark-0'>{t('app.newApp.captionDescription')}</div>
             <textarea
-              className='w-full h-10 px-3 py-2 text-sm font-normal bg-gray-100 rounded-lg border border-transparent outline-none appearance-none caret-primary-600 placeholder:text-gray-400 hover:bg-gray-50 hover:border hover:border-gray-300 focus:bg-gray-50 focus:border focus:border-gray-300 focus:shadow-xs h-[80px] resize-none'
+              className='text-dark-0  w-full h-10 px-3 py-2 text-sm font-normal bg-dark-200 rounded-lg border border-transparent outline-none appearance-none caret-dark-0 placeholder:text-dark-0  hover:border hover:border-dark-15  focus:border focus:border-dark-15 focus:shadow-xs h-[80px] resize-none'
               placeholder={t('app.newApp.appDescriptionPlaceholder') || ''}
               value={description}
               onChange={e => setDescription(e.target.value)}
@@ -104,7 +104,7 @@ const CreateAppModal = ({
         </div>
         <div className='flex flex-row-reverse'>
           <Button disabled={!isEditModal && isAppsFull} className='w-24 ml-2' type='primary' onClick={submit}>{!isEditModal ? t('common.operation.create') : t('common.operation.save')}</Button>
-          <Button className='w-24' onClick={onHide}>{t('common.operation.cancel')}</Button>
+          <Button className='w-24 bg-dark-200 border-dark-30 hover:bg-dark-200 hover:border-dark-30' onClick={onHide}>{t('common.operation.cancel')}</Button>
         </div>
       </Modal>
       {showEmojiPicker && <EmojiPicker

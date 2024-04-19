@@ -50,7 +50,7 @@ const NotionSvg = <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xm
 
 const ICON_MAP = {
   app: <AppIcon className='border !border-[rgba(0,0,0,0.05)]' />,
-  api: <AppIcon innerIcon={ApiSvg} className='border !bg-purple-50 !border-purple-200' />,
+  api: <AppIcon innerIcon={ApiSvg} className='border !bg-dark-50 !border-purple-200' />,
   dataset: <AppIcon innerIcon={DatasetSvg} className='!border-[0.5px] !border-indigo-100 !bg-indigo-25' />,
   webapp: <AppIcon innerIcon={WebappSvg} className='border !bg-primary-100 !border-primary-200' />,
   notion: <AppIcon innerIcon={NotionSvg} className='!border-[0.5px] !border-indigo-100 !bg-white' />,

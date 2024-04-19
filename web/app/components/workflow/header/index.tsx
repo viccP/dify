@@ -105,7 +105,7 @@ const Header: FC = () => {
     <div
       className='absolute top-0 left-0 z-10 flex items-center justify-between w-full px-3 h-14'
       style={{
-        background: 'linear-gradient(180deg, #F9FAFB 0%, rgba(249, 250, 251, 0.00) 100%)',
+        // background: 'linear-gradient(180deg, #F9FAFB 0%, rgba(249, 250, 251, 0.00) 100%)',
       }}
     >
       <div>
@@ -131,27 +131,28 @@ const Header: FC = () => {
               nodesReadOnly && (
                 <Button
                   className={`
-                    mr-2 px-3 py-0 h-8 bg-white text-[13px] font-medium text-primary-600
+                    mr-2 px-3 py-0 h-8 bg-dark-180 text-[13px] font-medium text-dark-0
                     border-[0.5px] border-gray-200 shadow-xs
                   `}
                   onClick={handleGoBackToEdit}
                 >
-                  <ArrowNarrowLeft className='w-4 h-4 mr-1' />
+                  <ArrowNarrowLeft className='w-4 h-4 mr-1 text-dark-0' />
                   {t('workflow.common.goBackToEdit')}
                 </Button>
               )
             }
             <RunAndHistory />
-            <div className='mx-2 w-[1px] h-3.5 bg-gray-200'></div>
+            <div className='mx-2 w-[1px] h-3.5 bg-dark-0'></div>
             <Button
               className={`
-                mr-2 px-3 py-0 h-8 bg-white text-[13px] font-medium text-gray-700
+                mr-2 px-3 py-0 h-8 bg-dark-180 text-[13px] font-medium text-dark-0
                 border-[0.5px] border-gray-200 shadow-xs
+                hover:bg-dark-180 hover:border-gray-200
                 ${nodesReadOnly && !isRestoring && 'opacity-50 !cursor-not-allowed'}
               `}
               onClick={handleShowFeatures}
             >
-              <Grid01 className='w-4 h-4 mr-1 text-gray-500' />
+              <Grid01 className='w-4 h-4 mr-1 text-dark-0' />
               {t('workflow.common.features')}
             </Button>
             <AppPublisher
@@ -168,7 +169,7 @@ const Header: FC = () => {
             {
               !nodesReadOnly && (
                 <>
-                  <div className='mx-2 w-[1px] h-3.5 bg-gray-200'></div>
+                  <div className='mx-2 w-[1px] h-3.5 bg-dark-0'></div>
                   <Checklist />
                 </>
               )

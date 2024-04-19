@@ -9,16 +9,20 @@
     @apply border-solid border border-gray-200 cursor-pointer text-gray-500 hover:bg-white hover:shadow-sm hover:border-gray-300;
   }
 
+  .btn-default:hover {
+    @apply border-dark-15
+  }
+
   .btn-default-disabled {
-    @apply border-solid border border-gray-200 bg-gray-200 cursor-not-allowed text-gray-800;
+    @apply border-solid border border-gray-200 bg-gray-200 cursor-not-allowed text-dark-0;
   }
 
   .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-600/75 cursor-pointer text-white hover:shadow-sm;
+    @apply bg-primary-600 hover:bg-primary-600/75 cursor-pointer text-white hover:shadow-sm text-dark-0;
   }
 
   .btn-primary-disabled {
-    @apply bg-primary-200 cursor-not-allowed text-white;
+    @apply bg-primary-200 cursor-not-allowed text-dark-0;
   }
 
   .btn-warning {

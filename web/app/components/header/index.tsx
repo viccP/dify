@@ -51,8 +51,8 @@ const Header = () => {
           <Bars3Icon className="h-4 w-4 text-gray-500" />
         </div>}
         {!isMobile && <>
-          <Link href="/apps" className='flex items-center mr-4'>
-            <LogoSite className='object-contain' />
+          <Link href="/apps" className='flex items-center mr-4 h-15'>
+            <LogoSite className='object-contain h-11 w-28' />
           </Link>
           {/* <GithubStar /> */}
         </>}

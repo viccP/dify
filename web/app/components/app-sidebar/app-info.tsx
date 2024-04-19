@@ -161,7 +161,7 @@ const AppInfo = ({ expand }: IAppInfoProps) => {
             <div className='relative shrink-0 mr-2'>
               <AppIcon size={expand ? 'large' : 'small'} icon={appDetail.icon} background={appDetail.icon_background} />
               <span className={cn(
-                'absolute bottom-[-3px] right-[-3px] w-4 h-4 p-0.5 bg-white rounded border-[0.5px] border-[rgba(0,0,0,0.02)] shadow-sm',
+                'absolute bottom-[-3px] right-[-3px] w-4 h-4 p-0.5 bg-dark-0 rounded border-[0.5px] border-[rgba(0,0,0,0.02)] shadow-sm',
                 !expand && '!w-3.5 !h-3.5 !bottom-[-2px] !right-[-2px]',
               )}>
                 {appDetail.mode === 'advanced-chat' && (
@@ -223,7 +223,7 @@ const AppInfo = ({ expand }: IAppInfoProps) => {
             <div className={cn('flex pl-4 pt-3 pr-3', !appDetail.description && 'pb-2')}>
               <div className='relative shrink-0 mr-2'>
                 <AppIcon size="large" icon={appDetail.icon} background={appDetail.icon_background} />
-                <span className='absolute bottom-[-3px] right-[-3px] w-4 h-4 p-0.5 bg-white rounded border-[0.5px] border-[rgba(0,0,0,0.02)] shadow-sm'>
+                <span className='absolute bottom-[-3px] right-[-3px] w-4 h-4 p-0.5 bg-dark-0 rounded border-[0.5px] border-[rgba(0,0,0,0.02)] shadow-sm'>
                   {appDetail.mode === 'advanced-chat' && (
                     <ChatBot className='w-3 h-3 text-[#1570EF]' />
                   )}
@@ -330,7 +330,7 @@ const AppInfo = ({ expand }: IAppInfoProps) => {
                 'w-full h-[256px] bg-center bg-no-repeat bg-contain rounded-xl',
                 showSwitchTip === 'chat' && s.expertPic,
                 showSwitchTip === 'completion' && s.completionPic,
-              )}/>
+              )} />
               <div className='px-4 pb-2'>
                 <div className='flex items-center gap-1 text-gray-700 text-md leading-6 font-semibold'>
                   {showSwitchTip === 'chat' ? t('app.newApp.advanced') : t('app.types.workflow')}

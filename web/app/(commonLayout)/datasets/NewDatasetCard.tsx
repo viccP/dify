@@ -10,12 +10,12 @@ const CreateAppCard = forwardRef<HTMLAnchorElement>((_, ref) => {
   const { t } = useTranslation()
 
   return (
-    <Link ref={ref} className={classNames(style.listItem, style.newItemCard)} href='/datasets/create'>
+    <Link ref={ref} className={classNames(style.listItem, style.newItemCard, '!bg-dark-120 hover:bg-dark-120 hover:border-dark-30')} href='/datasets/create'>
       <div className={style.listItemTitle}>
         <span className={style.newItemIcon}>
           <span className={classNames(style.newItemIconImage, style.newItemIconAdd)} />
         </span>
-        <div className={classNames(style.listItemHeading, style.newItemCardHeading)}>
+        <div className={classNames(style.listItemHeading, style.newItemCardHeading, 'text-primary-600')}>
           {t('dataset.createDataset')}
         </div>
       </div>

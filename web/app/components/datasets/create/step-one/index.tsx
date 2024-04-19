@@ -108,10 +108,10 @@ const StepOne = ({
       <div className='grow overflow-y-auto relative'>
         {
           shouldShowDataSourceTypeList && (
-            <div className={s.stepHeader}>{t('datasetCreation.steps.one')}</div>
+            <div className={cn(s.stepHeader, '!text-dark-0')}>{t('datasetCreation.steps.one')}</div>
           )
         }
-        <div className={s.form}>
+        <div className={cn(s.form, '!bg-dark-200')}>
           {
             shouldShowDataSourceTypeList && (
               <div className='flex items-center mb-8 flex-wrap gap-y-4'>
@@ -120,6 +120,7 @@ const StepOne = ({
                     s.dataSourceItem,
                     dataSourceType === DataSourceType.FILE && s.active,
                     dataSourceTypeDisable && dataSourceType !== DataSourceType.FILE && s.disabled,
+                    `!text-dark-0 !bg-dark-120  ${dataSourceType === DataSourceType.FILE ? s.active : '!border-dark-120'}`
                   )}
                   onClick={() => {
                     if (dataSourceTypeDisable)
@@ -129,7 +130,7 @@ const StepOne = ({
                     hideNotionPagePreview()
                   }}
                 >
-                  <span className={cn(s.datasetIcon)} />
+                  <span className={cn(s.datasetIcon, '!bg-dark-200 !border-dark-200')} />
                   {t('datasetCreation.stepOne.dataSourceType.file')}
                 </div>
                 <div
@@ -137,6 +138,8 @@ const StepOne = ({
                     s.dataSourceItem,
                     dataSourceType === DataSourceType.NOTION && s.active,
                     dataSourceTypeDisable && dataSourceType !== DataSourceType.NOTION && s.disabled,
+                    `!text-dark-0 !bg-dark-120  ${dataSourceType === DataSourceType.NOTION ? s.active : '!border-dark-120'}`,
+                    '!text-dark-0 !bg-dark-120  !hover:text-dark-0 !hover:bg-dark-120'
                   )}
                   onClick={() => {
                     if (dataSourceTypeDisable)
@@ -146,15 +149,16 @@ const StepOne = ({
                     hideNotionPagePreview()
                   }}
                 >
-                  <span className={cn(s.datasetIcon, s.notion)} />
+                  <span className={cn(s.datasetIcon, s.notion, '!bg-dark-200 !border-dark-200')} />
                   {t('datasetCreation.stepOne.dataSourceType.notion')}
                 </div>
                 <div
-                  className={cn(s.dataSourceItem, s.disabled, dataSourceType === DataSourceType.WEB && s.active)}
+                  className={cn(s.dataSourceItem, s.disabled, dataSourceType === DataSourceType.WEB && s.active, `!text-dark-0 !bg-dark-120  ${dataSourceType === DataSourceType.WEB ? s.active : '!border-dark-120'}`,
+                    '!text-dark-0 !bg-dark-120  !hover:text-dark-0 !hover:bg-dark-120')}
                 // onClick={() => changeType(DataSourceType.WEB)}
                 >
-                  <span className={s.comingTag}>Coming soon</span>
-                  <span className={cn(s.datasetIcon, s.web)} />
+                  <span className={cn(s.comingTag, ' !border-dark-200')}>Coming soon</span>
+                  <span className={cn(s.datasetIcon, s.web, '!bg-dark-200 !border-dark-200')} />
                   {t('datasetCreation.stepOne.dataSourceType.web')}
                 </div>
               </div>
@@ -164,7 +168,7 @@ const StepOne = ({
             <>
               <FileUploader
                 fileList={files}
-                titleClassName={!shouldShowDataSourceTypeList ? 'mt-[30px] !mb-[44px] !text-lg !font-semibold !text-gray-900' : undefined}
+                titleClassName={!shouldShowDataSourceTypeList ? 'mt-[30px] !mb-[44px] !text-lg !font-semibold !text-dark-0' : undefined}
                 prepareFileList={updateFileList}
                 onFileListUpdate={updateFileList}
                 onFileUpdate={updateFile}

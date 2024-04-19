@@ -22,7 +22,7 @@ const EconomicalRetrievalMethodConfig: FC<Props> = ({
   return (
     <div className='space-y-2'>
       <RadioCard
-        icon={<HighPriority className='w-4 h-4 text-[#7839EE]' />}
+        icon={<HighPriority className='w-4 h-4 text-dark-0' />}
         title={t('dataset.retrieval.invertedIndex.title')}
         description={t('dataset.retrieval.invertedIndex.description')}
         noRadio

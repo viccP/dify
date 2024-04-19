@@ -15,13 +15,13 @@ const CreateAppTemplateDialog = ({ show, onSuccess, onClose }: CreateAppDialogPr
 
   return (
     <NewAppDialog
-      className='flex'
+      className='flex !bg-dark-120'
       show={show}
-      onClose={() => {}}
+      onClose={() => { }}
     >
       {/* template list */}
-      <div className='grow flex flex-col h-full bg-gray-100'>
-        <div className='shrink-0 pl-8 pr-6 pt-6 pb-3 bg-gray-100 rounded-se-xl text-xl leading-[30px] font-semibold text-gray-900 z-10'>{t('app.newApp.startFromTemplate')}</div>
+      <div className='grow flex flex-col h-full bg-dark-120'>
+        <div className='shrink-0 pl-8 pr-6 pt-6 pb-3 bg-dark-120 rounded-se-xl text-xl leading-[30px] font-semibold text-dark-0 z-10'>{t('app.newApp.startFromTemplate')}</div>
         <AppList onSuccess={() => {
           onSuccess()
           onClose()

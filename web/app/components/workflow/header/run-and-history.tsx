@@ -82,10 +82,10 @@ const RunMode = memo(() => {
     <>
       <div
         className={`
-          flex items-center px-1.5 h-7 rounded-md text-[13px] font-medium text-primary-600
-          hover:bg-primary-50 cursor-pointer
-          ${showInputsPanel && 'bg-primary-50'}
-          ${isRunning && 'bg-primary-50 !cursor-not-allowed'}
+          flex items-center px-1.5 h-7 rounded-md text-[13px] font-medium text-dark-0
+          hover:cursor-pointer
+          ${showInputsPanel && 'bg-dark-180'}
+          ${isRunning && 'bg-dark-180 !cursor-not-allowed'}
         `}
         onClick={handleClick}
       >
@@ -134,8 +134,7 @@ const PreviewMode = memo(() => {
   return (
     <div
       className={`
-        flex items-center px-1.5 h-7 rounded-md text-[13px] font-medium text-primary-600
-        hover:bg-primary-50 cursor-pointer
+        flex items-center px-1.5 h-7 rounded-md text-[13px] font-medium text-dark-0
         ${nodesReadOnly && 'bg-primary-50 opacity-50 !cursor-not-allowed'}
       `}
       onClick={() => !nodesReadOnly && handleClick()}
@@ -149,7 +148,7 @@ const PreviewMode = memo(() => {
           )
           : (
             <>
-              <Play className='mr-1 w-4 h-4' />
+              <Play className='mr-1 w-4 h-4 bg-dark-0' />
               {t('workflow.common.preview')}
             </>
           )
@@ -163,14 +162,14 @@ const RunAndHistory: FC = () => {
   const isChatMode = useIsChatMode()
 
   return (
-    <div className='flex items-center px-0.5 h-8 rounded-lg border-[0.5px] border-gray-200 bg-white shadow-xs'>
+    <div className='flex items-center px-0.5 h-8 rounded-lg border-[0.5px] border-gray-200 bg-dark-180 shadow-xs'>
       {
         !isChatMode && <RunMode />
       }
       {
         isChatMode && <PreviewMode />
       }
-      <div className='mx-0.5 w-[0.5px] h-8 bg-gray-200'></div>
+      <div className='mx-0.5 w-[0.5px] h-8 bg-dark-0'></div>
       <ViewHistory />
     </div>
   )

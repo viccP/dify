@@ -90,7 +90,7 @@ const ModelProviderPage = () => {
 
   return (
     <div className='relative pt-1 -mt-2'>
-      <div className={`flex items-center justify-between mb-2 h-8 ${defaultModelNotConfigured && 'px-3 bg-[#FFFAEB] rounded-lg border border-[#FEF0C7]'}`}>
+      <div className={`flex items-center justify-between mb-2 h-8 ${defaultModelNotConfigured && 'px-3 bg-dark-120 rounded-lg border border-dark-30'}`}>
         {
           defaultModelNotConfigured
             ? (
@@ -127,7 +127,7 @@ const ModelProviderPage = () => {
       {
         !!notConfigedProviders?.length && (
           <>
-            <div className='flex items-center mb-2 text-xs font-semibold text-gray-500'>
+            <div className='flex items-center mb-2 text-xs font-semibold text-dark-0'>
               + {t('common.modelProvider.addMoreModelProvider')}
               <span className='grow ml-3 h-[1px] bg-gradient-to-r from-[#f3f4f6]' />
             </div>

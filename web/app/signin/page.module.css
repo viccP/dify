@@ -7,6 +7,7 @@
 }
 
 .background {
-  background-image: url('./assets/background.png');
-  background-size: cover;
+  /* background-image: url('./assets/background.png'); */
+  background-image: url('./assets/new-login-bg.png');
+  /* background-size: cover; */
 }

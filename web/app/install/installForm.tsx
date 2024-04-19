@@ -92,7 +92,7 @@ const InstallForm = () => {
         </div>
 
         <div className="grow mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white ">
+          <div className="">
             <form onSubmit={() => { }}>
               <div className='mb-5'>
                 <label htmlFor="email" className="my-2 flex items-center justify-between text-sm font-medium text-gray-900">
@@ -105,7 +105,7 @@ const InstallForm = () => {
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     placeholder={t('login.emailPlaceholder') || ''}
-                    className={'appearance-none block w-full rounded-lg pl-[14px] px-3 py-2 border border-gray-200 hover:border-gray-300 hover:shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400 caret-primary-600 sm:text-sm'}
+                    className={'appearance-none block w-full rounded-lg pl-[14px] bg-dark-0 px-3 py-2 border border-gray-200 hover:border-gray-300 hover:shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400 caret-primary-600 sm:text-sm'}
                   />
                 </div>
               </div>

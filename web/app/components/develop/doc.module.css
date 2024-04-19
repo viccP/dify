@@ -1,0 +1,25 @@
+/* #.template */
+.template h1,
+.template h3 {
+    color: #fff;
+}
+
+.template code {
+    @apply text-dark-0;
+    background-color: #1f2a37;
+    box-shadow: inset 0 0 0 1px #1f2a37;
+}
+
+.template pre>code {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 0 transparent;
+}
+
+.template table thead {
+    background-color: #1f2a37 !important;
+
+}
+
+.template table thead tr th {
+    color: #ffffff !important;
+}
