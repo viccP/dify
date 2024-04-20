@@ -24,14 +24,14 @@ const RadioCard: FC<Props> = ({
   description,
   noRadio,
   isChosen,
-  onChosen = () => {},
+  onChosen = () => { },
   chosenConfig,
   chosenConfigWrapClassName,
 }) => {
   return (
-    <div className={cn(s.item, isChosen && s.active)}>
+    <div className={cn(s.item, isChosen && s.active, '!bg-dark-200 !border-dark-30')}>
       <div className='flex py-3 pl-3 pr-4' onClick={onChosen}>
-        <div className={cn(iconBgClassName, 'mr-3 shrink-0 flex w-8 justify-center h-8 items-center rounded-lg')}>
+        <div className={cn(iconBgClassName, 'mr-3 shrink-0 flex w-8 justify-center h-8 items-center rounded-lg !bg-dark-120')}>
           {icon}
         </div>
         <div className='grow'>

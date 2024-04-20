@@ -50,7 +50,7 @@ const WorkplaceSelector = () => {
             <Menu.Button className={cn(
               `
                 ${itemClassName} w-full
-                group hover:bg-gray-50 cursor-pointer ${open && 'bg-gray-50'} rounded-lg
+                group hover:bg-dark-200 cursor-pointer ${open && 'bg-dark-200'} rounded-lg
               `,
             )}>
               <div className={itemIconClassName}>{currentWorkspace?.name[0].toLocaleUpperCase()}</div>
@@ -69,7 +69,7 @@ const WorkplaceSelector = () => {
               <Menu.Items
                 className={cn(
                   `
-                    absolute top-[1px] min-w-[200px] z-10 bg-white border-[0.5px] border-gray-200
+                    absolute top-[1px] min-w-[200px] z-10 bg-dark-25 
                     divide-y divide-gray-100 origin-top-right rounded-xl
                   `,
                   s.popup,

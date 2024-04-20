@@ -1,5 +1,5 @@
 .listItem {
-  @apply col-span-1 bg-white border-2 border-solid border-transparent rounded-xl shadow-xs min-h-[160px] flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg;
+  @apply col-span-1 bg-dark-120 border-2 border-solid border-transparent rounded-xl shadow-xs min-h-[160px] flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg;
 }
 
 .listItem.newItemCard {
@@ -53,7 +53,7 @@
 }
 
 .listItem:hover .newItemIcon {
-  @apply bg-gray-50 border-primary-100;
+  @apply bg-gray-50 border-dark-30;
 }
 
 .newItemCard .newItemIcon {
@@ -106,7 +106,7 @@
 }
 
 .listItemHeadingContent {
-  @apply absolute top-0 left-0 w-full h-full overflow-hidden text-ellipsis whitespace-nowrap;
+  @apply absolute text-dark-0 top-0 left-0 w-full h-full overflow-hidden text-ellipsis whitespace-nowrap;
 }
 
 .actionIconWrapper {
@@ -234,4 +234,30 @@
 
 .listItem:hover .unavailable {
   @apply opacity-100;
+}
+
+/* #.template */
+.template h1,
+.template h3 {
+  color: #fff;
+}
+
+.template code {
+  @apply text-dark-0;
+  background-color: #1f2a37;
+  box-shadow: inset 0 0 0 1px #1f2a37;
+}
+
+.template pre>code {
+  background-color: transparent;
+  box-shadow: inset 0 0 0 0 transparent;
+}
+
+.template table thead {
+  background-color: #1f2a37 !important;
+
+}
+
+.template table thead tr th {
+  color: #ffffff !important;
 }

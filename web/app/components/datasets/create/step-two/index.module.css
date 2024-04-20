@@ -51,7 +51,7 @@
   width: 100%;
   padding: 8px 20px 8px 40px;
   background: #FFFAEB;
-  border-top: 0.5px solid #FEF0C7;
+  border-top: 0.5px solid #141F39;
   border-radius: 12px;
   font-size: 12px;
   line-height: 18px;
@@ -77,7 +77,7 @@
 
 .indexItem.disabled:hover {
   background-color: #fcfcfd;
-  border-color: #f2f4f7;
+  border-color: #2E3F60;
   box-shadow: none;
   cursor: default;
 }
@@ -162,7 +162,7 @@
 
 .radioItem:hover {
   background-color: #ffffff;
-  border-color: #B2CCFF;
+  border-color: #528BFF;
   box-shadow: 0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03);
 }
 
@@ -209,7 +209,7 @@
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
-  color: #101828;
+  color: #FFFFFF;
 }
 
 .typeHeader .tip {
@@ -225,7 +225,7 @@
   align-items: center;
   padding: 0 6px;
   margin-left: 4px;
-  border: 1px solid #E0EAFF;
+  border: 1px solid #2E3F60;
   border-radius: 6px;
   font-weight: 500;
   font-size: 12px;
@@ -235,7 +235,7 @@
 
 .typeFormBody {
   @apply px-16;
-  border-top: 1px solid #F2F4F7;
+  border-top: 1px solid #2E3F60;
 }
 
 .formRow {
@@ -265,7 +265,7 @@
 
 .input {
   @apply inline-flex h-9 w-full py-1 px-2 rounded-lg text-xs leading-normal;
-  @apply bg-gray-100 caret-primary-600 hover:bg-gray-100 focus:ring-1 focus:ring-inset focus:ring-gray-200 focus-visible:outline-none focus:bg-white placeholder:text-gray-400;
+  @apply bg-gray-100 caret-primary-600 hover:bg-gray-100 focus:ring-1 focus:ring-inset focus:ring-gray-200 focus-visible:outline-none focus:bg-gray-100 placeholder:text-gray-400;
 }
 
 .source {
@@ -418,7 +418,7 @@
   font-size: 12px;
   line-height: 18px;
   background: rgba(255, 255, 255, 0.9);
-  border-bottom: 0.5px solid #EAECF0;
+  border-bottom: 0.5px solid #2E3F60;
   backdrop-filter: blur(4px);
   animation: fix 0.5s;
 }

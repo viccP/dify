@@ -22,12 +22,12 @@ const ModelTrigger: FC<ModelTriggerProps> = ({
   return (
     <div
       className={`
-        group flex items-center px-2 h-8 rounded-lg bg-[#FFFAEB] cursor-pointer
+        group flex items-center px-2 h-8 rounded-lg bg-dark-120 cursor-pointer
         ${className}
       `}
     >
       <ModelIcon
-        className='shrink-0 mr-1.5'
+        className='shrink-0 mr-1.5 border-dark-200'
         provider={currentProvider}
         modelName={modelName}
       />

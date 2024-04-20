@@ -173,11 +173,11 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
       setShowConfirmDelete(true)
     }
     return (
-      <div className="relative w-full py-1">
+      <div className="relative w-full py-1 bg-dark-120">
         <button className={s.actionItem} onClick={onClickSettings}>
           <span className={s.actionName}>{t('app.editApp')}</span>
         </button>
-        <Divider className="!my-1" />
+        <Divider className="!my-1 !bg-dark-30" />
         <button className={s.actionItem} onClick={onClickDuplicate}>
           <span className={s.actionName}>{t('app.duplicate')}</span>
         </button>
@@ -186,16 +186,16 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
         </button>
         {(app.mode === 'completion' || app.mode === 'chat') && (
           <>
-            <Divider className="!my-1" />
+            <Divider className="!my-1 !bg-dark-30" />
             <div
-              className='h-9 py-2 px-3 mx-1 flex items-center hover:bg-gray-50 rounded-lg cursor-pointer'
+              className='h-9 py-2 px-3 mx-1 flex items-center hover:bg-dark-120 rounded-lg cursor-pointer'
               onClick={onClickSwitch}
             >
-              <span className='text-gray-700 text-sm leading-5'>{t('app.switch')}</span>
+              <span className='text-dark-0 text-sm leading-5'>{t('app.switch')}</span>
             </div>
           </>
         )}
-        <Divider className="!my-1" />
+        <Divider className="!my-1 !bg-dark-30" />
         <div
           className={cn(s.actionItem, s.deleteActionItem, 'group')}
           onClick={onClickDelete}
@@ -215,7 +215,7 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
           e.preventDefault()
           getRedirection(isCurrentWorkspaceManager, app, push)
         }}
-        className='group flex col-span-1 bg-white border-2 border-solid border-transparent rounded-xl shadow-sm min-h-[160px] flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg'
+        className='group flex col-span-1 bg-dark-200 border-2 border-solid border-transparent rounded-xl shadow-sm min-h-[160px] flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg'
       >
         <div className='flex pt-[14px] px-[14px] pb-3 h-[66px] items-center gap-3 grow-0 shrink-0'>
           <div className='relative shrink-0'>
@@ -224,7 +224,7 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
               icon={app.icon}
               background={app.icon_background}
             />
-            <span className='absolute bottom-[-3px] right-[-3px] w-4 h-4 p-0.5 bg-white rounded border-[0.5px] border-[rgba(0,0,0,0.02)] shadow-sm'>
+            <span className='absolute bottom-[-3px] right-[-3px] w-4 h-4 p-0.5 bg-dark-0 rounded border-[0.5px] border-[rgba(0,0,0,0.02)] shadow-sm'>
               {app.mode === 'advanced-chat' && (
                 <ChatBot className='w-3 h-3 text-[#1570EF]' />
               )}
@@ -243,10 +243,10 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
             </span>
           </div>
           <div className='grow w-0 py-[1px]'>
-            <div className='flex items-center text-sm leading-5 font-semibold text-gray-800'>
+            <div className='flex items-center text-sm leading-5 font-semibold text-dark-0'>
               <div className='truncate' title={app.name}>{app.name}</div>
             </div>
-            <div className='flex items-center text-[10px] leading-[18px] text-gray-500 font-medium'>
+            <div className='flex items-center text-[10px] leading-[18px] text-dark-10 font-medium'>
               {app.mode === 'advanced-chat' && <div className='truncate'>{t('app.types.chatbot').toUpperCase()}</div>}
               {app.mode === 'chat' && <div className='truncate'>{t('app.types.chatbot').toUpperCase()}</div>}
               {app.mode === 'agent-chat' && <div className='truncate'>{t('app.types.agent').toUpperCase()}</div>}
@@ -261,8 +261,8 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
             btnElement={<div className={cn(s.actionIcon, s.commonIcon)} />}
             btnClassName={open =>
               cn(
-                open ? '!bg-gray-100 !shadow-none' : '!bg-transparent',
-                '!hidden h-8 w-8 !p-2 rounded-md border-none hover:!bg-gray-100 group-hover:!inline-flex',
+                open ? '!bg-dark-120 !shadow-none' : '!bg-transparent',
+                '!hidden h-8 w-8 !p-2 rounded-md border-none hover:!bg-dark-120 group-hover:!inline-flex',
               )
             }
             className={'!w-[128px] h-fit !z-20'}
@@ -274,7 +274,7 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
             manualClose
           />}
         </div>
-        <div className='mb-1 px-[14px] text-xs leading-normal text-gray-500 line-clamp-4'>{app.description}</div>
+        <div className='mb-1 px-[14px] text-xs leading-normal text-dark-10 line-clamp-4'>{app.description}</div>
         {showEditModal && (
           <EditAppModal
             isEditModal

@@ -91,15 +91,15 @@ const Uploader: FC<Props> = ({
       />
       <div ref={dropRef}>
         {!file && (
-          <div className={cn('flex items-center h-20 rounded-xl bg-gray-50 border border-dashed border-gray-200 text-sm font-normal', dragging && 'bg-[#F5F8FF] border border-[#B2CCFF]')}>
+          <div className={cn('flex items-center h-20 rounded-xl bg-dark-200 border border-dashed border-dark-30 text-sm font-normal', dragging && 'bg-[#F5F8FF] border border-[#B2CCFF]')}>
             <div className='w-full flex items-center justify-center space-x-2'>
-              <UploadCloud01 className='w-6 h-6 mr-2'/>
-              <div className='text-gray-500'>
+              <UploadCloud01 className='w-6 h-6 mr-2 text-dark-0' />
+              <div className='text-dark-0'>
                 {t('datasetCreation.stepOne.uploader.button')}
                 <span className='pl-1 text-[#155eef] cursor-pointer' onClick={selectHandle}>{t('datasetDocuments.list.batchModal.browse')}</span>
               </div>
             </div>
-            {dragging && <div ref={dragRef} className='absolute w-full h-full top-0 left-0'/>}
+            {dragging && <div ref={dragRef} className='absolute w-full h-full top-0 left-0' />}
           </div>
         )}
         {file && (

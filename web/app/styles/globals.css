@@ -147,4 +147,16 @@ button:focus-within {
   bottom: 0;
 }
 
+button:focus {
+  @apply outline-none
+}
+
+input:focus {
+  @apply appearance-none outline-none;
+}
+
+input {
+  @apply bg-dark-120;
+}
+
 @import '../components/base/button/index.css';

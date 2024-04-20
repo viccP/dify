@@ -249,12 +249,12 @@ const FileUploader = ({
         />
       )}
 
-      <div className={cn(s.title, titleClassName)}>{t('datasetCreation.stepOne.uploader.title')}</div>
+      <div className={cn(s.title, titleClassName, '!text-dark-0')}>{t('datasetCreation.stepOne.uploader.title')}</div>
       {!hideUpload && (
 
-        <div ref={dropRef} className={cn(s.uploader, dragging && s.dragging)}>
+        <div ref={dropRef} className={cn(s.uploader, dragging && s.dragging, '!bg-dark-120 !border-dark-30 !text-dark-0')}>
           <div className='flex justify-center items-center min-h-6 mb-2'>
-            <span className={s.uploadIcon} />
+            <span className={cn(s.uploadIcon, '!text-dark-0')} />
             <span>
               {t('datasetCreation.stepOne.uploader.button')}
               <label className={s.browse} onClick={selectHandle}>{t('datasetCreation.stepOne.uploader.browse')}</label>
@@ -275,19 +275,20 @@ const FileUploader = ({
             className={cn(
               s.file,
               fileItem.progress < 100 && s.uploading,
+              '!bg-dark-120 !text-dark-0 !border-dark-120',
             )}
           >
             {fileItem.progress < 100 && (
-              <div className={s.progressbar} style={{ width: `${fileItem.progress}%` }} />
+              <div className={cn(s.progressbar, '!bg-dark-120 ')} style={{ width: `${fileItem.progress}%` }} />
             )}
-            <div className={s.fileInfo}>
+            <div className={cn(s.fileInfo, '!border-dark-120')}>
               <div className={cn(s.fileIcon, s[getFileType(fileItem.file)])} />
-              <div className={s.filename}>{fileItem.file.name}</div>
-              <div className={s.size}>{getFileSize(fileItem.file.size)}</div>
+              <div className={cn(s.filename, '!text-dark-0')}>{fileItem.file.name}</div>
+              <div className={cn(s.size, '!text-dark-0')}>{getFileSize(fileItem.file.size)}</div>
             </div>
             <div className={s.actionWrapper}>
               {(fileItem.progress < 100 && fileItem.progress >= 0) && (
-                <div className={s.percent}>{`${fileItem.progress}%`}</div>
+                <div className={cn(s.percent, '!text-dark-0')}>{`${fileItem.progress}%`}</div>
               )}
               {fileItem.progress === 100 && (
                 <div className={s.remove} onClick={(e) => {

@@ -22,7 +22,7 @@ const WarningMask: FC<IWarningMaskProps> = ({
   footer,
 }) => {
   return (
-    <div className={`${s.mask} absolute z-10 inset-0 pt-16`}
+    <div className={`${s.mask} absolute z-10 inset-0 pt-16 !bg-dark-120`}
     >
       <div className='mx-auto px-10'>
         <div className={`${s.icon} flex items-center justify-center w-11 h-11 rounded-xl bg-white`}>{warningIcon}</div>

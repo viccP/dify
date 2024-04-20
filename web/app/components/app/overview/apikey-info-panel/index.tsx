@@ -26,7 +26,7 @@ const APIKeyInfoPanel: FC = () => {
     return null
 
   return (
-    <div className={cn('bg-[#EFF4FF] border-[#D1E0FF]', 'mb-6 relative  rounded-2xl shadow-md border  p-8 ')}>
+    <div className={cn('bg-dark-120 border-dark-30', 'mb-6 relative  rounded-2xl shadow-md border  p-8 ')}>
       <div className={cn('text-[24px] text-gray-800 font-semibold', isCloud ? 'flex items-center h-8 space-x-1' : 'leading-8 mb-6')}>
         {isCloud && <em-emoji id={'😀'} />}
         {isCloud

@@ -52,8 +52,8 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
         {({ open }) => (
           <>
             <Menu.Button className={cn(
-              'group inline-flex items-center w-full h-7 justify-center rounded-[10px] pl-2 pr-2.5 text-[14px] font-semibold text-primary-600 hover:bg-primary-50',
-              open && 'bg-primary-50',
+              'group inline-flex items-center w-full h-7 justify-center rounded-[10px] pl-2 pr-2.5 text-[14px] font-semibold text-dark-0 hover:bg-dark-15',
+              open && 'bg-dark-15',
             )}>
               <div className='max-w-[180px] truncate' title={curNav?.name}>{curNav?.name}</div>
               <ChevronDown
@@ -64,7 +64,7 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
             <Menu.Items
               className="
                 absolute -left-11 right-0 mt-1.5 w-60 max-w-80
-                divide-y divide-gray-100 origin-top-right rounded-lg bg-white
+                divide-y divide-dark-30 origin-top-right rounded-lg bg-dark-200
                 shadow-lg
               "
             >
@@ -72,12 +72,12 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
                 {
                   navs.map(nav => (
                     <Menu.Item key={nav.id}>
-                      <div className='flex items-center w-full px-3 py-[6px] text-gray-700 text-[14px] rounded-lg font-normal hover:bg-gray-100 cursor-pointer truncate' onClick={() => {
+                      <div className='flex items-center w-full px-3 py-[6px] text-dark-0 text-[14px] rounded-lg font-normal hover:bg-dark-120 cursor-pointer truncate' onClick={() => {
                         setAppDetail()
                         router.push(nav.link)
                       }} title={nav.name}>
                         <div className='relative w-6 h-6 mr-2 rounded-md'>
-                          <AppIcon size='tiny' icon={nav.icon} background={nav.icon_background}/>
+                          <AppIcon size='tiny' icon={nav.icon} background={nav.icon_background} />
                           {!!nav.mode && (
                             <span className={cn(
                               'absolute w-3.5 h-3.5 -bottom-0.5 -right-0.5 p-0.5 bg-white rounded border-[0.5px] border-[rgba(0,0,0,0.02)] shadow-sm',
@@ -111,12 +111,12 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
               {!isApp && (
                 <Menu.Button className='p-1 w-full'>
                   <div onClick={() => onCreate('')} className={cn(
-                    'flex items-center gap-2 px-3 py-[6px] rounded-lg cursor-pointer hover:bg-gray-100',
+                    'flex items-center gap-2 px-3 py-[6px] rounded-lg cursor-pointer hover:bg-dark-120',
                   )}>
-                    <div className='shrink-0 flex justify-center items-center w-6 h-6 bg-gray-50 rounded-[6px] border-[0.5px] border-gray-200 border'>
-                      <Plus className='w-4 h-4 text-gray-500' />
+                    <div className='shrink-0 flex justify-center items-center w-6 h-6 bg-dark-120 rounded-[6px] border-[0.5px] border-dark-200 border'>
+                      <Plus className='w-4 h-4 text-dark-0' />
                     </div>
-                    <div className='grow text-left font-normal text-[14px] text-gray-700'>{createText}</div>
+                    <div className='grow text-left font-normal text-[14px] text-dark-0'>{createText}</div>
                   </div>
                 </Menu.Button>
               )}
@@ -126,14 +126,14 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
                     <>
                       <Menu.Button className='p-1 w-full'>
                         <div className={cn(
-                          'flex items-center gap-2 px-3 py-[6px] rounded-lg cursor-pointer hover:bg-gray-100',
-                          open && '!bg-gray-100',
+                          'flex items-center gap-2 px-3 py-[6px] rounded-lg cursor-pointer hover:bg-dark-120',
+                          open && '!bg-dark-120',
                         )}>
-                          <div className='shrink-0 flex justify-center items-center w-6 h-6 bg-gray-50 rounded-[6px] border-[0.5px] border-gray-200 border'>
-                            <Plus className='w-4 h-4 text-gray-500' />
+                          <div className='shrink-0 flex justify-center items-center w-6 h-6 bg-dark-120 rounded-[6px] border-[0.5px] border-dark-200 border'>
+                            <Plus className='w-4 h-4 text-dark-0' />
                           </div>
-                          <div className='grow text-left font-normal text-[14px] text-gray-700'>{createText}</div>
-                          <ChevronRight className='shrink-0 w-3.5 h-3.5  text-gray-500'/>
+                          <div className='grow text-left font-normal text-[14px] text-dark-0'>{createText}</div>
+                          <ChevronRight className='shrink-0 w-3.5 h-3.5  text-gray-500' />
                         </div>
                       </Menu.Button>
                       <Transition
@@ -146,21 +146,21 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
                         leaveTo="transform opacity-0 scale-95"
                       >
                         <Menu.Items className={cn(
-                          'absolute top-[3px] right-[-198px] min-w-[200px] z-10 bg-white border-[0.5px] border-gray-200 rounded-lg shadow-lg',
+                          'absolute top-[3px] right-[-198px] min-w-[200px] z-10 bg-dark-200 border-[0.5px] border-dark-200 rounded-lg shadow-lg',
                         )}>
                           <div className='p-1'>
-                            <div className={cn('flex items-center px-3 py-[6px] rounded-lg cursor-pointer hover:bg-gray-100 text-gray-700 font-normal')} onClick={() => onCreate('blank')}>
-                              <FilePlus01 className='shrink-0 mr-2 w-4 h-4 text-gray-600' />
+                            <div className={cn('flex items-center px-3 py-[6px] rounded-lg cursor-pointer hover:bg-dark-120 text-dark-0 font-normal')} onClick={() => onCreate('blank')}>
+                              <FilePlus01 className='shrink-0 mr-2 w-4 h-4 text-dark-0' />
                               {t('app.newApp.startFromBlank')}
                             </div>
-                            <div className={cn('flex items-center px-3 py-[6px] rounded-lg cursor-pointer hover:bg-gray-100 text-gray-700 font-normal')} onClick={() => onCreate('template')}>
-                              <FilePlus02 className='shrink-0 mr-2 w-4 h-4 text-gray-600' />
+                            <div className={cn('flex items-center px-3 py-[6px] rounded-lg cursor-pointer hover:bg-dark-120 text-dark-0 font-normal')} onClick={() => onCreate('template')}>
+                              <FilePlus02 className='shrink-0 mr-2 w-4 h-4 text-dark-0' />
                               {t('app.newApp.startFromTemplate')}
                             </div>
                           </div>
-                          <div className='p-1 border-t border-gray-100'>
-                            <div className={cn('flex items-center px-3 py-[6px] rounded-lg cursor-pointer hover:bg-gray-100 text-gray-700 font-normal')} onClick={() => onCreate('dsl')}>
-                              <FileArrow01 className='shrink-0 mr-2 w-4 h-4 text-gray-600' />
+                          <div className='p-1 border-t border-dark-30'>
+                            <div className={cn('flex items-center px-3 py-[6px] rounded-lg cursor-pointer hover:bg-dark-120 text-dark-0 font-normal')} onClick={() => onCreate('dsl')}>
+                              <FileArrow01 className='shrink-0 mr-2 w-4 h-4 text-dark-0' />
                               {t('app.importDSL')}
                             </div>
                           </div>

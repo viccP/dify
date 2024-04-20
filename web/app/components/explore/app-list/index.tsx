@@ -149,7 +149,7 @@ const Apps = ({
         {pageType !== PageType.EXPLORE && (
           <>
             <AppTypeSelector value={currentType} onChange={setCurrentType} />
-            <div className='mx-2 w-[1px] h-3.5 bg-gray-200'/>
+            <div className='mx-2 w-[1px] h-3.5 bg-gray-200' />
           </>
         )}
         <Category
@@ -160,7 +160,7 @@ const Apps = ({
         />
       </div>
       <div className={cn(
-        'relative flex flex-1 pb-6 flex-col overflow-auto bg-gray-100 shrink-0 grow',
+        'relative flex flex-1 pb-6 flex-col overflow-auto bg-dark-120 shrink-0 grow',
         pageType === PageType.EXPLORE ? 'mt-6' : 'mt-0 pt-2',
       )}>
         <nav

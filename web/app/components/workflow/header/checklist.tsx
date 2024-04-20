@@ -47,12 +47,11 @@ const WorkflowChecklist = () => {
       onOpenChange={setOpen}
     >
       <PortalToFollowElemTrigger onClick={() => setOpen(v => !v)}>
-        <div className='relative flex items-center justify-center p-0.5 w-8 h-8 rounded-lg border-[0.5px] border-gray-200 bg-white shadow-xs'>
+        <div className='relative flex items-center justify-center p-0.5 w-8 h-8 rounded-lg border-[0.5px] border-gray-200 bg-dark-180 shadow-xs'>
           <div
             className={`
               group flex items-center justify-center w-full h-full rounded-md cursor-pointer 
-              hover:bg-primary-50
-              ${open && 'bg-primary-50'}
+              ${open && 'bg-dark-180'}
             `}
           >
             <Checklist
@@ -114,7 +113,7 @@ const WorkflowChecklist = () => {
                           <div className='border-t-[0.5px] border-t-black/[0.02]'>
                             {
                               node.unConnected && (
-                                <div className='px-3 py-2 bg-gray-25 rounded-b-lg'>
+                                <div className='px-3 py-2 bg-dark-120 rounded-b-lg'>
                                   <div className='flex text-xs leading-[18px] text-gray-500'>
                                     <AlertTriangle className='mt-[3px] mr-2 w-3 h-3 text-[#F79009]' />
                                     {t('workflow.common.needConnecttip')}
@@ -124,7 +123,7 @@ const WorkflowChecklist = () => {
                             }
                             {
                               node.errorMessage && (
-                                <div className='px-3 py-2 bg-gray-25 rounded-b-lg'>
+                                <div className='px-3 py-2 bg-dark-120 rounded-b-lg'>
                                   <div className='flex text-xs leading-[18px] text-gray-500'>
                                     <AlertTriangle className='mt-[3px] mr-2 w-3 h-3 text-[#F79009]' />
                                     {node.errorMessage}

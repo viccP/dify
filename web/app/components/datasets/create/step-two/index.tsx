@@ -511,7 +511,7 @@ const StepTwo = ({
   return (
     <div className='flex w-full h-full'>
       <div ref={scrollRef} className='relative h-full w-full overflow-y-scroll'>
-        <div className={cn(s.pageHeader, scrolled && s.fixed, isMobile && '!px-6')}>
+        <div className={cn(s.pageHeader, scrolled && s.fixed, isMobile && '!px-6 ', '!bg-dark-200 !text-dark-0')}>
           <span>{t('datasetCreation.steps.two')}</span>
           {isMobile && (
             <Button
@@ -528,20 +528,21 @@ const StepTwo = ({
           )}
         </div>
         <div className={cn(s.form, isMobile && '!px-4')}>
-          <div className={s.label}>{t('datasetCreation.stepTwo.segmentation')}</div>
+          <div className={cn(s.label, '!text-dark-0')}>{t('datasetCreation.stepTwo.segmentation')}</div>
           <div className='max-w-[640px]'>
             <div
               className={cn(
                 s.radioItem,
                 s.segmentationItem,
                 segmentationType === SegmentType.AUTO && s.active,
+                '!bg-dark-200',
               )}
               onClick={() => setSegmentationType(SegmentType.AUTO)}
             >
-              <span className={cn(s.typeIcon, s.auto)} />
+              <span className={cn(s.typeIcon, s.auto, '!bg-dark-120')} />
               <span className={cn(s.radio)} />
               <div className={s.typeHeader}>
-                <div className={s.title}>{t('datasetCreation.stepTwo.auto')}</div>
+                <div className={cn(s.title, '!text-dark-0')}>{t('datasetCreation.stepTwo.auto')}</div>
                 <div className={s.tip}>{t('datasetCreation.stepTwo.autoDescription')}</div>
               </div>
             </div>
@@ -551,23 +552,24 @@ const StepTwo = ({
                 s.segmentationItem,
                 segmentationType === SegmentType.CUSTOM && s.active,
                 segmentationType === SegmentType.CUSTOM && s.custom,
+                '!bg-dark-200',
               )}
               onClick={() => setSegmentationType(SegmentType.CUSTOM)}
             >
-              <span className={cn(s.typeIcon, s.customize)} />
+              <span className={cn(s.typeIcon, s.customize, '!bg-dark-120')} />
               <span className={cn(s.radio)} />
               <div className={s.typeHeader}>
-                <div className={s.title}>{t('datasetCreation.stepTwo.custom')}</div>
+                <div className={cn(s.title, '!text-dark-0')}>{t('datasetCreation.stepTwo.custom')}</div>
                 <div className={s.tip}>{t('datasetCreation.stepTwo.customDescription')}</div>
               </div>
               {segmentationType === SegmentType.CUSTOM && (
                 <div className={s.typeFormBody}>
                   <div className={s.formRow}>
                     <div className='w-full'>
-                      <div className={s.label}>{t('datasetCreation.stepTwo.separator')}</div>
+                      <div className={cn(s.label, '!text-dark-0')}>{t('datasetCreation.stepTwo.separator')}</div>
                       <input
                         type="text"
-                        className={s.input}
+                        className={cn(s.input, '!text-dark-0')}
                         placeholder={t('datasetCreation.stepTwo.separatorPlaceholder') || ''} value={segmentIdentifier}
                         onChange={e => setSegmentIdentifier(e.target.value)}
                       />
@@ -575,10 +577,10 @@ const StepTwo = ({
                   </div>
                   <div className={s.formRow}>
                     <div className='w-full'>
-                      <div className={s.label}>{t('datasetCreation.stepTwo.maxLength')}</div>
+                      <div className={cn(s.label, '!text-dark-0')}>{t('datasetCreation.stepTwo.maxLength')}</div>
                       <input
                         type="number"
-                        className={s.input}
+                        className={cn(s.input, '!text-dark-0')}
                         placeholder={t('datasetCreation.stepTwo.maxLength') || ''}
                         value={max}
                         min={1}
@@ -588,7 +590,7 @@ const StepTwo = ({
                   </div>
                   <div className={s.formRow}>
                     <div className='w-full'>
-                      <div className={s.label}>
+                      <div className={cn(s.label, '!text-dark-0')}>
                         {t('datasetCreation.stepTwo.overlap')}
                         <TooltipPlus popupContent={
                           <div className='max-w-[200px]'>
@@ -600,7 +602,7 @@ const StepTwo = ({
                       </div>
                       <input
                         type="number"
-                        className={s.input}
+                        className={cn(s.input, '!text-dark-0')}
                         placeholder={t('datasetCreation.stepTwo.overlap') || ''}
                         value={overlap}
                         min={1}
@@ -621,13 +623,13 @@ const StepTwo = ({
                   </div>
                   <div className={s.formFooter}>
                     <Button type="primary" className={cn(s.button, '!h-8')} onClick={confirmChangeCustomConfig}>{t('datasetCreation.stepTwo.preview')}</Button>
-                    <Button className={cn(s.button, 'ml-2 !h-8')} onClick={resetRules}>{t('datasetCreation.stepTwo.reset')}</Button>
+                    <Button className={cn(s.button, 'ml-2 !h-8 hover:border-dark-15')} onClick={resetRules}>{t('datasetCreation.stepTwo.reset')}</Button>
                   </div>
                 </div>
               )}
             </div>
           </div>
-          <div className={s.label}>{t('datasetCreation.stepTwo.indexMode')}</div>
+          <div className={cn(s.label, '!text-dark-0')}>{t('datasetCreation.stepTwo.indexMode')}</div>
           <div className='max-w-[640px]'>
             <div className='flex items-center gap-3 flex-wrap sm:flex-nowrap'>
               {(!hasSetIndexType || (hasSetIndexType && indexingType === IndexingType.QUALIFIED)) && (
@@ -639,16 +641,17 @@ const StepTwo = ({
                     !hasSetIndexType && indexType === IndexingType.QUALIFIED && s.active,
                     hasSetIndexType && s.disabled,
                     hasSetIndexType && '!w-full',
+                    '!bg-dark-200',
                   )}
                   onClick={() => {
                     if (hasSetAPIKEY)
                       setIndexType(IndexingType.QUALIFIED)
                   }}
                 >
-                  <span className={cn(s.typeIcon, s.qualified)} />
+                  <span className={cn(s.typeIcon, s.qualified, '!bg-dark-120')} />
                   {!hasSetIndexType && <span className={cn(s.radio)} />}
-                  <div className={s.typeHeader}>
-                    <div className={s.title}>
+                  <div className={cn(s.typeHeader)}>
+                    <div className={cn(s.title, '!text-dark-0')}>
                       {t('datasetCreation.stepTwo.qualified')}
                       {!hasSetIndexType && <span className={s.recommendTag}>{t('datasetCreation.stepTwo.recommend')}</span>}
                     </div>
@@ -665,7 +668,7 @@ const StepTwo = ({
                     }
                   </div>
                   {!hasSetAPIKEY && (
-                    <div className={s.warningTip}>
+                    <div className={cn(s.warningTip, '!bg-dark-120 !text-dark-0 ')}>
                       <span>{t('datasetCreation.stepTwo.warning')}&nbsp;</span>
                       <span className={s.click} onClick={onSetting}>{t('datasetCreation.stepTwo.click')}</span>
                     </div>
@@ -681,10 +684,11 @@ const StepTwo = ({
                     !hasSetIndexType && indexType === IndexingType.ECONOMICAL && s.active,
                     hasSetIndexType && s.disabled,
                     hasSetIndexType && '!w-full',
+                    '!bg-dark-200',
                   )}
                   onClick={changeToEconomicalType}
                 >
-                  <span className={cn(s.typeIcon, s.economical)} />
+                  <span className={cn(s.typeIcon, s.economical, '!bg-dark-120')} />
                   {!hasSetIndexType && <span className={cn(s.radio)} />}
                   <div className={s.typeHeader}>
                     <div className={s.title}>{t('datasetCreation.stepTwo.economical')}</div>
@@ -702,9 +706,9 @@ const StepTwo = ({
               </div>
             )}
             {IS_CE_EDITION && indexType === IndexingType.QUALIFIED && (
-              <div className='mt-3 rounded-xl bg-gray-50 border border-gray-100'>
+              <div className='mt-3 rounded-xl bg-dark-200 border border-dark-30'>
                 <div className='flex justify-between items-center px-5 py-4'>
-                  <div className='flex justify-center items-center w-8 h-8 rounded-lg bg-indigo-50'>
+                  <div className='flex justify-center items-center w-8 h-8 rounded-lg bg-dark-120'>
                     <MessageChatSquare className='w-4 h-4' />
                   </div>
                   <div className='grow mx-3'>
@@ -723,9 +727,9 @@ const StepTwo = ({
                   </div>
                 </div>
                 {docForm === DocForm.QA && !QATipHide && (
-                  <div className='flex justify-between items-center px-5 py-2 bg-orange-50 border-t border-amber-100 rounded-b-xl text-[13px] leading-[18px] text-medium text-amber-500'>
+                  <div className='flex justify-between items-center px-5 py-2 bg-dark-120 border-t border-dark-30 rounded-b-xl text-[13px] leading-[18px] text-medium text-dark-0'>
                     {t('datasetCreation.stepTwo.QATip')}
-                    <XClose className='w-4 h-4 text-gray-500 cursor-pointer' onClick={() => setQATipHide(true)} />
+                    <XClose className='w-4 h-4 text-dark-0 cursor-pointer' onClick={() => setQATipHide(true)} />
                   </div>
                 )}
               </div>
@@ -734,7 +738,7 @@ const StepTwo = ({
             <div>
               {!datasetId
                 ? (
-                  <div className={s.label}>
+                  <div className={cn(s.label, '!text-dark-0')}>
                     {t('datasetSettings.form.retrievalSetting.title')}
                     <div className='leading-[18px] text-xs font-normal text-gray-500'>
                       <a target='_blank' rel='noopener noreferrer' href='https://docs.dify.ai/features/retrieval-augment' className='text-[#155eef]'>{t('datasetSettings.form.retrievalSetting.learnMore')}</a>
@@ -743,7 +747,7 @@ const StepTwo = ({
                   </div>
                 )
                 : (
-                  <div className={cn(s.label, 'flex justify-between items-center')}>
+                  <div className={cn(s.label, 'flex justify-between items-center !text-dark-0')}>
                     <div>{t('datasetSettings.form.retrievalSetting.title')}</div>
                   </div>
                 )}
@@ -838,15 +842,15 @@ const StepTwo = ({
             {!isSetting
               ? (
                 <div className='flex items-center mt-8 py-2'>
-                  <Button onClick={() => onStepChange && onStepChange(-1)}>{t('datasetCreation.stepTwo.previousStep')}</Button>
+                  <Button className='!text-dark-0 hover:border-dark-15' onClick={() => onStepChange && onStepChange(-1)}>{t('datasetCreation.stepTwo.previousStep')}</Button>
                   <div className={s.divider} />
-                  <Button loading={isCreating} type='primary' onClick={createHandle}>{t('datasetCreation.stepTwo.nextStep')}</Button>
+                  <Button className='!text-dark-0' loading={isCreating} type='primary' onClick={createHandle}>{t('datasetCreation.stepTwo.nextStep')}</Button>
                 </div>
               )
               : (
                 <div className='flex items-center mt-8 py-2'>
-                  <Button loading={isCreating} type='primary' onClick={createHandle}>{t('datasetCreation.stepTwo.save')}</Button>
-                  <Button className='ml-2' onClick={onCancel}>{t('datasetCreation.stepTwo.cancel')}</Button>
+                  <Button className='!text-dark-0 ' loading={isCreating} type='primary' onClick={createHandle}>{t('datasetCreation.stepTwo.save')}</Button>
+                  <Button className='ml-2 !text-dark-0 hover:border-dark-15' onClick={onCancel}>{t('datasetCreation.stepTwo.cancel')}</Button>
                 </div>
               )}
           </div>
@@ -854,7 +858,7 @@ const StepTwo = ({
       </div>
       <FloatRightContainer isMobile={isMobile} isOpen={showPreview} onClose={hidePreview} footer={null}>
         {showPreview && <div ref={previewScrollRef} className={cn(s.previewWrap, isMobile && s.isMobile, 'relative h-full overflow-y-scroll border-l border-[#F2F4F7]')}>
-          <div className={cn(s.previewHeader, previewScrolled && `${s.fixed} pb-3`)}>
+          <div className={cn(s.previewHeader, previewScrolled && `${s.fixed} pb-3`, '!bg-dark-200 !text-dark-0')}>
             <div className='flex items-center justify-between px-8'>
               <div className='grow flex items-center'>
                 <div>{t('datasetCreation.stepTwo.previewTitle')}</div>

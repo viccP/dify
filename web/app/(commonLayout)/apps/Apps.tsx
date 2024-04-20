@@ -58,11 +58,11 @@ const Apps = () => {
 
   const anchorRef = useRef<HTMLDivElement>(null)
   const options = [
-    { value: 'all', text: t('app.types.all'), icon: <DotsGrid className='w-[14px] h-[14px] mr-1'/> },
-    { value: 'chat', text: t('app.types.chatbot'), icon: <ChatBot className='w-[14px] h-[14px] mr-1'/> },
-    { value: 'agent-chat', text: t('app.types.agent'), icon: <CuteRobot className='w-[14px] h-[14px] mr-1'/> },
+    { value: 'all', text: t('app.types.all'), icon: <DotsGrid className='w-[14px] h-[14px] mr-1' /> },
+    { value: 'chat', text: t('app.types.chatbot'), icon: <ChatBot className='w-[14px] h-[14px] mr-1' /> },
+    { value: 'agent-chat', text: t('app.types.agent'), icon: <CuteRobot className='w-[14px] h-[14px] mr-1' /> },
     // { value: 'completion', text: t('app.newApp.completeApp'), icon: <AiText className='w-[14px] h-[14px] mr-1'/> },
-    { value: 'workflow', text: t('app.types.workflow'), icon: <Route className='w-[14px] h-[14px] mr-1'/> },
+    { value: 'workflow', text: t('app.types.workflow'), icon: <Route className='w-[14px] h-[14px] mr-1' /> },
   ]
 
   useEffect(() => {
@@ -100,20 +100,20 @@ const Apps = () => {
 
   return (
     <>
-      <div className='sticky top-0 flex justify-between items-center pt-4 px-12 pb-2 leading-[56px] bg-gray-100 z-10 flex-wrap gap-y-2'>
+      <div className='sticky top-0 flex justify-between items-center pt-4 px-12 pb-2 leading-[56px] bg-dark-100 z-10 flex-wrap gap-y-2'>
         <TabSliderNew
           value={activeTab}
           onChange={setActiveTab}
           options={options}
         />
-        <div className="flex items-center px-2 w-[200px] h-8 rounded-lg bg-gray-200">
+        <div className="flex items-center px-2 w-[200px] h-8 rounded-lg bg-dark-200">
           <div className="pointer-events-none shrink-0 flex items-center mr-1.5 justify-center w-4 h-4">
-            <SearchLg className="h-3.5 w-3.5 text-gray-500" aria-hidden="true" />
+            <SearchLg className="h-3.5 w-3.5 text-dark-10" aria-hidden="true" />
           </div>
           <input
             type="text"
             name="query"
-            className="grow block h-[18px] bg-gray-200 rounded-md border-0 text-gray-600 text-[13px] placeholder:text-gray-500 appearance-none outline-none"
+            className="grow block h-[18px] bg-dark-200 rounded-md border-0 text-dark-10 text-[13px] placeholder:text-dark-10 appearance-none outline-none"
             placeholder={t('common.operation.search')!}
             value={keywords}
             onChange={(e) => {

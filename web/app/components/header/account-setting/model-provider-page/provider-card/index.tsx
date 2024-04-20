@@ -6,7 +6,6 @@ import type {
 } from '../declarations'
 import { ConfigurateMethodEnum } from '../declarations'
 import {
-  DEFAULT_BACKGROUND_COLOR,
   MODEL_PROVIDER_QUOTA_GET_FREE,
   modelTypeFormat,
 } from '../utils'
@@ -60,8 +59,8 @@ const ProviderCard: FC<ProviderCardProps> = ({
 
   return (
     <div
-      className='group relative flex flex-col justify-between px-4 py-3 h-[148px] border-[0.5px] border-black/5 rounded-xl shadow-xs hover:shadow-lg'
-      style={{ background: provider.background || DEFAULT_BACKGROUND_COLOR }}
+      className='group text-dark-0 relative bg-dark-120 flex flex-col justify-between px-4 py-3 h-[148px] border-[0.5px] border-black/5 rounded-xl shadow-xs hover:shadow-lg'
+    // style={{ background: provider.background || DEFAULT_BACKGROUND_COLOR }}
     >
       <div>
         <div className='py-0.5'>
@@ -69,7 +68,7 @@ const ProviderCard: FC<ProviderCardProps> = ({
         </div>
         {
           provider.description && (
-            <div className='mt-1 leading-4 text-xs text-black/[48]'>{provider.description[language] || provider.description.en_US}</div>
+            <div className='mt-1 leading-4 text-xs text-dark-10'>{provider.description[language] || provider.description.en_US}</div>
           )
         }
       </div>

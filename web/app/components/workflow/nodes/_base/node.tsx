@@ -42,12 +42,12 @@ const BaseNode: FC<BaseNodeProps> = ({
     <div
       className={`
         flex border-[2px] rounded-2xl
-        ${(data.selected && !data._runningStatus && !data._isInvalidConnection) ? 'border-primary-600' : 'border-transparent'}
+        ${(data.selected && !data._runningStatus && !data._isInvalidConnection) ? 'border-dark-210' : 'border-transparent'}
       `}
     >
       <div
         className={`
-          group relative pb-1 w-[240px] bg-[#fcfdff] shadow-xs
+          group relative pb-1 w-[240px] bg-dark-210 shadow-xs
           border border-transparent rounded-[15px]
           ${!data._runningStatus && 'hover:shadow-lg'}
           ${data._runningStatus === NodeRunningStatus.Running && '!border-primary-500'}

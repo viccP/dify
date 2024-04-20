@@ -5,6 +5,7 @@
   font-size: 14px;
   line-height: 20px;
 }
+
 .navBack {
   @apply box-border flex justify-center items-center mr-3 w-8 h-8 bg-white bg-center bg-no-repeat cursor-pointer hover:border-gray-300;
   border: 0.5px solid #F2F4F7;
@@ -13,6 +14,7 @@
   background-image: url(../assets/arrow-narrow-left.svg);
   background-size: 16px;
 }
+
 .stepList {
   @apply p-4 relative;
   line-height: 18px;
@@ -32,7 +34,7 @@
   left: 23px;
   width: 2px;
   height: 7px;
-  background-color: #f2f4f7;
+  background-color: #02081F;
 }
 
 .stepItem.step2::before {
@@ -42,8 +44,9 @@
   left: 23px;
   width: 2px;
   height: 100%;
-  background-color: #f2f4f7;
+  background-color: #02081F;
 }
+
 .stepItem.step2::after {
   content: '';
   position: absolute;
@@ -51,7 +54,7 @@
   left: 23px;
   width: 2px;
   height: 28px;
-  background-color: #fff;
+  @apply bg-dark-200;
 }
 
 .stepItem.step3::before {
@@ -61,14 +64,14 @@
   left: 23px;
   width: 2px;
   height: 7px;
-  background-color: #f2f4f7;
+  background-color: #02081F;
 }
 
 .stepNum {
-  @apply box-border absolute top-2 left-3 flex justify-center items-center  w-6 h-6;
+  @apply box-border absolute top-2 left-3 flex justify-center items-center w-6 h-6;
   color: #98a2b3;
   font-size: 12px;
-  border: 1px solid #F2F4F7;
+  border: 1px solid #02081F;
   border-radius: 24px;
   z-index: 1;
 }
@@ -79,7 +82,7 @@
 
 .stepItem.active .stepNum {
   color: #1c64f2;
-  background-color: #EFF4FF;
+  background-color: #02081F;
   border: none;
 }
 
@@ -89,7 +92,7 @@
 
 .stepItem.done .stepNum {
   color: #667085;
-  background-color: #f2f4f7;
+  background-color: #02081F;
   border: none;
 }
 

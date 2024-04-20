@@ -141,7 +141,7 @@ function CodePanel({ tag, label, code, children, targetCode }: ICodePanelProps) 
         {/* <pre className="p-4 overflow-x-auto text-xs text-white">{children}</pre> */}
         {/* <CopyButton code={child.props.code ?? code} /> */}
         {/* <CopyButton code={child.props.children.props.children} /> */}
-        <pre className="p-4 overflow-x-auto text-xs text-white">{targetCode || children}</pre>
+        <pre className="p-4 overflow-x-auto text-xs text-">{targetCode || children}</pre>
         <CopyButton code={targetCode || child.props.children.props.children} />
       </div>
     </div>
@@ -157,7 +157,7 @@ function CodeGroupHeader({ title, children, selectedIndex }: IChildrenProps) {
   return (
     <div className="flex min-h-[calc(theme(spacing.12)+1px)] flex-wrap items-start gap-x-4 border-b border-zinc-700 bg-zinc-800 px-4 dark:border-zinc-800 dark:bg-transparent">
       {title && (
-        <h3 className="pt-3 mr-auto text-xs font-semibold text-white">
+        <h3 className="pt-3 mr-auto text-xs font-semibold text-dark-0">
           {title}
         </h3>
       )}

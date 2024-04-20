@@ -15,13 +15,13 @@ const Install = () => {
     )}>
       <div className={
         classNames(
-          'flex w-full flex-col bg-white shadow rounded-2xl shrink-0',
+          'flex w-full ml-auto bg-dark-1000 flex-col  shadow shrink-0',
           'md:w-[608px] space-between',
         )
       }>
         <Header />
         <InstallForm />
-        <div className='px-8 py-6 text-sm font-normal text-gray-500'>
+        <div className='px-8 py-6 text-sm text-center font-normal text-dark-10'>
           © {new Date().getFullYear()} Bonc Lops, Inc. All rights reserved.
         </div>
       </div>

@@ -31,8 +31,8 @@ const Category: FC<ICategoryProps> = ({
   const isAllCategories = !list.includes(value)
 
   const itemClassName = (isSelected: boolean) => cn(
-    'flex items-center px-3 py-[7px] h-[32px] rounded-lg border-[0.5px] border-transparent text-gray-700 font-medium leading-[18px] cursor-pointer hover:bg-gray-200',
-    isSelected && 'bg-white border-gray-200 shadow-xs text-primary-600 hover:bg-white',
+    `flex items-center px-3 py-[7px] h-[32px] rounded-lg border-[0.5px] border-transparent text-dark-0 font-medium leading-[18px] cursor-pointer 
+    ${isSelected ? 'bg-dark-15 border-dark-30 shadow-xs text-dark-0 hover:bg-dark-15' : 'hover:bg-dark-200'}`,
   )
 
   return (
@@ -41,7 +41,7 @@ const Category: FC<ICategoryProps> = ({
         className={itemClassName(isAllCategories)}
         onClick={() => onChange(allCategoriesEn)}
       >
-        <ThumbsUp className='mr-1 w-3.5 h-3.5'/>
+        <ThumbsUp className='mr-1 w-3.5 h-3.5' />
         {t('explore.apps.allCategories')}
       </div>
       {list.map(name => (

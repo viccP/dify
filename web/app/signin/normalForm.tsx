@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import useSWR from 'swr'
 import { useContext } from 'use-context-selector'
 import Toast from '../components/base/toast'
+import Header from './_header'
 import style from './page.module.css'
 import { IS_CE_EDITION, apiPrefix } from '@/config'
 import Button from '@/app/components/base/button'
@@ -138,12 +139,13 @@ const NormalForm = () => {
   return (
     <>
       <div className="w-full mx-auto">
-        <h2 className="text-[32px] font-bold text-gray-900">{t('login.pageTitle')}</h2>
-        <p className='mt-1 text-sm text-gray-600'>{t('login.welcome')}</p>
+        <Header />
+        {/* <h2 className="text-[32px] font-bold text-gray-900">{t('login.pageTitle')}</h2> */}
+        <p className='mt-1 text-sm text-center text-dark-10'>{t('login.welcome')}</p>
       </div>
 
       <div className="w-full mx-auto mt-8">
-        <div className="bg-white ">
+        <div className=" ">
           {!IS_CE_EDITION && (
             <div className="flex flex-col gap-3 mt-6">
               <div className='w-full'>
@@ -200,7 +202,7 @@ const NormalForm = () => {
 
               <form onSubmit={() => { }}>
                 <div className='mb-5'>
-                  <label htmlFor="email" className="my-2 block text-sm font-medium text-gray-900">
+                  <label htmlFor="email" className="my-2 block text-sm font-medium text-dark-10">
                     {t('login.email')}
                   </label>
                   <div className="mt-1">
@@ -211,13 +213,13 @@ const NormalForm = () => {
                       type="email"
                       autoComplete="email"
                       placeholder={t('login.emailPlaceholder') || ''}
-                      className={'appearance-none block w-full rounded-lg pl-[14px] px-3 py-2 border border-gray-200 hover:border-gray-300 hover:shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400 caret-primary-600 sm:text-sm'}
+                      className={'appearance-none block w-full rounded-lg pl-[14px] px-3 py-2 border border-gray-200 bg-dark-0 hover:shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400 caret-primary-600 sm:text-sm'}
                     />
                   </div>
                 </div>
 
                 <div className='mb-4'>
-                  <label htmlFor="password" className="my-2 flex items-center justify-between text-sm font-medium text-gray-900">
+                  <label htmlFor="password" className="my-2 flex items-center justify-between text-sm font-medium text-dark-10">
                     <span>{t('login.password')}</span>
                     {/* <Tooltip
                       selector='forget-password'
@@ -247,7 +249,7 @@ const NormalForm = () => {
                       type={showPassword ? 'text' : 'password'}
                       autoComplete="current-password"
                       placeholder={t('login.passwordPlaceholder') || ''}
-                      className={'appearance-none block w-full rounded-lg pl-[14px] px-3 py-2 border border-gray-200 hover:border-gray-300 hover:shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400 caret-primary-600 sm:text-sm pr-10'}
+                      className={'appearance-none block w-full rounded-lg pl-[14px] px-3 py-2 border border-gray-200 bg-dark-0 hover:shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400 caret-primary-600 sm:text-sm pr-10'}
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                       <button

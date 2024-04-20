@@ -1,5 +1,6 @@
 'use client'
 import { useContext } from 'use-context-selector'
+import cn from 'classnames'
 import TemplateEn from './template/template.en.mdx'
 import TemplateZh from './template/template.zh.mdx'
 import TemplateAdvancedChatEn from './template/template_advanced_chat.en.mdx'
@@ -8,9 +9,9 @@ import TemplateWorkflowEn from './template/template_workflow.en.mdx'
 import TemplateWorkflowZh from './template/template_workflow.zh.mdx'
 import TemplateChatEn from './template/template_chat.en.mdx'
 import TemplateChatZh from './template/template_chat.zh.mdx'
+import style from './doc.module.css'
 import I18n from '@/context/i18n'
 import { LanguagesSupported } from '@/i18n/language'
-
 type IDocProps = {
   appDetail: any
 }
@@ -25,7 +26,7 @@ const Doc = ({ appDetail }: IDocProps) => {
   }, {})
 
   return (
-    <article className="prose prose-xl" >
+    <article className={cn('prose prose-xl bg-dark-200 text-dark-0', style.template)} >
       {(appDetail?.mode === 'chat' || appDetail?.mode === 'agent-chat') && (
         locale !== LanguagesSupported[1] ? <TemplateChatEn appDetail={appDetail} variables={variables} inputs={inputs} /> : <TemplateChatZh appDetail={appDetail} variables={variables} inputs={inputs} />
       )}

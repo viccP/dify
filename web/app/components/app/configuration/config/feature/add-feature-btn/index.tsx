@@ -21,13 +21,13 @@ const AddFeatureBtn: FC<IAddFeatureBtnProps> = ({
       className='absolute z-[9] left-0 right-0 flex justify-center pb-4'
       style={{
         top: toBottomHeight - ITEM_HEIGHT,
-        background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #FFF 100%)',
+        background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #000 100%)',
       }}
     >
       <div
         className='flex items-center h-8 space-x-2 px-3
-        border border-primary-100 rounded-lg bg-primary-25 hover:bg-primary-50 cursor-pointer
-        text-xs font-semibold text-primary-600 uppercase
+        border border-dark-30 rounded-lg bg-dark-120 hover:bg-dark-120 cursor-pointer
+        text-xs font-semibold text-dark-0 uppercase
       '
         onClick={onClick}
       >

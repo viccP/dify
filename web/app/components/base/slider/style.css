@@ -1,6 +1,7 @@
 .slider {
     position: relative;
 }
+
 .slider.disabled {
     opacity: 0.6;
 }
@@ -8,7 +9,7 @@
 .slider-thumb {
     width: 16px;
     height: 16px;
-    background-color: white;
+    background-color: #167CEC;
     border-radius: 50%;
     border: 1px solid rgba(0, 0, 0, 0.08);
     position: absolute;
@@ -28,5 +29,5 @@
 }
 
 .slider-track-1 {
-    background-color: #E5E7EB;
+    background-color: #2E3F60;
 }

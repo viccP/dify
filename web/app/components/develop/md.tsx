@@ -45,7 +45,7 @@ export const Heading = function H2({
         <span className="font-mono text-xs text-zinc-400">{url}</span>
       </div>
       <h2 className='mt-2 scroll-mt-32'>
-        <a href={name} className='no-underline group text-inherit hover:text-inherit'>{title}</a>
+        <a href={name} className='no-underline group text-dark-0  hover:text-dark-0'>{title}</a>
       </h2>
     </>
 
