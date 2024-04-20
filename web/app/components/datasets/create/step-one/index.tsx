@@ -133,7 +133,7 @@ const StepOne = ({
                   <span className={cn(s.datasetIcon, '!bg-dark-200 !border-dark-200')} />
                   {t('datasetCreation.stepOne.dataSourceType.file')}
                 </div>
-                <div
+                {/*<div
                   className={cn(
                     s.dataSourceItem,
                     dataSourceType === DataSourceType.NOTION && s.active,
@@ -160,7 +160,7 @@ const StepOne = ({
                   <span className={cn(s.comingTag, ' !border-dark-200')}>Coming soon</span>
                   <span className={cn(s.datasetIcon, s.web, '!bg-dark-200 !border-dark-200')} />
                   {t('datasetCreation.stepOne.dataSourceType.web')}
-                </div>
+                </div>*/}
               </div>
             )
           }

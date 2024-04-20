@@ -7,8 +7,8 @@ import LogoSite from '@/app/components/base/logo/logo-site'
 const Header = () => {
   const { locale, setLocaleOnClient } = useContext(I18n)
 
-  if (localStorage?.getItem('console_token'))
-    localStorage.removeItem('console_token')
+  // if (localStorage?.getItem('console_token'))
+  //   localStorage.removeItem('console_token')
 
   return <div className='flex items-center justify-center p-6 w-full'>
     <LogoSite />

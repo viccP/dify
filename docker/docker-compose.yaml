@@ -2,7 +2,7 @@ version: '3'
 services:
   # API service
   api:
-    image: bonclops-backend:2.1
+    image: bonclops-backend:2.2-dev
     privileged: true
     restart: always
     environment:
@@ -145,8 +145,8 @@ services:
       # Mount the storage directory to the container, for storing user files.
       - ./volumes/app/storage:/app/api/storage
     # uncomment to expose dify-api port to host
-    # ports:
-    #   - "5001:5001"
+    ports:
+     - "5001:5001"
 
   # worker service
   # The Celery worker for processing the queue.
@@ -240,7 +240,7 @@ services:
 
   # Frontend web application.
   web:
-    image: bonclops-web:2.5.0
+    image: bonclops-web:2.5.1-dev
     restart: always
     environment:
       EDITION: SELF_HOSTED

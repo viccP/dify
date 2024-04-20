@@ -42,7 +42,7 @@ const Item: FC<Props> = ({
             background={payload.icon.background}
           />
         )}
-      <div className={cn(isCurrent && 'text-primary-600 font-semibold', 'leading-5 text-sm font-normal truncate')}>{payload.label[language]}</div>
+      <div className={cn(isCurrent && 'text-primary-600 font-semibold', 'leading-5 text-sm font-normal truncate text-gray-900')}>{payload.label[language]}</div>
 
     </div>
   )

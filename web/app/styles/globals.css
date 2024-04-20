@@ -158,5 +158,37 @@ input:focus {
 input {
   @apply bg-dark-120;
 }
+/* 设置全局滚动条样式 */
+body::-webkit-scrollbar {
+  /* 窄滚动条宽度 */
+  width: 8px;
+}
+
+/* 滚动条轨道（背景） */
+body::-webkit-scrollbar-track {
+  /* 使用深色背景 */
+  background-color: #003366; /* 深蓝色背景 */
+  border-radius: 12px 12px 0 0; /* 上下两端圆角化，值为 (上) (右) (下) (左) */
+}
+
+/* 滚动条滑块（ thumb） */
+body::-webkit-scrollbar-thumb {
+  /* 使用稍浅的深色或对比色 */
+  background-color: #004c99; /* 较深蓝色滑块 */
+  border-radius: 12px; /* 圆角滑块 */
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); /* 可选，增加阴影效果以增强立体感 */
+}
+
+/* 当鼠标悬停在滚动条滑块上时的样式 */
+body::-webkit-scrollbar-thumb:hover {
+  background-color: #0066cc; /* 鼠标悬停时可适当加深颜色 */
+}
+
+/* 对于非Webkit内核的浏览器，如Firefox，使用以下CSS变量（需确保浏览器支持） */
+body {
+  scrollbar-color: #004c99 #003366; /* 第一个颜色为滑块颜色，第二个颜色为轨道颜色 */
+  scrollbar-width: thin; /* 或者尝试 'auto' 或 'none'，具体取决于浏览器支持情况和所需效果 */
+}
+
 
 @import '../components/base/button/index.css';
