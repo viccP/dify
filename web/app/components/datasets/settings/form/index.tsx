@@ -30,7 +30,7 @@ const rowClass = `
   flex justify-between py-4 flex-wrap gap-y-2
 `
 const labelClass = `
-  flex items-center w-[168px] h-9
+  flex items-center w-[168px] h-9 text-dark-0
 `
 const inputClass = `
   w-full max-w-[480px] px-3 bg-gray-100 text-sm text-gray-800 rounded-lg outline-none appearance-none

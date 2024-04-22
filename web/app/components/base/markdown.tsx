@@ -85,7 +85,7 @@ export function Markdown(props: { content: string; className?: string }) {
   const [isCopied, setIsCopied] = useState(false)
   const [isSVG, setIsSVG] = useState(false)
   return (
-    <div className={cn(props.className, 'markdown-body')}>
+    <div className={cn(props.className, 'markdown-body !text-dark-0')}>
       <ReactMarkdown
         remarkPlugins={[[RemarkMath, { singleDollarTextMath: false }], RemarkGfm, RemarkBreaks]}
         rehypePlugins={[
@@ -127,7 +127,7 @@ export function Markdown(props: { content: string; className?: string }) {
                       style={atelierHeathLight}
                       customStyle={{
                         paddingLeft: 12,
-                        backgroundColor: '#fff',
+                        // backgroundColor: '#fff',
                       }}
                       language={match[1]}
                       showLineNumbers

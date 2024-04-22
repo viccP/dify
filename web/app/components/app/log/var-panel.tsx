@@ -20,7 +20,7 @@ const VarPanel: FC<Props> = ({
   const [imagePreviewUrl, setImagePreviewUrl] = useState('')
 
   return (
-    <div className='rounded-xl border border-color-indigo-100 bg-indigo-25'>
+    <div className='rounded-xl border border-color-indigo-100 bg-dark-120'>
       <div
         className='flex items-center h-6 pl-2 py-6 space-x-1 cursor-pointer'
         onClick={toggleCollapse}
@@ -30,7 +30,7 @@ const VarPanel: FC<Props> = ({
             ? <ChevronRight className='w-3 h-3 text-gray-300' />
             : <ChevronDown className='w-3 h-3 text-gray-300' />
         }
-        <div className='text-sm font-semibold text-indigo-800 uppercase'>{t('appLog.detail.variables')}</div>
+        <div className='text-sm font-semibold text-dark-0 uppercase'>{t('appLog.detail.variables')}</div>
       </div>
       {!isCollapse && (
         <div className='px-6 pb-3'>
@@ -38,10 +38,10 @@ const VarPanel: FC<Props> = ({
             <div key={index} className='flex py-2 leading-[18px] text-[13px]'>
               <div className='shrink-0 w-[128px] flex text-primary-600'>
                 <span className='shrink-0 opacity-60'>{'{{'}</span>
-                <span className='truncate'>{label}</span>
+                <span className='truncate text-dark-0'>{label}</span>
                 <span className='shrink-0 opacity-60'>{'}}'}</span>
               </div>
-              <div className='pl-2.5 break-all'>{value}</div>
+              <div className='pl-2.5 break-all text-dark-0'>{value}</div>
             </div>
           ))}
 

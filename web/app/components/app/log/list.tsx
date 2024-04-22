@@ -261,7 +261,7 @@ function DetailPanel<T extends ChatConversationFullDetailResponse | CompletionCo
           {!isAdvanced && (
             <>
               <div
-                className={cn('mr-2 flex items-center border h-8 px-2 space-x-2 rounded-lg bg-indigo-25 border-[#2A87F5]')}
+                className={cn('mr-2 flex items-center border h-8 px-2 space-x-2 rounded-lg bg-dark-120 border-[#2A87F5]')}
               >
                 <ModelIcon
                   className='!w-5 !h-5'
@@ -275,10 +275,10 @@ function DetailPanel<T extends ChatConversationFullDetailResponse | CompletionCo
               </div>
               <Popover
                 position='br'
-                className='!w-[280px]'
+                className='!w-[280px] border border-dark-15'
                 btnClassName='mr-4 !bg-gray-50 !py-1.5 !px-2.5 border-none font-normal'
                 btnElement={<>
-                  <span className='text-[13px]'>{targetTone}</span>
+                  <span className='text-[13px] text-dark-0'>{targetTone}</span>
                   <InformationCircleIcon className='h-4 w-4 text-gray-800 ml-1.5' />
                 </>}
                 htmlContent={<div className='w-[280px]'>

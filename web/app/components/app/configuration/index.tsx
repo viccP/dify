@@ -56,6 +56,8 @@ import { useTextGenerationCurrentProviderAndModelAndModelList } from '@/app/comp
 import { fetchCollectionList } from '@/service/tools'
 import { type Collection } from '@/app/components/tools/types'
 import { useStore as useAppStore } from '@/app/components/app/store'
+import cn from 'classnames'
+import s from './style.module.css'
 
 type PublichConfig = {
   modelConfig: ModelConfig
@@ -743,7 +745,7 @@ const Configuration: FC = () => {
     }}
     >
       <>
-        <div className="flex flex-col h-full">
+        <div className='flex flex-col h-full'>
           <div className='relative flex grow h-[200px] pt-14'>
             {/* Header */}
             <div className='absolute top-0 left-0 w-full bg-white h-14'>
@@ -808,11 +810,11 @@ const Configuration: FC = () => {
                 </div>
               </div>
             </div>
-            <div className={`w-full sm:w-1/2 shrink-0 flex flex-col h-full ${debugWithMultipleModel && 'max-w-[560px]'}`}>
+            <div className={cn(s.scrollbarBlue, `w-full sm:w-1/2 shrink-0 flex flex-col h-full ${debugWithMultipleModel && 'max-w-[560px]'}`)}>
               <Config />
             </div>
-            {!isMobile && <div className="relative flex flex-col w-1/2 h-full overflow-y-auto grow " style={{ borderColor: 'rgba(0, 0, 0, 0.02)' }}>
-              <div className='flex flex-col h-0 border-t border-l grow rounded-tl-2xl bg-gray-50 '>
+            {!isMobile && <div className={cn(s.scrollbarBlue, "relative flex flex-col w-1/2 h-full overflow-y-auto grow ")} style={{ borderColor: 'rgba(0, 0, 0, 0.02)' }}>
+              <div className='flex flex-col h-0 border-t border-l grow rounded-tl-2xl bg-gray-50  border-dark-15'>
                 <Debug
                   hasSetAPIKEY={hasSettedApiKey}
                   onSetting={() => setShowAccountSettingModal({ payload: 'provider' })}

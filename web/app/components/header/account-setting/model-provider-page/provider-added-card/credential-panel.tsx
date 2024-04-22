@@ -66,14 +66,14 @@ const CredentialPanel: FC<CredentialPanelProps> = ({
     <>
       {
         provider.provider_credential_schema && (
-          <div className='shrink-0 relative ml-1 p-1 w-[112px] rounded-lg bg-white/[0.3] border-[0.5px] border-black/5'>
-            <div className='flex items-center justify-between mb-1 pt-1 pl-2 pr-[7px] h-5 text-xs font-medium text-gray-500'>
+          <div className='shrink-0 relative ml-1 p-1 w-[112px] rounded-lg bg-[#FFFFFF]/[0.3] border-[0.5px] border-[#000000]/5'>
+            <div className='flex items-center justify-between mb-1 pt-1 pl-2 pr-[7px] h-5 text-xs font-medium text-dark-500'>
               API-KEY
               <Indicator color={customConfiged ? 'green' : 'gray'} />
             </div>
             <div className='flex items-center gap-0.5'>
               <Button
-                className='grow px-0 h-6 bg-white text-xs font-medium rounded-md'
+                className='grow px-0 h-6 text-dark-600 bg-dark-0 text-xs font-medium rounded-md border border-[#000000]/[0.3] hover:bg-dark-0 hover:border-[#000000]/[0.3]'
                 onClick={onSetup}
               >
                 <Settings01 className='mr-1 w-3 h-3' />

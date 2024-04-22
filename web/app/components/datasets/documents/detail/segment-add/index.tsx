@@ -36,8 +36,8 @@ const SegmentAdd: FC<ISegmentAddProps> = ({
       <>
         {(importStatus === ProcessStatus.WAITING || importStatus === ProcessStatus.PROCESSING) && (
           <div className='relative overflow-hidden inline-flex items-center mr-2 px-3 py-[6px] text-blue-700 bg-[#F5F8FF] rounded-lg border border-black/5'>
-            {importStatus === ProcessStatus.WAITING && <div className='absolute left-0 top-0 w-3/12 h-full bg-[#D1E0FF] z-0'/>}
-            {importStatus === ProcessStatus.PROCESSING && <div className='absolute left-0 top-0 w-2/3 h-full bg-[#D1E0FF] z-0'/>}
+            {importStatus === ProcessStatus.WAITING && <div className='absolute left-0 top-0 w-3/12 h-full bg-[#D1E0FF] z-0' />}
+            {importStatus === ProcessStatus.PROCESSING && <div className='absolute left-0 top-0 w-2/3 h-full bg-[#D1E0FF] z-0' />}
             <Loading02 className='animate-spin mr-2 w-4 h-4' />
             <span className='font-medium text-[13px] leading-[18px] z-10'>{t('datasetDocuments.list.batchModal.processing')}</span>
           </div>
@@ -76,7 +76,7 @@ const SegmentAdd: FC<ISegmentAddProps> = ({
           <span className='pl-1'>{t('datasetDocuments.list.action.addButton')}</span>
         </div>
       }
-      btnClassName={open => cn('mr-2 !py-[6px] !text-[13px] !leading-[18px] hover:bg-gray-50 border border-gray-200 hover:border-gray-300 hover:shadow-[0_1px_2px_rgba(16,24,40,0.05)]', open ? '!bg-gray-100 !shadow-none' : '!bg-transparent')}
+      btnClassName={open => cn('mr-2 !py-[6px] !text-gray-700  !text-[13px] !leading-[18px] hover:bg-gray-50 border border-gray-200 hover:border-dark-30 hover:shadow-[0_1px_2px_rgba(16,24,40,0.05)]', open ? '!bg-gray-100 !shadow-none' : '!bg-transparent')}
       className='!w-[132px] h-fit !z-20  !translate-x-0 !left-0'
     />
   )

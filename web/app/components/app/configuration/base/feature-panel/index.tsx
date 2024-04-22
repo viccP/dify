@@ -29,7 +29,7 @@ const FeaturePanel: FC<IFeaturePanelProps> = ({
 }) => {
   return (
     <div
-      className={cn(className, isFocus && 'border border-[#2D0DEE]', 'rounded-xl bg-gray-50 pt-2 pb-3', noBodySpacing && '!pb-0')}
+      className={cn(className, isFocus && 'border border-[#2D0DEE]', 'rounded-xl !bg-dark-120 pt-2 pb-3 border !border-dark-220', noBodySpacing && '!pb-0')}
       style={isFocus
         ? {
           boxShadow: '0px 4px 8px -2px rgba(16, 24, 40, 0.1), 0px 2px 4px -2px rgba(16, 24, 40, 0.06)',
@@ -46,7 +46,7 @@ const FeaturePanel: FC<IFeaturePanelProps> = ({
           <div className='flex gap-2 items-center'>
             {headerRight && <div>{headerRight}</div>}
             {isShowTextToSpeech && <div className='flex items-center'>
-              <ParamsConfig/>
+              <ParamsConfig />
             </div>}
           </div>
         </div>

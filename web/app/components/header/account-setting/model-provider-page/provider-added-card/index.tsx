@@ -112,7 +112,7 @@ const ProviderAddedCard: FC<ProviderAddedCardProps> = ({
       </div>
       {
         collapsed && (
-          <div className='group flex items-center justify-between pl-2 py-1.5 pr-[11px] border-t border-t-black/5 bg-white/30 text-xs font-medium text-gray-500'>
+          <div className='group flex items-center justify-between pl-2 py-1.5 pr-[11px] border-t border-t-black/5 bg-dark/30 text-xs font-medium text-dark-500'>
             <div className='group-hover:hidden pl-1 pr-1.5 h-6 leading-6'>
               {
                 hasModelList
@@ -121,7 +121,7 @@ const ProviderAddedCard: FC<ProviderAddedCardProps> = ({
               }
             </div>
             <div
-              className='hidden group-hover:flex items-center pl-1 pr-1.5 h-6 rounded-lg hover:bg-white cursor-pointer'
+              className='hidden group-hover:flex items-center pl-1 pr-1.5 h-6 rounded-lg hover:bg-dark-0 cursor-pointer'
               onClick={handleOpenModelList}
             >
               <ChevronDownDouble className='mr-0.5 w-3 h-3' />

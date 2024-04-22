@@ -14,14 +14,14 @@ const SuggestedAction = ({ icon, link, disabled, children, className, ...props }
     target='_blank'
     rel='noreferrer'
     className={classNames(
-      'flex justify-start items-center gap-2 h-[34px] px-2.5 bg-gray-100 rounded-lg transition-colors [&:not(:first-child)]:mt-1',
+      'flex justify-start items-center text-dark-0 gap-2 h-[34px] px-2.5 bg-gray-100 rounded-lg transition-colors [&:not(:first-child)]:mt-1',
       disabled ? 'shadow-xs opacity-30 cursor-not-allowed' : 'hover:bg-primary-50 hover:text-primary-600 cursor-pointer',
       className,
     )}
     {...props}
   >
-    <div className='relative w-4 h-4'>{icon}</div>
-    <div className='grow shrink basis-0 text-[13px] font-medium leading-[18px]'>{children}</div>
+    <div className='relative w-4 h-4 '>{icon}</div>
+    <div className='grow shrink basis-0 text-[13px]  font-medium leading-[18px]'>{children}</div>
     <ArrowUpRight />
   </a>
 )
