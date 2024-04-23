@@ -90,7 +90,7 @@ const SwitchAppModal = ({ show, appDetail, inAppDetail = false, onSuccess, onClo
         wrapperClassName='z-20'
         className={cn('p-8 max-w-[600px] w-[600px]', s.bg)}
         isShow={show}
-        onClose={() => {}}
+        onClose={() => { }}
       >
         <div className='absolute right-4 top-4 p-2 cursor-pointer' onClick={onClose}>
           <XClose className='w-4 h-4 text-gray-500' />
@@ -112,7 +112,7 @@ const SwitchAppModal = ({ show, appDetail, inAppDetail = false, onSuccess, onClo
               value={name}
               onChange={e => setName(e.target.value)}
               placeholder={t('app.newApp.appNamePlaceholder') || ''}
-              className='grow h-10 px-3 text-sm font-normal bg-gray-100 rounded-lg border border-transparent outline-none appearance-none caret-primary-600 placeholder:text-gray-400 hover:bg-gray-50 hover:border hover:border-gray-300 focus:bg-gray-50 focus:border focus:border-gray-300 focus:shadow-xs'
+              className='grow text-dark-0 h-10 px-3 text-sm font-normal bg-gray-100 rounded-lg border border-transparent outline-none appearance-none caret-primary-600 placeholder:text-gray-400  hover:border hover:border-dark-15  focus:border focus:border-dark-15 focus:shadow-xs'
             />
           </div>
           {showEmojiPicker && <EmojiPicker
@@ -134,7 +134,7 @@ const SwitchAppModal = ({ show, appDetail, inAppDetail = false, onSuccess, onClo
           </div>
           <div className='flex items-center'>
             <Button className='mr-2 text-gray-700 text-sm font-medium' onClick={onClose}>{t('app.newApp.Cancel')}</Button>
-            <Button className='text-sm font-medium border-red-700 border-[0.5px]' disabled={isAppsFull || !name} type="warning" onClick={goStart}>{t('app.switchStart')}</Button>
+            <Button className='text-sm text-dark-0 font-medium border-red-700 border-[0.5px]' disabled={isAppsFull || !name} type="warning" onClick={goStart}>{t('app.switchStart')}</Button>
           </div>
         </div>
       </Modal>

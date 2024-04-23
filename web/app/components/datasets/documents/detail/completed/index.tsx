@@ -118,7 +118,7 @@ const SegmentDetailComponent: FC<ISegmentDetailProps> = ({
 
     return (
       <AutoHeightTextarea
-        className='leading-6 text-md text-gray-800'
+        className='leading-6 text-md text-gray-800 bg-dark-120'
         value={question}
         placeholder={t('datasetDocuments.segment.contentPlaceholder') || ''}
         onChange={e => setQuestion(e.target.value)}
@@ -402,7 +402,7 @@ const Completed: FC<ICompletedProps> = ({
         onClick={onClickCard}
         archived={archived}
       />
-      <Modal isShow={currSegment.showModal} onClose={() => {}} className='!max-w-[640px] !overflow-visible'>
+      <Modal isShow={currSegment.showModal} onClose={() => { }} className='!max-w-[640px] !overflow-visible'>
         <SegmentDetail
           embeddingAvailable={embeddingAvailable}
           segInfo={currSegment.segInfo ?? { id: '' }}

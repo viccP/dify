@@ -45,10 +45,15 @@ const Trigger: FC<TriggerProps> = ({
     <div
       className={cn(
         'relative flex items-center px-2 h-8 rounded-lg  cursor-pointer',
-        !isInWorkflow && 'border hover:border-[1.5px]',
-        !isInWorkflow && (disabled ? 'border-dark-30 bg-dark-120' : 'border-[#444CE7] bg-primary-50'),
-        isInWorkflow && 'bg-dark-120 border border-gray-100  hover:border-gray-200',
+        !isInWorkflow && 'bg-dark-0 border hover:border-[1.5px]',
+        !isInWorkflow && (disabled ? 'border-dark-30 bg-dark-120' : 'border-[#444CE7] bg-dark-0'),
+        isInWorkflow && 'bg-dark-120 border border-gray-100 text-dark-0  hover:border-dark-30',
       )}
+    // style={{
+    //   background: '#fff',
+    //   border: ' 1px solid #0682ff',
+    //   color: '#000',
+    // }}
     >
       {
         currentProvider && (
@@ -71,7 +76,7 @@ const Trigger: FC<TriggerProps> = ({
       {
         currentModel && (
           <ModelName
-            className='mr-1.5 text-gray-900'
+            className={cn('mr-1.5 ', isInWorkflow && 'text-dark-0', !isInWorkflow && 'text-dark-1')}
             modelItem={currentModel}
             showMode
             modeClassName={cn(!isInWorkflow ? '!text-[#444CE7] !border-[#A4BCFD]' : '!text-gray-500 !border-black/8')}
@@ -82,7 +87,7 @@ const Trigger: FC<TriggerProps> = ({
       }
       {
         !currentModel && (
-          <div className='mr-1 text-[13px] font-medium text-gray-900 truncate'>
+          <div className='mr-1 text-[13px] font-medium text-dark-0 truncate'>
             {modelId}
           </div>
         )

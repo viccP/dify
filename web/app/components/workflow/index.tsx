@@ -12,6 +12,8 @@ import {
   useKeyPress,
 } from 'ahooks'
 import ReactFlow, {
+  Background,
+  BackgroundVariant,
   ReactFlowProvider,
   useOnViewportChange,
 } from 'reactflow'
@@ -192,11 +194,12 @@ const Workflow: FC<WorkflowProps> = memo(({
         zoomOnDoubleClick={!workflowReadOnly}
         isValidConnection={isValidConnection}
       >
-        {/* <Background
+        <Background
           gap={[14, 14]}
           size={2}
-          color='#E4E5E7'
-        /> */}
+          variant={BackgroundVariant.Lines}
+          color='#0A1A2C'
+        />
       </ReactFlow>
     </div>
   )

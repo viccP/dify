@@ -133,7 +133,7 @@ const Prompt: FC<ISimplePromptInput> = ({
 
   return (
     <div className={cn(!readonly ? `${s.gradientBorder}` : 'bg-gray-50', ' relative shadow-md')}>
-      <div className='rounded-xl bg-dark-120 text-dark-0'>
+      <div className='rounded-xl bg-dark-150 text-dark-0'>
         <div className="flex justify-between items-center h-11 px-3">
           <div className="flex items-center space-x-1">
             <div className='h2 !text-dark-0'>{mode !== AppType.completion ? t('appDebug.chatSubTitle') : t('appDebug.completionSubTitle')}</div>
@@ -154,18 +154,18 @@ const Prompt: FC<ISimplePromptInput> = ({
           </div>
         </div>
         <PromptEditorHeightResizeWrap
-          className='px-4 pt-2 min-h-[228px] bg-white rounded-t-xl text-sm text-gray-700'
+          className='px-4 pt-2 min-h-[228px] bg-dark-0 rounded-t-xl text-sm text-dark-1'
           height={editorHeight}
           minHeight={minHeight}
           onHeightChange={setEditorHeight}
           footer={(
-            <div className='pl-4 pb-2 flex bg-white rounded-b-xl'>
-              <div className="h-[18px] leading-[18px] px-1 rounded-md bg-gray-100 text-xs text-gray-500">{promptTemplate.length}</div>
+            <div className='pl-4 pb-2 flex bg-dark-0 rounded-b-xl'>
+              <div className="h-[18px] leading-[18px] px-1 rounded-md bg-dark-3 text-xs text-dark-0">{promptTemplate.length}</div>
             </div>
           )}
         >
           <PromptEditor
-            className='min-h-[210px]'
+            className='min-h-[210px] !text-dark-1'
             compact
             value={promptTemplate}
             contextBlock={{

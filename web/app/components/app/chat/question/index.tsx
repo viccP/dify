@@ -27,7 +27,7 @@ const Question: FC<IQuestionProps> = ({ id, content, more, useCurrentUserAvatar,
 
         <div className={`${s.question} group relative text-sm text-gray-900`}>
           <div
-            className={'mr-2 py-3 px-4 bg-blue-500 rounded-tl-2xl rounded-b-2xl'}
+            className={'mr-2 py-3 px-4 bg-[#7389A4] rounded-tl-2xl rounded-b-2xl'}
           >
             {imgSrcs && imgSrcs.length > 0 && (
               <ImageGallery srcs={imgSrcs} />

@@ -66,9 +66,9 @@ const ChatRecord = () => {
       className={`
         flex flex-col w-[400px] rounded-l-2xl h-full border border-black/[0.02] shadow-xl
       `}
-      style={{
-        background: 'linear-gradient(156deg, rgba(242, 244, 247, 0.80) 0%, rgba(242, 244, 247, 0.00) 99.43%), var(--white, #FFF)',
-      }}
+    // style={{
+    //   background: 'linear-gradient(156deg, rgba(242, 244, 247, 0.80) 0%, rgba(242, 244, 247, 0.00) 99.43%), var(--white, #FFF)',
+    // }}
     >
       {!fetched && (
         <div className='flex items-center justify-center h-full'>

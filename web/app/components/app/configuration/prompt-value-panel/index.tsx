@@ -92,10 +92,10 @@ const PromptValuePanel: FC<IPromptValuePanelProps> = ({
   }
 
   return (
-    <div className="pb-3 border border-gray-200 bg-white rounded-xl" style={{
+    <div className="" style={{
       boxShadow: '0px 4px 8px -2px rgba(16, 24, 40, 0.1), 0px 2px 4px -2px rgba(16, 24, 40, 0.06)',
     }}>
-      <div className={'mt-3 px-4 bg-white'}>
+      <div className={'mt-3 px-4 bg-white border border-dark-220'}>
         <div className={
           `${!userInputFieldCollapse && 'mb-2'}`
         }>
@@ -127,13 +127,14 @@ const PromptValuePanel: FC<IPromptValuePanelProps> = ({
                             onSelect={(i) => { handleInputValueChange(key, i.value as string) }}
                             items={(options || []).map(i => ({ name: i, value: i }))}
                             allowSearch={false}
-                            bgClassName='bg-gray-50'
+                            bgClassName='bg-dark-0 text-dark-1'
+                            overlayClassName='bg-dark-0 text-dark-1'
                           />
                         )
                         }
                         {type === 'string' && (
                           <input
-                            className="w-full px-3 text-sm leading-9 text-gray-900 border-0 rounded-lg grow h-9 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-inset focus:ring-gray-200"
+                            className="w-full px-3 text-sm leading-9 text-dark-1 border-0 rounded-lg grow h-9 bg-dark-0 focus:outline-none focus:ring-1 focus:ring-inset focus:ring-gray-200"
                             placeholder={`${name}${!required ? `(${t('appDebug.variableTable.optional')})` : ''}`}
                             type="text"
                             value={inputs[key] ? `${inputs[key]}` : ''}
@@ -143,7 +144,7 @@ const PromptValuePanel: FC<IPromptValuePanelProps> = ({
                         )}
                         {type === 'paragraph' && (
                           <textarea
-                            className="w-full px-3 text-sm leading-9 text-gray-900 border-0 rounded-lg grow h-[120px] bg-gray-50 focus:outline-none focus:ring-1 focus:ring-inset focus:ring-gray-200"
+                            className="w-full px-3 text-sm leading-9 bg-dark-0 text-dark-1 border-0 rounded-lg grow h-[120px]  focus:outline-none "
                             placeholder={`${name}${!required ? `(${t('appDebug.variableTable.optional')})` : ''}`}
                             value={inputs[key] ? `${inputs[key]}` : ''}
                             onChange={(e) => { handleInputValueChange(key, e.target.value) }}
@@ -151,7 +152,7 @@ const PromptValuePanel: FC<IPromptValuePanelProps> = ({
                         )}
                         {type === 'number' && (
                           <input
-                            className="w-full px-3 text-sm leading-9 text-gray-900 border-0 rounded-lg grow h-9 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-inset focus:ring-gray-200"
+                            className="w-full px-3 text-sm leading-9 text-dark-1 border-0 rounded-lg grow h-9 bg-dark-0 focus:outline-none "
                             placeholder={`${name}${!required ? `(${t('appDebug.variableTable.optional')})` : ''}`}
                             type="number"
                             value={inputs[key] ? `${inputs[key]}` : ''}

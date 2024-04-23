@@ -15,10 +15,10 @@ const ContextVar: FC<Props> = (props) => {
   const currItem = options.find(item => item.value === value)
   const notSetVar = !currItem
   return (
-    <div className={cn(notSetVar ? 'rounded-bl-xl rounded-br-xl bg-[#FEF0C7] border-[#FEF0C7]' : 'border-gray-200', 'flex justify-between items-center h-12 px-3 border-t ')}>
+    <div className={cn(notSetVar ? 'rounded-bl-xl rounded-br-xl bg-dark-120 border-dark-30' : 'border-gray-200', 'flex justify-between items-center h-12 px-3 border-t ')}>
       <div className='flex items-center space-x-1 shrink-0'>
         <div className='p-1'>
-          <BracketsX className='w-4 h-4 text-primary-500'/>
+          <BracketsX className='w-4 h-4 text-primary-500' />
         </div>
         <div className='mr-1 text-sm font-medium text-gray-800'>{t('appDebug.feature.dataSet.queryVariable.title')}</div>
         <Tooltip
@@ -27,7 +27,7 @@ const ContextVar: FC<Props> = (props) => {
           </div>}
           selector='context-var-tooltip'
         >
-          <HelpCircle className='w-3.5 h-3.5 text-gray-400'/>
+          <HelpCircle className='w-3.5 h-3.5 text-gray-400' />
         </Tooltip>
       </div>
 

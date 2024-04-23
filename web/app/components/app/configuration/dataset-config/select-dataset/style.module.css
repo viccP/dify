@@ -4,7 +4,7 @@
 
 .item:hover,
 .item.selected {
-  background: #F5F8FF;
+  /* background: #F5F8FF; */
   border-color: #528BFF;
 }
 

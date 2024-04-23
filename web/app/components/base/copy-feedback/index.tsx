@@ -38,16 +38,14 @@ const CopyFeedback = ({ content, selectorId, className }: Props) => {
       }
     >
       <div
-        className={`w-8 h-8 cursor-pointer hover:bg-gray-100 rounded-lg ${
-          className ?? ''
-        }`}
+        className={`w-8 h-8 cursor-pointer rounded-lg ${className ?? ''
+          }`}
         onMouseLeave={onMouseLeave}
       >
         <div
           onClick={onClickCopy}
-          className={`w-full h-full ${copyStyle.copyIcon} ${
-            isCopied ? copyStyle.copied : ''
-          }`}
+          className={`w-full h-full ${copyStyle.copyIcon} ${isCopied ? copyStyle.copied : ''
+            }`}
         ></div>
       </div>
     </Tooltip>
@@ -78,16 +76,14 @@ export const CopyFeedbackNew = ({ content, className }: Pick<Props, 'className' 
       }
     >
       <div
-        className={`w-8 h-8 cursor-pointer hover:bg-gray-100 rounded-lg ${
-          className ?? ''
-        }`}
+        className={`w-8 h-8 cursor-pointer hover:bg-gray-100 rounded-lg ${className ?? ''
+          }`}
         onMouseLeave={onMouseLeave}
       >
         <div
           onClick={onClickCopy}
-          className={`w-full h-full ${copyStyle.copyIcon} ${
-            isCopied ? copyStyle.copied : ''
-          }`}
+          className={`w-full h-full ${copyStyle.copyIcon} ${isCopied ? copyStyle.copied : ''
+            }`}
         ></div>
       </div>
     </TooltipPlus>

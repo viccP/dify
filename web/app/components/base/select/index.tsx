@@ -37,6 +37,7 @@ export type ISelectProps = {
   bgClassName?: string
   placeholder?: string
   overlayClassName?: string
+  overlayHoverClassName?: string
 }
 const Select: FC<ISelectProps> = ({
   className,
@@ -46,6 +47,7 @@ const Select: FC<ISelectProps> = ({
   onSelect,
   allowSearch = true,
   bgClassName = 'bg-gray-100',
+  overlayHoverClassName = 'bg-dark-3',
   overlayClassName,
 }) => {
   const [query, setQuery] = useState('')
@@ -97,10 +99,10 @@ const Select: FC<ISelectProps> = ({
                 if (!disabled)
                   setOpen(!open)
               }
-            } className={`flex items-center h-9 w-full rounded-lg border-0 ${bgClassName} py-1.5 pl-3 pr-10 shadow-sm sm:text-sm sm:leading-6 focus-visible:outline-none focus-visible:bg-gray-200 group-hover:bg-gray-200`}>
+            } className={`flex items-center h-9 w-full rounded-lg border-0 ${bgClassName} py-1.5 pl-3 pr-10shadow-sm sm:text-sm sm:leading-6 focus-visible:outline-none focus-visible:bg-gray-200`}>
               <div className='w-0 grow text-left truncate' title={selectedItem?.name}>{selectedItem?.name}</div>
             </Combobox.Button>}
-          <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none group-hover:bg-gray-200" onClick={
+          <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md text-dark-10 px-2 focus:outline-none" onClick={
             () => {
               if (!disabled)
                 setOpen(!open)
@@ -110,16 +112,16 @@ const Select: FC<ISelectProps> = ({
           </Combobox.Button>
         </div>
 
-        {filteredItems.length > 0 && (
-          <Combobox.Options className={`absolute z-10 mt-1 px-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg border-gray-200 border-[0.5px] focus:outline-none sm:text-sm ${overlayClassName}`}>
+        {open && filteredItems.length > 0 && (
+          <Combobox.Options className={`absolute z-10 mt-1 px-1 max-h-60 w-full overflow-auto rounded-md  py-1 text-base  shadow-lg border-gray-200 border-[0.5px] focus:outline-none sm:text-sm ${overlayClassName}`}>
             {filteredItems.map((item: Item) => (
               <Combobox.Option
                 key={item.value}
                 value={item}
                 className={({ active }: { active: boolean }) =>
                   classNames(
-                    'relative cursor-default select-none py-2 pl-3 pr-9 rounded-lg hover:bg-gray-100 text-gray-700',
-                    active ? 'bg-gray-100' : '',
+                    `relative cursor-default select-none py-2 pl-3 pr-9 rounded-lg hover:${overlayHoverClassName}`,
+                    active ? overlayHoverClassName : '',
                   )
                 }
               >
@@ -179,7 +181,7 @@ const SimpleSelect: FC<ISelectProps> = ({
       }}
     >
       <div className={`relative h-9 ${wrapperClassName}`}>
-        <Listbox.Button className={`w-full h-full rounded-lg border-0 bg-gray-100 py-1.5 pl-3 pr-10 sm:text-sm sm:leading-6 focus-visible:outline-none focus-visible:bg-gray-200 group-hover:bg-gray-200 ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} ${className}`}>
+        <Listbox.Button className={`w-full h-full text-dark-0 rounded-lg border-0 bg-gray-100 py-1.5 pl-3 pr-10 sm:text-sm sm:leading-6 focus-visible:outline-none focus-visible:bg-gray-200 group-hover:bg-gray-200 ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} ${className}`}>
           <span className={classNames('block truncate text-left', !selectedItem?.name && 'text-gray-400')}>{selectedItem?.name ?? localPlaceholder}</span>
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
             <ChevronDownIcon

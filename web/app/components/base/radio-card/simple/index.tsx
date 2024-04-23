@@ -23,7 +23,7 @@ const RadioCard: FC<Props> = ({
 }) => {
   return (
     <div
-      className={cn(s.item, isChosen && s.active, 'flex')}
+      className={cn(s.item, isChosen && s.active, 'flex !bg-dark-120 hover:border-dark-15')}
       onClick={onChosen}
     >
       {icon}

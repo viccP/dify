@@ -130,7 +130,7 @@ function AppCard({
   return (
     <div
       className={`shadow-xs border-[0.5px] rounded-lg border-gray-200 ${className ?? ''
-      }`}
+        }`}
     >
       <div className={`px-6 py-5 ${customBgColor ?? bgColor} rounded-lg`}>
         <div className="mb-2.5 flex flex-row items-start justify-between">
@@ -172,7 +172,7 @@ function AppCard({
               <CopyFeedback
                 content={isApp ? appUrl : apiUrl}
                 selectorId={randomString(8)}
-                className={'hover:bg-gray-200'}
+                className={'hover:bg-dark-120'}
               />
               {/* button copy link/ button regenerate */}
               {isApp && isCurrentWorkspaceManager && (
@@ -186,7 +186,7 @@ function AppCard({
                   >
                     <div
                       className={`w-full h-full ${style.refreshIcon} ${genLoading ? style.generateLogo : ''
-                      }`}
+                        }`}
                     ></div>
                   </div>
                 </Tooltip>
@@ -203,7 +203,7 @@ function AppCard({
                 : !runningStatus
             return (
               <Button
-                className="mr-2 border-[0.5px] !h-8 hover:outline hover:outline-[0.5px] hover:outline-gray-300 text-gray-700 font-medium bg-white shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)]"
+                className="mr-2 border-[0.5px] !h-8  text-gray-700 font-medium bg-white shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)]"
                 key={op.opName}
                 onClick={genClickFuncByName(op.opName)}
                 disabled={disabled}

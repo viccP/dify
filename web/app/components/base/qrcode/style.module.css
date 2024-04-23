@@ -4,11 +4,11 @@
   background-repeat: no-repeat;
 }
 
-.QrcodeIcon:hover {
+/* .QrcodeIcon:hover {
   background-image: url(~@/app/components/develop/secret-key/assets/qrcode-hover.svg);
   background-position: center;
   background-repeat: no-repeat;
-}
+} */
 
 .QrcodeIcon.show {
   background-image: url(~@/app/components/develop/secret-key/assets/qrcode-hover.svg);
@@ -20,17 +20,20 @@
   position: relative;
   object-fit: cover;
 }
+
 .scan {
   margin: 0;
   line-height: 1rem;
   font-size: 0.75rem;
 }
+
 .download {
   position: relative;
   color: #155eef;
   font-size: 0.75rem;
   line-height: 1rem;
 }
+
 .text {
   align-self: stretch;
   display: flex;
@@ -39,6 +42,7 @@
   justify-content: center;
   gap: 4px;
 }
+
 .qrcodeform {
   border: 0.5px solid #eaecf0;
   display: flex;

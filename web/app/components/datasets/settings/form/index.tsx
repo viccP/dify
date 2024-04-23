@@ -30,7 +30,7 @@ const rowClass = `
   flex justify-between py-4 flex-wrap gap-y-2
 `
 const labelClass = `
-  flex items-center w-[168px] h-9
+  flex items-center w-[168px] h-9 text-dark-0
 `
 const inputClass = `
   w-full max-w-[480px] px-3 bg-gray-100 text-sm text-gray-800 rounded-lg outline-none appearance-none
@@ -209,10 +209,10 @@ const Form = () => {
         <div className={labelClass}>
           <div>
             <div>{t('datasetSettings.form.retrievalSetting.title')}</div>
-            <div className='leading-[18px] text-xs font-normal text-gray-500'>
+            {/* <div className='leading-[18px] text-xs font-normal text-gray-500'>
               <a target='_blank' rel='noopener noreferrer' href='https://docs.dify.ai/features/retrieval-augment' className='text-[#155eef]'>{t('datasetSettings.form.retrievalSetting.learnMore')}</a>
               {t('datasetSettings.form.retrievalSetting.description')}
-            </div>
+            </div> */}
           </div>
         </div>
         <div className='w-[480px]'>

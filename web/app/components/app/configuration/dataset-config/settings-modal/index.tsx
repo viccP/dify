@@ -35,7 +35,7 @@ const rowClass = `
 `
 
 const labelClass = `
-  flex w-[168px] shrink-0
+  flex w-[168px] shrink-0 text-dark-0
 `
 
 const SettingsModal: FC<SettingsModalProps> = ({
@@ -161,7 +161,7 @@ const SettingsModal: FC<SettingsModalProps> = ({
             <textarea
               value={localeCurrentDataset.description || ''}
               onChange={e => handleValueChange('description', e.target.value)}
-              className='block px-3 py-2 w-full h-[88px] rounded-lg bg-gray-100 text-sm outline-none appearance-none resize-none'
+              className='block px-3 py-2 w-full text-dark-0 h-[88px] rounded-lg bg-gray-100 text-sm outline-none appearance-none resize-none'
               placeholder={t('datasetSettings.form.descPlaceholder') || ''}
             />
             <a className='mt-2 flex items-center h-[18px] px-3 text-xs text-gray-500' href="https://docs.dify.ai/features/datasets#how-to-write-a-good-dataset-description" target='_blank' rel='noopener noreferrer'>

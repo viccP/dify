@@ -38,7 +38,7 @@ const Item: FC<ItemProps> = ({
   }
 
   return (
-    <div className='group relative flex items-center mb-1 last-of-type:mb-0  pl-2.5 py-2 pr-3 w-full bg-white rounded-lg border-[0.5px] border-gray-200 shadow-xs'>
+    <div className='group relative flex items-center mb-1 last-of-type:mb-0  pl-2.5 py-2 pr-3 w-full bg-dark-0 rounded-lg border-[0.5px] border-gray-200 shadow-xs'>
       {
         config.data_source_type === DataSourceType.FILE && (
           <div className='shrink-0 flex items-center justify-center mr-2 w-6 h-6 bg-[#F5F8FF] rounded-md border-[0.5px] border-[#E0EAFF]'>
@@ -55,7 +55,7 @@ const Item: FC<ItemProps> = ({
       }
       <div className='grow'>
         <div className='flex items-center h-[18px]'>
-          <div className='grow text-[13px] font-medium text-gray-800 truncate' title={config.name}>{config.name}</div>
+          <div className='grow text-[13px] font-medium text-dark-1 truncate' title={config.name}>{config.name}</div>
           <div className='shrink-0 text-xs text-gray-500'>
             {formatNumber(config.word_count)} {t('appDebug.feature.dataSet.words')} · {formatNumber(config.document_count)} {t('appDebug.feature.dataSet.textBlocks')}
           </div>

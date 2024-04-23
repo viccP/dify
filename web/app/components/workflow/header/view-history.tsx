@@ -153,7 +153,7 @@ const ViewHistory = () => {
                         <div>
                           <div
                             className={cn(
-                              'flex items-center text-[13px] font-medium leading-[18px]',
+                              'flex items-center text-[13px] font-medium leading-[18px] text-dark-0',
                               item.id === historyWorkflowData?.id && 'text-primary-600',
                             )}
                           >

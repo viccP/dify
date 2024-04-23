@@ -21,7 +21,7 @@ type Props = {
 }
 
 export const EditTitle: FC<{ className?: string; title: string }> = ({ className, title }) => (
-  <div className={cn(className, 'flex items-center height-[18px] text-xs font-medium text-gray-500')}>
+  <div className={cn(className, 'flex items-center height-[18px] text-xs font-medium text-dark-500')}>
     <EditSolid className='mr-1 w-3.5 h-3.5' />
     <div>{title}</div>
     <div

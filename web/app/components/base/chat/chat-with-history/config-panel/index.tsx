@@ -34,7 +34,7 @@ const ConfigPanel = () => {
       >
         <div
           className={`
-            flex flex-wrap px-6 py-4 rounded-t-xl bg-indigo-25
+            flex flex-wrap px-6 py-4 rounded-t-xl bg-dark-120
             ${isMobile && '!px-4 !py-3'}
           `}
         >

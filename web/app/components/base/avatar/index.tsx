@@ -16,7 +16,7 @@ const Avatar = ({
   className,
   textClassName,
 }: AvatarProps) => {
-  const avatarClassName = 'shrink-0 flex items-center rounded-full bg-primary-600'
+  const avatarClassName = 'shrink-0 flex items-center rounded-full bg-dark-15'
   const style = { width: `${size}px`, height: `${size}px`, fontSize: `${size}px`, lineHeight: `${size}px` }
   const [imgError, setImgError] = useState(false)
 
@@ -42,7 +42,7 @@ const Avatar = ({
       style={style}
     >
       <div
-        className={cn(textClassName, 'text-center text-white scale-[0.4]')}
+        className={cn(textClassName, 'text-center text-dark-0 scale-[0.4]')}
         style={style}
       >
         {name[0].toLocaleUpperCase()}

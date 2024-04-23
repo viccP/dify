@@ -12,3 +12,7 @@
   background-color: rgba(68, 76, 231, 0.18);
   transform: skewX(-30deg);
 }
+
+.scrollbarBlue {
+  scrollbar-color: #167CEC #003366
+}

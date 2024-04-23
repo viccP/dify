@@ -239,7 +239,7 @@ const ModerationSettingModal: FC<ModerationSettingModalProps> = ({
       onClose={() => { }}
       className='!p-8 !pb-6 !mt-14 !max-w-none !w-[640px]'
     >
-      <div className='mb-2 text-xl font-semibold text-[#1D2939]'>
+      <div className='mb-2 text-xl font-semibold text-[#FFFFFF]'>
         {t('appDebug.feature.moderation.modal.title')}
       </div>
       <div className='py-2'>
@@ -252,8 +252,8 @@ const ModerationSettingModal: FC<ModerationSettingModalProps> = ({
               <div
                 key={provider.key}
                 className={`
-                  flex items-center px-3 py-2 rounded-lg text-sm text-gray-900 cursor-pointer
-                  ${localeData.type === provider.key ? 'bg-white border-[1.5px] border-primary-400 shadow-sm' : 'border border-gray-100 bg-gray-25'}
+                  flex items-center px-3 py-2 rounded-lg text-sm text-gray-900 cursor-pointer bg-white
+                  ${localeData.type === provider.key ? ' border-[1.5px] border-primary-400 shadow-sm' : 'border border-dark-10 '}
                   ${localeData.type === 'openai_moderation' && provider.key === 'openai_moderation' && !openaiProviderConfiged && 'opacity-50'}
                 `}
                 onClick={() => handleDataTypeChange(provider.key)}
@@ -268,7 +268,7 @@ const ModerationSettingModal: FC<ModerationSettingModalProps> = ({
         </div>
         {
           !isLoading && !openaiProviderConfiged && localeData.type === 'openai_moderation' && (
-            <div className='flex items-center mt-2 px-3 py-2 bg-[#FFFAEB] rounded-lg border border-[#FEF0C7]'>
+            <div className='flex items-center mt-2 px-3 py-2 bg-dark-120 rounded-lg border border-dark-30'>
               <InfoCircle className='mr-1 w-4 h-4 text-[#F79009]' />
               <div className='flex items-center text-xs font-medium text-gray-700'>
                 {t('appDebug.feature.moderation.modal.openaiNotConfig.before')}
@@ -289,7 +289,7 @@ const ModerationSettingModal: FC<ModerationSettingModalProps> = ({
           <div className='py-2'>
             <div className='mb-1 text-sm font-medium text-gray-900'>{t('appDebug.feature.moderation.modal.provider.keywords')}</div>
             <div className='mb-2 text-xs text-gray-500'>{t('appDebug.feature.moderation.modal.keywords.tip')}</div>
-            <div className='relative px-3 py-2 h-[88px] bg-gray-100 rounded-lg'>
+            <div className='relative px-3 py-2 h-[88px] bg-gray-100 rounded-lg text-dark-0'>
               <textarea
                 value={localeData.config?.keywords || ''}
                 onChange={handleDataKeywordsChange}

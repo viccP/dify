@@ -111,7 +111,7 @@ const SettingsModal: FC<ISettingsModalProps> = ({
             icon={emoji.icon}
             background={emoji.icon_background}
           />
-          <input className={`flex-grow rounded-lg h-10 box-border px-3 ${s.projectName} bg-gray-100`}
+          <input className={`flex-grow rounded-lg h-10 box-border px-3 ${s.projectName} bg-gray-100 text-dark-0`}
             value={inputInfo.title}
             onChange={onChange('title')}
             placeholder={t('app.appNamePlaceholder') || ''}

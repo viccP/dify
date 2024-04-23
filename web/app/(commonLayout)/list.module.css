@@ -248,6 +248,10 @@
   box-shadow: inset 0 0 0 1px #1f2a37;
 }
 
+.template p strong {
+  @apply text-dark-0;
+}
+
 .template pre>code {
   background-color: transparent;
   box-shadow: inset 0 0 0 0 transparent;

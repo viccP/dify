@@ -6,6 +6,7 @@ import type {
 } from '../declarations'
 import { ConfigurateMethodEnum } from '../declarations'
 import {
+  DEFAULT_BACKGROUND_COLOR,
   MODEL_PROVIDER_QUOTA_GET_FREE,
   modelTypeFormat,
 } from '../utils'
@@ -59,8 +60,8 @@ const ProviderCard: FC<ProviderCardProps> = ({
 
   return (
     <div
-      className='group text-dark-0 relative bg-dark-120 flex flex-col justify-between px-4 py-3 h-[148px] border-[0.5px] border-black/5 rounded-xl shadow-xs hover:shadow-lg'
-    // style={{ background: provider.background || DEFAULT_BACKGROUND_COLOR }}
+      className='group text-dark-1 relative  flex flex-col justify-between px-4 py-3 h-[148px] border-[0.5px] border-black/5 rounded-xl shadow-xs hover:shadow-lg'
+      style={{ background: provider.background || DEFAULT_BACKGROUND_COLOR }}
     >
       <div>
         <div className='py-0.5'>
@@ -115,7 +116,7 @@ const ProviderCard: FC<ProviderCardProps> = ({
                 return (
                   <Button
                     key={method}
-                    className={'h-7 bg-white text-xs text-gray-700 shrink-0'}
+                    className={'h-7 bg-dark-0 text-xs text-dark-700 border border-[#000000]/[0.48] shrink-0 hover:bg-dark-0 hover:border-[#000000]/[0.3] '}
                     onClick={() => onOpenModal(method)}
                   >
                     <Settings01 className={`mr-[5px] w-3.5 h-3.5 ${s.icon}`} />
@@ -126,7 +127,7 @@ const ProviderCard: FC<ProviderCardProps> = ({
               return (
                 <Button
                   key={method}
-                  className='px-0 h-7 bg-white text-xs text-gray-700'
+                  className='px-0 h-7 bg-dark-0 border border-[#000000]/[0.48] text-xs text-dark-700 hover:bg-dark-0 hover:border-[#000000]/[0.3] '
                   onClick={() => onOpenModal(method)}
                 >
                   <Plus className='mr-[5px] w-3.5 h-3.5' />

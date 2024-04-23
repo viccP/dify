@@ -30,7 +30,7 @@ const Input = ({ value, defaultValue, onChange, className = '', wrapperClassName
       {showPrefix && <span className={s.prefix}>{prefixIcon ?? <GlassIcon className='h-3.5 w-3.5 stroke-current text-gray-700 stroke-2' />}</span>}
       <input
         type={type ?? 'text'}
-        className={`${s.input} ${showPrefix ? '!pl-7' : ''} ${className}`}
+        className={`${s.input} ${showPrefix ? '!pl-7' : ''} ${className} ${'!bg-dark-120'} `}
         placeholder={placeholder ?? (showPrefix ? t('common.operation.search') ?? '' : 'please input')}
         value={localValue}
         onChange={(e) => {

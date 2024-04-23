@@ -372,7 +372,7 @@ const Answer: FC<IAnswerProps> = ({
                     )}
                     {!item.isOpeningStatement && isShowTextToSpeech && (
                       <>
-                        <div className='mx-1 w-[1px] h-[14px] bg-gray-200'/>
+                        <div className='mx-1 w-[1px] h-[14px] bg-gray-200' />
                         <AudioBtn
                           value={content}
                           className={cn(s.playBtn)}
