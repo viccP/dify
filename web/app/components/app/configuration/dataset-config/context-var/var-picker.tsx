@@ -24,11 +24,11 @@ export type Props = {
 }
 
 const VarItem: FC<{ item: Option }> = ({ item }) => (
-  <div className='flex items-center h-[18px] px-1 bg-[#EFF8FF] rounded space-x-1'>
+  <div className='flex items-center h-[18px] px-1 bg-dark-120 rounded space-x-1'>
     <IconTypeIcon type={item.type as IInputTypeIconProps['type']} className='text-[#1570EF]' />
     <div className='flex text-xs font-medium text-[#1570EF]'>
       <span className='opacity-60'>{'{{'}</span>
-      <span className='max-w-[150px] truncate'>{item.value}</span>
+      <span className='max-w-[150px] truncate text-dark-0'>{item.value}</span>
       <span className='opacity-60'>{'}}'}</span>
     </div>
   </div>
@@ -58,7 +58,7 @@ const VarPicker: FC<Props> = ({
         <div className={cn(
           s.trigger,
           className,
-          notSetVar ? 'bg-[#FFFCF5] border-[#FEDF89] text-[#DC6803]' : ' hover:bg-gray-50 border-gray-200 text-primary-600',
+          notSetVar ? 'bg-gray-50 border-gray-200 text-primary-600' : ' hover:bg-gray-50 border-gray-200 text-primary-600',
           open ? 'bg-gray-50' : 'bg-white',
           `
           flex items-center h-8 justify-center px-2 space-x-1 rounded-lg border  shadow-xs cursor-pointer

@@ -272,7 +272,7 @@ const CreateAppModal = ({ show, onSuccess, onClose }: CreateAppDialogProps) => {
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder={t('app.newApp.appNamePlaceholder') || ''}
-            className='text-dark-0 bg-dark-200 grow h-10 px-3 text-sm font-normal  rounded-lg border border-transparent outline-none appearance-none caret-dark-0 placeholder:text-dark-10   focus:border focus:border-primary-400 focus:shadow-xs'
+            className='text-dark-0 bg-dark-200 grow h-10 px-3 text-sm font-normal  rounded-lg border border-dark-30 outline-none appearance-none caret-dark-0 placeholder:text-dark-10   focus:border focus:border-primary-400 focus:shadow-xs'
           />
         </div>
         {showEmojiPicker && <EmojiPicker
@@ -290,7 +290,7 @@ const CreateAppModal = ({ show, onSuccess, onClose }: CreateAppDialogProps) => {
       <div className='pt-2 px-8'>
         <div className='py-2 text-sm font-medium leading-[20px] text-dark-0'>{t('app.newApp.captionDescription')}</div>
         <textarea
-          className='text-dark-0 w-full h-10 px-3 py-2 text-sm font-normal bg-dark-200 rounded-lg border border-transparent outline-none appearance-none caret-dark-0 placeholder:text-dark-20 focus:border focus:border-primary-400 focus:shadow-xs h-[80px] resize-none'
+          className='text-dark-0 w-full h-10 px-3 py-2 text-sm font-normal bg-dark-200 rounded-lg border border-dark-30 outline-none appearance-none caret-dark-0 placeholder:text-dark-20 focus:border focus:border-primary-400 focus:shadow-xs h-[80px] resize-none'
           placeholder={t('app.newApp.appDescriptionPlaceholder') || ''}
           value={description}
           onChange={e => setDescription(e.target.value)}

@@ -209,10 +209,10 @@ const Form = () => {
         <div className={labelClass}>
           <div>
             <div>{t('datasetSettings.form.retrievalSetting.title')}</div>
-            <div className='leading-[18px] text-xs font-normal text-gray-500'>
+            {/* <div className='leading-[18px] text-xs font-normal text-gray-500'>
               <a target='_blank' rel='noopener noreferrer' href='https://docs.dify.ai/features/retrieval-augment' className='text-[#155eef]'>{t('datasetSettings.form.retrievalSetting.learnMore')}</a>
               {t('datasetSettings.form.retrievalSetting.description')}
-            </div>
+            </div> */}
           </div>
         </div>
         <div className='w-[480px]'>

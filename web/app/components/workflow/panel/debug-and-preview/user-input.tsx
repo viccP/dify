@@ -36,7 +36,7 @@ const UserInput = () => {
     <div
       className={`
         relative rounded-xl border z-[1]
-        ${!expanded ? 'bg-indigo-25 border-indigo-100 shadow-none' : 'bg-white shadow-xs border-transparent'}
+        ${!expanded ? 'bg-dark-120 border-indigo-100 shadow-none' : 'bg-white shadow-xs border-transparent'}
       `}
     >
       <div

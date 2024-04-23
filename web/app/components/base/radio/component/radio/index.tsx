@@ -36,7 +36,7 @@ export default function Radio({
 
   const isChecked = groupContext ? groupContext.value === value : checked
   const divClassName = `
-    flex items-center py-1 relative
+    flex items-center py-1 relative text-dark-0
     px-7 cursor-pointer hover:bg-gray-200 rounded
   `
 
@@ -47,13 +47,13 @@ export default function Radio({
       isChecked ? 'bg-white shadow' : '',
       divClassName,
       className)}
-    onClick={() => handleChange(value)}
+      onClick={() => handleChange(value)}
     >
       {children && (
         <label className={
           cn(labelClassName, 'text-sm cursor-pointer')
         }
-        id={labelId}
+          id={labelId}
         >
           {children}
         </label>

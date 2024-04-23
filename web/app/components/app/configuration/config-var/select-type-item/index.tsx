@@ -22,13 +22,13 @@ const SelectTypeItem: FC<ISelectTypeItemProps> = ({
 
   return (
     <div
-      className={cn(s.item, selected && s.selected, 'space-y-1')}
+      className={cn(s.item, selected && s.selected, 'space-y-1 !bg-dark-120 text-dark-0 hover:border border-dark-15')}
       onClick={onClick}
     >
       <div className='shrink-0'>
-        <InputVarTypeIcon type={type} className='w-5 h-5' />
+        <InputVarTypeIcon type={type} className='w-5 h-5 !text-dark-0' />
       </div>
-      <span className={cn(s.text)}>{typeName}</span>
+      <span className={cn(s.text, '!text-dark-0')}>{typeName}</span>
     </div>
   )
 }

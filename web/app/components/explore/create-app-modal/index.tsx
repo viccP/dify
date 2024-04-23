@@ -86,7 +86,7 @@ const CreateAppModal = ({
                 value={name}
                 onChange={e => setName(e.target.value)}
                 placeholder={t('app.newApp.appNamePlaceholder') || ''}
-                className='text-dark-0  grow h-10 px-3 text-sm font-normal bg-dark-200 rounded-lg border border-transparent outline-none appearance-none caret-dark-0 placeholder:text-dark-0  hover:border hover:border-dark-15   focus:border focus:border-dark-15 focus:shadow-xs'
+                className='text-dark-0  grow h-10 px-3 text-sm font-normal bg-dark-200 rounded-lg border border-dark-30 outline-none appearance-none caret-dark-0 placeholder:text-dark-0  hover:border hover:border-dark-15   focus:border focus:border-dark-15 focus:shadow-xs'
               />
             </div>
           </div>
@@ -94,7 +94,7 @@ const CreateAppModal = ({
           <div className='pt-2'>
             <div className='py-2 text-sm font-medium leading-[20px] text-dark-0'>{t('app.newApp.captionDescription')}</div>
             <textarea
-              className='text-dark-0  w-full h-10 px-3 py-2 text-sm font-normal bg-dark-200 rounded-lg border border-transparent outline-none appearance-none caret-dark-0 placeholder:text-dark-0  hover:border hover:border-dark-15  focus:border focus:border-dark-15 focus:shadow-xs h-[80px] resize-none'
+              className='text-dark-0  w-full h-10 px-3 py-2 text-sm font-normal bg-dark-200 rounded-lg border border-dark-30 outline-none appearance-none caret-dark-0 placeholder:text-dark-0  hover:border hover:border-dark-15  focus:border focus:border-dark-15 focus:shadow-xs h-[80px] resize-none'
               placeholder={t('app.newApp.appDescriptionPlaceholder') || ''}
               value={description}
               onChange={e => setDescription(e.target.value)}

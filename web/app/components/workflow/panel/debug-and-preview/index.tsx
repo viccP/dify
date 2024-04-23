@@ -13,7 +13,7 @@ export type ChatWrapperRefType = {
 }
 const DebugAndPreview = () => {
   const { t } = useTranslation()
-  const chatRef = useRef({ handleRestart: () => {} })
+  const chatRef = useRef({ handleRestart: () => { } })
 
   useKeyPress('shift.r', () => {
     chatRef.current.handleRestart()
@@ -26,9 +26,9 @@ const DebugAndPreview = () => {
       className={`
         flex flex-col w-[400px] rounded-l-2xl h-full border border-black/[0.02] shadow-xl
       `}
-      style={{
-        background: 'linear-gradient(156deg, rgba(242, 244, 247, 0.80) 0%, rgba(242, 244, 247, 0.00) 99.43%), var(--white, #FFF)',
-      }}
+    // style={{
+    //   background: 'linear-gradient(156deg, rgba(242, 244, 247, 0.80) 0%, rgba(242, 244, 247, 0.00) 99.43%), var(--white, #FFF)',
+    // }}
     >
       <div className='shrink-0 flex items-center justify-between px-4 pt-3 pb-2 font-semibold text-gray-900'>
         {t('workflow.common.debugAndPreview').toLocaleUpperCase()}

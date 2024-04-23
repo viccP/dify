@@ -230,7 +230,7 @@ const ModelModal: FC<ModelModalProps> = ({
             <div className='px-8 pt-8'>
               <div className='flex justify-between items-center mb-2'>
                 <div className='text-xl font-semibold text-gray-900'>{renderTitlePrefix()}</div>
-                <ProviderIcon provider={provider} />
+                <ProviderIcon provider={provider} className={'text-dark-0'} />
               </div>
               <Form
                 value={value}

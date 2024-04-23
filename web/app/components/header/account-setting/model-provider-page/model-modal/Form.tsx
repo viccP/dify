@@ -156,8 +156,8 @@ const Form: FC<FormProps> = ({
               }).map(option => (
                 <div
                   className={`
-                    flex items-center px-3 py-2 rounded-lg border border-gray-100 bg-gray-25 cursor-pointer
-                    ${value[variable] === option.value && 'bg-white border-[1.5px] border-primary-400 shadow-sm'}
+                    flex items-center px-3 py-2 rounded-lg border border-gray-100 bg-dark-120 cursor-pointer
+                    ${value[variable] === option.value && 'bg-dark-120 border-[1.5px] border-primary-400 shadow-sm'}
                     ${disabed && '!cursor-not-allowed opacity-60'}
                   `}
                   onClick={() => handleFormChange(variable, option.value)}

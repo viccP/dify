@@ -20,7 +20,7 @@ const ModelIcon: FC<ModelIconProps> = ({
   const language = useLanguage()
 
   if (provider?.provider === 'openai' && modelName?.startsWith('gpt-4'))
-    return <OpenaiViolet className={`w-4 h-4 ${className}`}/>
+    return <OpenaiViolet className={`w-4 h-4 ${className}`} />
 
   if (provider?.icon_small) {
     return (
@@ -34,7 +34,7 @@ const ModelIcon: FC<ModelIconProps> = ({
 
   return (
     <div className={`
-      flex items-center justify-center w-6 h-6 rounded border-[0.5px] border-black/5 bg-gray-50
+      flex items-center justify-center w-6 h-6 rounded border-[0.5px] border-black/5
       ${className}
     `}>
       <CubeOutline className='w-4 h-4 text-gray-400' />

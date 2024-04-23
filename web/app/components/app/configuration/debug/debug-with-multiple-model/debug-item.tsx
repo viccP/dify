@@ -73,6 +73,7 @@ const DebugItem: FC<DebugItemProps> = ({
         </div>
         <ModelParameterTrigger
           modelAndParameter={modelAndParameter}
+        // className
         />
         <Dropdown
           onSelect={handleSelect}
@@ -118,7 +119,7 @@ const DebugItem: FC<DebugItemProps> = ({
         }
         {
           mode === 'completion' && currentProvider && currentModel && currentModel.status === ModelStatusEnum.active && (
-            <TextGenerationItem modelAndParameter={modelAndParameter}/>
+            <TextGenerationItem modelAndParameter={modelAndParameter} />
           )
         }
       </div>

@@ -29,7 +29,7 @@ const OperationBtn: FC<IOperationBtnProps> = ({
   const { t } = useTranslation()
   return (
     <div
-      className={cn(className, 'flex items-center rounded-md h-7 px-3 space-x-1 text-gray-700 cursor-pointer hover:bg-gray-200 select-none')}
+      className={cn(className, 'flex items-center rounded-md h-7 px-3 space-x-1 text-gray-700 cursor-pointer  select-none')}
       onClick={onClick}>
       <div>
         {iconMap[type]}

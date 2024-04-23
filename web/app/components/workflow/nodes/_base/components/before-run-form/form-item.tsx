@@ -122,6 +122,9 @@ const FormItem: FC<Props> = ({
               items={payload.options?.map(option => ({ name: option, value: option })) || []}
               onSelect={i => onChange(i.value)}
               allowSearch={false}
+              bgClassName='bg-dark-120 text-dark-0'
+              overlayClassName='bg-dark-120 text-dark-0'
+              overlayHoverClassName='bg-dark-200'
             />
           )
         }

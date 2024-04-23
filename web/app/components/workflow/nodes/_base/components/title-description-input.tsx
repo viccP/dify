@@ -63,10 +63,11 @@ export const DescriptionInput = memo(({
 
   return (
     <div
+      //  ${focus && '!border-gray-300 shadow-xs !bg-gray-50'}
       className={`
         group flex px-2 py-[5px] max-h-[60px] rounded-lg overflow-y-auto
         border border-transparent hover:bg-gray-50 leading-0
-        ${focus && '!border-gray-300 shadow-xs !bg-gray-50'}
+       
       `}
     >
       <Textarea
@@ -76,9 +77,9 @@ export const DescriptionInput = memo(({
         onFocus={handleFocus}
         onBlur={handleBlur}
         className={`
-          w-full text-xs text-gray-900 leading-[18px] bg-transparent
+          w-full text-xs text-dark-0 leading-[18px] bg-transparent
           appearance-none outline-none resize-none
-          placeholder:text-gray-400 caret-[#295EFF]
+          placeholder:text-gray-400 caret-[#FFFFFF] 
         `}
         placeholder={t('workflow.common.addDescription') || ''}
         autoSize

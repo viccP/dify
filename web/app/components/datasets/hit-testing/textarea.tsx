@@ -64,7 +64,7 @@ const TextAreaWithButton = ({
   return (
     <>
       <div className={s.wrapper}>
-        <div className='pt-2 rounded-tl-xl rounded-tr-xl bg-[#EEF4FF]'>
+        <div className='pt-2 rounded-tl-xl rounded-tr-xl bg-dark-120'>
           <div className="px-4 pb-2 flex justify-between h-8 items-center">
             <span className="text-gray-800 font-semibold text-sm">
               {t('datasetHitTesting.input.title')}
@@ -75,7 +75,7 @@ const TextAreaWithButton = ({
             >
               <div
                 onClick={onClickRetrievalMethod}
-                className='flex px-2 h-7 items-center space-x-1 bg-white hover:bg-[#ECE9FE] rounded-md shadow-sm cursor-pointer text-[#6927DA]'
+                className='flex px-2 h-7 items-center space-x-1 bg-dark-200  rounded-md shadow-sm cursor-pointer text-dark-0'
               >
                 <Icon className='w-3.5 h-3.5'></Icon>
                 <div className='text-xs font-medium'>{t(`dataset.retrieval.${retrievalMethod}.title`)}</div>
@@ -102,7 +102,7 @@ const TextAreaWithButton = ({
                     <Tag color="red" className="!text-red-600">
                       {text?.length}
                       <span className="text-red-300 mx-0.5">/</span>
-                  200
+                      200
                     </Tag>
                   </div>
                 </Tooltip>
@@ -114,7 +114,7 @@ const TextAreaWithButton = ({
                 >
                   {text?.length}
                   <span className="text-gray-300 mx-0.5">/</span>
-              200
+                  200
                 </Tag>
               )}
             <Tooltip

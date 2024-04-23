@@ -42,13 +42,14 @@ const Input: FC<InputProps> = ({
         tabIndex={-1}
         className={`
           block px-3 w-full h-9 bg-gray-100 text-sm rounded-lg border border-transparent
-          appearance-none outline-none caret-primary-600
-          hover:border-[rgba(0,0,0,0.08)] hover:bg-gray-50
-          focus:bg-white focus:border-gray-300 focus:shadow-xs
-          placeholder:text-sm placeholder:text-gray-400
+          appearance-none outline-none caret-dark-0 text-dark-0
+
+          placeholder:text-sm placeholder:text-dark-0
           ${validated && 'pr-[30px]'}
           ${className}
         `}
+        // hover:border-[rgba(0,0,0,0.08)] hover:bg-gray-50
+        // focus:bg-white focus:border-gray-300 focus:shadow-xs
         placeholder={placeholder || ''}
         onChange={e => onChange(e.target.value)}
         onBlur={e => toLimit(e.target.value)}

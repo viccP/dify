@@ -28,7 +28,7 @@ const Features = () => {
 
   return (
     <div className='fixed top-16 left-2 bottom-2 w-[600px] rounded-2xl border-[0.5px] border-gray-200 bg-white shadow-xl z-10'>
-      <div className='flex items-center justify-between px-4 pt-3'>
+      <div className='flex items-center justify-between px-4 pt-3 text-dark-0'>
         {t('workflow.common.features')}
         <div className='flex items-center'>
           {
@@ -55,7 +55,7 @@ const Features = () => {
           disabled={nodesReadOnly}
           onChange={handleFeaturesChange}
           openingStatementProps={{
-            onAutoAddPromptVariable: () => {},
+            onAutoAddPromptVariable: () => { },
           }}
         />
       </div>

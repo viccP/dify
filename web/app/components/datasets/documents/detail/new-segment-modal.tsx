@@ -100,7 +100,7 @@ const NewSegmentModal: FC<NewSegmentModalProps> = ({
 
     return (
       <AutoHeightTextarea
-        className='leading-6 text-md text-gray-800'
+        className='leading-6 text-md text-gray-800 bg-dark-120'
         value={question}
         placeholder={t('datasetDocuments.segment.contentPlaceholder') || ''}
         onChange={e => setQuestion(e.target.value)}
@@ -110,7 +110,7 @@ const NewSegmentModal: FC<NewSegmentModalProps> = ({
   }
 
   return (
-    <Modal isShow={isShow} onClose={() => {}} className='pt-8 px-8 pb-6 !max-w-[640px] !rounded-xl'>
+    <Modal isShow={isShow} onClose={() => { }} className='pt-8 px-8 pb-6 !max-w-[640px] !rounded-xl'>
       <div className={'flex flex-col relative'}>
         <div className='absolute right-0 -top-0.5 flex items-center h-6'>
           <div className='flex justify-center items-center w-6 h-6 cursor-pointer' onClick={handleCancel}>

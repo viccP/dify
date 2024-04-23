@@ -32,12 +32,12 @@ const OPTION_MAP = {
       `<script>
  window.difyChatbotConfig = {
   token: '${token}'${isTestEnv
-  ? `,
+        ? `,
   isDev: true`
-  : ''}${IS_CE_EDITION
-  ? `,
+        : ''}${IS_CE_EDITION
+          ? `,
   baseUrl: '${url}'`
-  : ''}
+          : ''}
  }
 </script>
 <script
@@ -131,14 +131,14 @@ const Embedded = ({ isShow, onClose, appBaseUrl, accessToken, className }: Props
           <div className={cn('gap-2 py-3 justify-center items-center inline-flex w-full rounded-lg',
             'bg-primary-600 hover:bg-primary-600/75 hover:shadow-md cursor-pointer text-white hover:shadow-sm flex-shrink-0')}>
             <div className={`w-4 h-4 relative ${style.pluginInstallIcon}`}></div>
-            <div className="text-white text-sm font-medium font-['Inter'] leading-tight" onClick={navigateToChromeUrl}>{t(`${prefixEmbedded}.chromePlugin`)}</div>
+            <div className="text-dark-0 text-sm font-medium font-['Inter'] leading-tight" onClick={navigateToChromeUrl}>{t(`${prefixEmbedded}.chromePlugin`)}</div>
           </div>
         </div>
       )}
       <div className={cn('w-full bg-gray-100 rounded-lg flex-col justify-start items-start inline-flex',
         'mt-6')}>
         <div className="inline-flex items-center self-stretch justify-start gap-2 py-1 pl-3 pr-1 border border-black rounded-tl-lg rounded-tr-lg bg-gray-50 border-opacity-5">
-          <div className="grow shrink basis-0 text-slate-700 text-[13px] font-medium leading-none">
+          <div className="grow shrink basis-0 text-dark-0 text-[13px] font-medium leading-none">
             {t(`${prefixEmbedded}.${option}`)}
           </div>
           <div className="flex items-center justify-center gap-1 p-2 rounded-lg">
@@ -154,7 +154,7 @@ const Embedded = ({ isShow, onClose, appBaseUrl, accessToken, className }: Props
         </div>
         <div className="flex items-start justify-start w-full gap-2 p-3 overflow-x-auto">
           <div className="grow shrink basis-0 text-slate-700 text-[13px] leading-tight font-mono">
-            <pre className='select-text'>{OPTION_MAP[option].getContent(appBaseUrl, accessToken, isTestEnv)}</pre>
+            <pre className='select-text text-dark-0'>{OPTION_MAP[option].getContent(appBaseUrl, accessToken, isTestEnv)}</pre>
           </div>
         </div>
       </div>

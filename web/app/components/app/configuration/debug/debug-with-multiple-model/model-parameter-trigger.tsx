@@ -73,8 +73,8 @@ const ModelParameterTrigger: FC<ModelParameterTriggerProps> = ({
         <div
           className={`
             flex items-center max-w-[200px] h-8 px-2 rounded-lg cursor-pointer
-            ${open && 'bg-gray-100'}
-            ${currentModel && currentModel.status !== ModelStatusEnum.active && '!bg-[#FFFAEB]'}
+            ${open && 'bg-dark-120'}
+            ${currentModel && currentModel.status !== ModelStatusEnum.active && '!bg-dark-120'}
           `}
         >
           {
@@ -96,7 +96,7 @@ const ModelParameterTrigger: FC<ModelParameterTriggerProps> = ({
           {
             currentModel && (
               <ModelName
-                className='mr-0.5 text-gray-800'
+                className='mr-0.5 text-dark-0'
                 modelItem={currentModel}
               />
             )

@@ -60,6 +60,7 @@ const FeaturePanel = ({
                     {...openingStatementProps}
                     onChange={onChange}
                     readonly={disabled}
+                    isTitle={true}
                   />
                 )
               }

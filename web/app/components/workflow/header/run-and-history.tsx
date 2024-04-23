@@ -148,7 +148,7 @@ const PreviewMode = memo(() => {
           )
           : (
             <>
-              <Play className='mr-1 w-4 h-4 bg-dark-0' />
+              <Play className='mr-1 w-4 h-4' />
               {t('workflow.common.preview')}
             </>
           )
