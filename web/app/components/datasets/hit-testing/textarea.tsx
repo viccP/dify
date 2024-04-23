@@ -49,7 +49,14 @@ const TextAreaWithButton = ({
   const onSubmit = async () => {
     setLoading(true)
     const [e, res] = await asyncRunSafe<HitTestingResponse>(
-      hitTesting({ datasetId, queryText: text, retrieval_model: retrievalConfig }) as Promise<HitTestingResponse>,
+      hitTesting({
+        datasetId,
+        queryText: text,
+        retrieval_model: {
+          ...retrievalConfig,
+          search_method: isEconomy ? RETRIEVE_METHOD.keywordSearch : retrievalConfig.search_method,
+        },
+      }) as Promise<HitTestingResponse>,
     )
     if (!e) {
       setHitResult(res)
@@ -117,22 +124,17 @@ const TextAreaWithButton = ({
                   200
                 </Tag>
               )}
-            <Tooltip
-              selector="hit-testing-submit"
-              disabled={indexingTechnique === 'high_quality'}
-              content={t('datasetHitTesting.input.indexWarning') as string}
-            >
-              <div>
-                <Button
-                  onClick={onSubmit}
-                  type="primary"
-                  loading={loading}
-                  disabled={indexingTechnique !== 'high_quality' ? true : (!text?.length || text?.length > 200)}
-                >
-                  {t('datasetHitTesting.input.testing')}
-                </Button>
-              </div>
-            </Tooltip>
+
+            <div>
+              <Button
+                onClick={onSubmit}
+                type="primary"
+                loading={loading}
+                disabled={(!text?.length || text?.length > 200)}
+              >
+                {t('datasetHitTesting.input.testing')}
+              </Button>
+            </div>
           </div>
         </div>
 

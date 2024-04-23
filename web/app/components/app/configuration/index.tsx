@@ -8,6 +8,7 @@ import produce from 'immer'
 import { useBoolean, useGetState } from 'ahooks'
 import { clone, isEqual } from 'lodash-es'
 import { CodeBracketIcon } from '@heroicons/react/20/solid'
+import cn from 'classnames'
 import Button from '../../base/button'
 import Loading from '../../base/loading'
 import AppPublisher from '../app-publisher'
@@ -19,6 +20,7 @@ import {
   useFormattingChangedDispatcher,
 } from './debug/hooks'
 import type { ModelAndParameter } from './debug/types'
+import s from './style.module.css'
 import type {
   AnnotationReplyConfig,
   DatasetConfigs,
@@ -56,10 +58,8 @@ import { useTextGenerationCurrentProviderAndModelAndModelList } from '@/app/comp
 import { fetchCollectionList } from '@/service/tools'
 import { type Collection } from '@/app/components/tools/types'
 import { useStore as useAppStore } from '@/app/components/app/store'
-import cn from 'classnames'
-import s from './style.module.css'
 
-type PublichConfig = {
+type PublishConfig = {
   modelConfig: ModelConfig
   completionParams: FormValue
 }
@@ -76,7 +76,7 @@ const Configuration: FC = () => {
   const matched = pathname.match(/\/app\/([^/]+)/)
   const appId = (matched?.length && matched[1]) ? matched[1] : ''
   const [mode, setMode] = useState('')
-  const [publishedConfig, setPublishedConfig] = useState<PublichConfig | null>(null)
+  const [publishedConfig, setPublishedConfig] = useState<PublishConfig | null>(null)
 
   const modalConfig = useMemo(() => appDetail?.model_config || {} as BackendModelConfig, [appDetail])
   const [conversationId, setConversationId] = useState<string | null>('')
@@ -227,7 +227,7 @@ const Configuration: FC = () => {
 
   const [isShowHistoryModal, { setTrue: showHistoryModal, setFalse: hideHistoryModal }] = useBoolean(false)
 
-  const syncToPublishedConfig = (_publishedConfig: PublichConfig) => {
+  const syncToPublishedConfig = (_publishedConfig: PublishConfig) => {
     const modelConfig = _publishedConfig.modelConfig
     setModelConfig(_publishedConfig.modelConfig)
     setCompletionParams(_publishedConfig.completionParams)
@@ -813,7 +813,7 @@ const Configuration: FC = () => {
             <div className={cn(s.scrollbarBlue, `w-full sm:w-1/2 shrink-0 flex flex-col h-full ${debugWithMultipleModel && 'max-w-[560px]'}`)}>
               <Config />
             </div>
-            {!isMobile && <div className={cn(s.scrollbarBlue, "relative flex flex-col w-1/2 h-full overflow-y-auto grow ")} style={{ borderColor: 'rgba(0, 0, 0, 0.02)' }}>
+            {!isMobile && <div className={cn(s.scrollbarBlue, 'relative flex flex-col w-1/2 h-full overflow-y-auto grow ')} style={{ borderColor: 'rgba(0, 0, 0, 0.02)' }}>
               <div className='flex flex-col h-0 border-t border-l grow rounded-tl-2xl bg-gray-50  border-dark-15'>
                 <Debug
                   hasSetAPIKEY={hasSettedApiKey}
