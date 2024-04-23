@@ -2,7 +2,7 @@ version: '3'
 services:
   # API service
   api:
-    image: bonclops-backend:2.3
+    image: bonclops-backend:2.4
     privileged: true
     restart: always
     environment:
@@ -151,7 +151,7 @@ services:
   # worker service
   # The Celery worker for processing the queue.
   worker:
-    image: bonclops-backend:2.3
+    image: bonclops-backend:2.4
     privileged: true
     restart: always
     environment:
@@ -240,7 +240,7 @@ services:
 
   # Frontend web application.
   web:
-    image: bonclops-web:2.5.2
+    image: bonclops-web:2.5.3
     restart: always
     environment:
       EDITION: SELF_HOSTED
