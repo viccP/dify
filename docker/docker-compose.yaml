@@ -240,7 +240,7 @@ services:
 
   # Frontend web application.
   web:
-    image: bonclops-web:2.5.3
+    image: bonclops-web:2.5.4
     restart: always
     environment:
       EDITION: SELF_HOSTED
