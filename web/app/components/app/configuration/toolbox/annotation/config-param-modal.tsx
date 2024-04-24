@@ -80,7 +80,7 @@ const ConfigParamModal: FC<Props> = ({
       className='!p-8 !pb-6 !mt-14 !max-w-none !w-[640px]'
       wrapperClassName='!z-50'
     >
-      <div className='mb-2 text-xl font-semibold text-[#1D2939]'>
+      <div className='mb-2 text-xl font-semibold text-dark-0'>
         {t(`appAnnotation.initSetup.${isInit ? 'title' : 'configTitle'}`)}
       </div>
 

@@ -26,7 +26,7 @@ export const Item: FC<{ title: string; tooltip: string; children: JSX.Element }>
   return (
     <div>
       <div className='flex items-center space-x-1'>
-        <div>{title}</div>
+        <div className='text-dark-0'>{title}</div>
         <TooltipPlus
           popupContent={
             <div className='max-w-[200px] leading-[18px] text-[13px] font-medium text-gray-800'>{tooltip}</div>
