@@ -256,7 +256,7 @@ services:
       SENTRY_DSN: ''
     # uncomment to expose dify-web port to host
     # ports:
-    #   - "3000:3000"
+    #  - "3000:3000"
 
   # The postgres database.
   db:
@@ -273,8 +273,8 @@ services:
     volumes:
       - ./volumes/db/data:/var/lib/postgresql/data
     # uncomment to expose db(postgresql) port to host
-    # ports:
-    #   - "5432:5432"
+    ports:
+      - "5432:5432"
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       interval: 1s
@@ -334,6 +334,14 @@ services:
       API_KEY: dify-sandbox
       GIN_MODE: release
       WORKER_TIMEOUT: 15
+
+  # The DifySandbox
+  custom:
+    image: bonclops-custom:1.0
+    privileged: true
+    restart: always
+    environment:
+      CONSOLE_WEB_URL: http://localhost
 
   # Qdrant vector store.
   # uncomment to use qdrant as vector store.
