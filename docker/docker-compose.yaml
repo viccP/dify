@@ -342,6 +342,11 @@ services:
     restart: always
     environment:
       CONSOLE_WEB_URL: http://localhost
+      spring.datasource.password: difyai123456
+      spring.datasource.url: jdbc:postgresql://db:5432/dify
+      spring.datasource.username: postgres
+      SECRET_KEY: sk-9f73s3ljTXVcMT3Blb3ljTqtsKiGHXVcMT3BlbkFJLK7U
+      TOKEN_TIME_OUT: 30
 
   # Qdrant vector store.
   # uncomment to use qdrant as vector store.
