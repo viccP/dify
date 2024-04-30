@@ -47,13 +47,8 @@ const Trigger: FC<TriggerProps> = ({
         'relative flex items-center px-2 h-8 rounded-lg  cursor-pointer',
         !isInWorkflow && 'bg-dark-0 border hover:border-[1.5px]',
         !isInWorkflow && (disabled ? 'border-dark-30 bg-dark-120' : 'border-[#444CE7] bg-dark-0'),
-        isInWorkflow && 'bg-dark-120 border border-gray-100 text-dark-0  hover:border-dark-30',
+        isInWorkflow && 'pr-[30px] bg-dark-120 border border-gray-100 text-dark-0   hover:border-dark-30',
       )}
-    // style={{
-    //   background: '#fff',
-    //   border: ' 1px solid #0682ff',
-    //   color: '#000',
-    // }}
     >
       {
         currentProvider && (
@@ -76,7 +71,7 @@ const Trigger: FC<TriggerProps> = ({
       {
         currentModel && (
           <ModelName
-            className={cn('mr-1.5 ', isInWorkflow && 'text-dark-0', !isInWorkflow && 'text-dark-1')}
+            className='mr-1.5 text-dark-0'
             modelItem={currentModel}
             showMode
             modeClassName={cn(!isInWorkflow ? '!text-[#444CE7] !border-[#A4BCFD]' : '!text-gray-500 !border-black/8')}
@@ -108,7 +103,7 @@ const Trigger: FC<TriggerProps> = ({
             </TooltipPlus>
           )
           : (
-            <SlidersH className={cn(!isInWorkflow ? 'text-indigo-600' : 'text-gray-500', 'w-4 h-4')} />
+            <SlidersH className={cn(!isInWorkflow ? 'text-indigo-600' : 'text-gray-500', 'shrink-0 w-4 h-4')} />
           )
       }
       {isInWorkflow && (<ChevronDown className='absolute top-[9px] right-2 w-3.5 h-3.5 text-gray-500' />)}

@@ -8,7 +8,7 @@ import produce from 'immer'
 import { useBoolean, useGetState } from 'ahooks'
 import { clone, isEqual } from 'lodash-es'
 import { CodeBracketIcon } from '@heroicons/react/20/solid'
-import cn from 'classnames'
+import { useShallow } from 'zustand/react/shallow'
 import Button from '../../base/button'
 import Loading from '../../base/loading'
 import AppPublisher from '../app-publisher'
@@ -20,7 +20,6 @@ import {
   useFormattingChangedDispatcher,
 } from './debug/hooks'
 import type { ModelAndParameter } from './debug/types'
-import s from './style.module.css'
 import type {
   AnnotationReplyConfig,
   DatasetConfigs,
@@ -67,7 +66,10 @@ type PublishConfig = {
 const Configuration: FC = () => {
   const { t } = useTranslation()
   const { notify } = useContext(ToastContext)
-  const { appDetail, setAppSiderbarExpand } = useAppStore()
+  const { appDetail, setAppSiderbarExpand } = useAppStore(useShallow(state => ({
+    appDetail: state.appDetail,
+    setAppSiderbarExpand: state.setAppSiderbarExpand,
+  })))
   const [formattingChanged, setFormattingChanged] = useState(false)
   const { setShowAccountSettingModal } = useModalContext()
   const [hasFetchedDetail, setHasFetchedDetail] = useState(false)
@@ -745,7 +747,7 @@ const Configuration: FC = () => {
     }}
     >
       <>
-        <div className='flex flex-col h-full'>
+        <div className="flex flex-col h-full">
           <div className='relative flex grow h-[200px] pt-14'>
             {/* Header */}
             <div className='absolute top-0 left-0 w-full bg-white h-14'>
@@ -810,11 +812,11 @@ const Configuration: FC = () => {
                 </div>
               </div>
             </div>
-            <div className={cn(s.scrollbarBlue, `w-full sm:w-1/2 shrink-0 flex flex-col h-full ${debugWithMultipleModel && 'max-w-[560px]'}`)}>
+            <div className={`w-full sm:w-1/2 shrink-0 flex flex-col h-full ${debugWithMultipleModel && 'max-w-[560px]'}`}>
               <Config />
             </div>
-            {!isMobile && <div className={cn(s.scrollbarBlue, 'relative flex flex-col w-1/2 h-full overflow-y-auto grow ')} style={{ borderColor: 'rgba(0, 0, 0, 0.02)' }}>
-              <div className='flex flex-col h-0 border-t border-l grow rounded-tl-2xl bg-gray-50  border-dark-15'>
+            {!isMobile && <div className="relative flex flex-col w-1/2 h-full overflow-y-auto grow " style={{ borderColor: 'rgba(0, 0, 0, 0.02)' }}>
+              <div className='flex flex-col h-0 border-t border-l grow rounded-tl-2xl bg-gray-50 '>
                 <Debug
                   hasSetAPIKEY={hasSettedApiKey}
                   onSetting={() => setShowAccountSettingModal({ payload: 'provider' })}

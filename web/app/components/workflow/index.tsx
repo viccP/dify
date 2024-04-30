@@ -15,6 +15,8 @@ import ReactFlow, {
   Background,
   BackgroundVariant,
   ReactFlowProvider,
+  useEdgesState,
+  useNodesState,
   useOnViewportChange,
 } from 'reactflow'
 import type { Viewport } from 'reactflow'
@@ -47,9 +49,11 @@ import {
   initialEdges,
   initialNodes,
 } from './utils'
+import { WORKFLOW_DATA_UPDATE } from './constants'
 import Loading from '@/app/components/base/loading'
 import { FeaturesProvider } from '@/app/components/base/features'
 import type { Features as FeaturesData } from '@/app/components/base/features/types'
+import { useEventEmitterContextContext } from '@/context/event-emitter'
 
 const nodeTypes = {
   custom: CustomNode,
@@ -64,10 +68,12 @@ type WorkflowProps = {
   viewport?: Viewport
 }
 const Workflow: FC<WorkflowProps> = memo(({
-  nodes,
-  edges,
+  nodes: originalNodes,
+  edges: originalEdges,
   viewport,
 }) => {
+  const [nodes, setNodes] = useNodesState(originalNodes)
+  const [edges, setEdges] = useEdgesState(originalEdges)
   const showFeaturesPanel = useStore(state => state.showFeaturesPanel)
   const nodeAnimation = useStore(s => s.nodeAnimation)
   const {
@@ -76,6 +82,15 @@ const Workflow: FC<WorkflowProps> = memo(({
   } = useNodesSyncDraft()
   const { workflowReadOnly } = useWorkflowReadOnly()
   const { nodesReadOnly } = useNodesReadOnly()
+
+  const { eventEmitter } = useEventEmitterContextContext()
+
+  eventEmitter?.useSubscription((v: any) => {
+    if (v.type === WORKFLOW_DATA_UPDATE) {
+      setNodes(v.payload.nodes)
+      setEdges(v.payload.edges)
+    }
+  })
 
   useEffect(() => {
     setAutoFreeze(false)
@@ -128,8 +143,6 @@ const Workflow: FC<WorkflowProps> = memo(({
   } = useEdgesInteractions()
   const {
     isValidConnection,
-    enableShortcuts,
-    disableShortcuts,
   } = useWorkflow()
 
   useOnViewportChange({
@@ -166,8 +179,6 @@ const Workflow: FC<WorkflowProps> = memo(({
         edgeTypes={edgeTypes}
         nodes={nodes}
         edges={edges}
-        onPointerDown={enableShortcuts}
-        onMouseLeave={disableShortcuts}
         onNodeDragStart={handleNodeDragStart}
         onNodeDrag={handleNodeDrag}
         onNodeDragStop={handleNodeDragStop}
