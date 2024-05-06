@@ -145,11 +145,11 @@ const GetAutomaticRes: FC<IGetAutomaticResProps> = ({
           <div className='mt-2 space-y-5'>
             <div className='space-y-2'>
               <div className='text-[13px] font-medium text-gray-900'>{t('appDebug.automatic.intendedAudience')}</div>
-              <input className="w-full h-8 px-3 text-[13px] font-normal bg-gray-50 rounded-lg" placeholder={t('appDebug.automatic.intendedAudiencePlaceHolder') as string} value={audiences} onChange={e => setAudiences(e.target.value)} />
+              <input className="text-dark-0 w-full h-8 px-3 text-[13px] font-normal bg-gray-50 rounded-lg" placeholder={t('appDebug.automatic.intendedAudiencePlaceHolder') as string} value={audiences} onChange={e => setAudiences(e.target.value)} />
             </div>
             <div className='space-y-2'>
               <div className='text-[13px] font-medium text-gray-900'>{t('appDebug.automatic.solveProblem')}</div>
-              <textarea className="w-full h-[200px] overflow-y-auto p-3 text-[13px] font-normal bg-gray-50 rounded-lg" placeholder={t('appDebug.automatic.solveProblemPlaceHolder') as string} value={hopingToSolve} onChange={e => setHopingToSolve(e.target.value)} />
+              <textarea className="text-dark-0 w-full h-[200px] overflow-y-auto p-3 text-[13px] font-normal bg-gray-50 rounded-lg" placeholder={t('appDebug.automatic.solveProblemPlaceHolder') as string} value={hopingToSolve} onChange={e => setHopingToSolve(e.target.value)} />
             </div>
 
             <div className='mt-6 flex justify-end'>
@@ -160,7 +160,7 @@ const GetAutomaticRes: FC<IGetAutomaticResProps> = ({
                 disabled={isLoading}
               >
                 {genIcon}
-                <span className='text-xs font-semibold text-white uppercase'>{t('appDebug.automatic.generate')}</span>
+                <span className='text-dark-0 text-xs font-semibold uppercase'>{t('appDebug.automatic.generate')}</span>
               </Button>
             </div>
           </div>

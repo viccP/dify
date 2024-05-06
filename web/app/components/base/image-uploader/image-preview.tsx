@@ -21,7 +21,7 @@ const ImagePreview: FC<ImagePreviewProps> = ({
         className='absolute top-6 right-6 flex items-center justify-center w-8 h-8 bg-white/[0.08] rounded-lg backdrop-blur-[2px] cursor-pointer'
         onClick={onCancel}
       >
-        <XClose className='w-4 h-4 text-white' />
+        <XClose className='w-4 h-4 text-dark-0' />
       </div>
     </div>,
     document.body,

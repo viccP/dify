@@ -57,7 +57,7 @@ const InviteModal = ({
           onSend(invitation_results)
         }
       }
-      catch (e) {}
+      catch (e) { }
     }
     else {
       notify({ type: 'error', message: t('common.members.emailInvalid') })
@@ -66,10 +66,10 @@ const InviteModal = ({
 
   return (
     <div className={cn(s.wrap)}>
-      <Modal overflowVisible isShow onClose={() => {}} className={cn(s.modal)} wrapperClassName='z-20'>
+      <Modal overflowVisible isShow onClose={() => { }} className={cn(s.modal)} wrapperClassName='z-20'>
         <div className='flex justify-between mb-2'>
           <div className='text-xl font-semibold text-gray-900'>{t('common.members.inviteTeamMember')}</div>
-          <XMarkIcon className='w-4 h-4 cursor-pointer' onClick={onCancel} />
+          <XMarkIcon className='w-4 h-4 cursor-pointer text-dark-0' onClick={onCancel} />
         </div>
         <div className='mb-7 text-[13px] text-gray-500'>{t('common.members.inviteTeamMemberTip')}</div>
         <div>
@@ -77,7 +77,7 @@ const InviteModal = ({
           <div className='mb-8 h-36 flex items-stretch'>
             <ReactMultiEmail
               className={cn('w-full pt-2 px-3 outline-none border-none',
-                'appearance-none text-sm text-gray-900 rounded-lg overflow-y-auto',
+                'appearance-none text-sm !bg-gray-100 !text-dark-0 rounded-lg overflow-y-auto',
                 s.emailsInput,
               )}
               autoFocus
@@ -88,7 +88,7 @@ const InviteModal = ({
                 <div data-tag key={index} className={cn(s.emailBackground)}>
                   <div data-tag-item>{email}</div>
                   <span data-tag-handle onClick={() => removeEmail(index)}>
-                      ×
+                    ×
                   </span>
                 </div>
               }
@@ -117,10 +117,10 @@ const InviteModal = ({
                       value={role}
                     >
                       {({ selected }) => (
-                        <div className='flex flex-row'>
+                        <div className='flex flex-row text-dark-0'>
                           <span
                             className={cn(
-                              'text-indigo-600 w-8',
+                              'text-dark-0 w-8',
                               'flex items-center',
                             )}
                           >
