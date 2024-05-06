@@ -17,6 +17,8 @@ export type I18nText = {
   'it-IT': string
   'uk-UA': string
   'vi-VN': string
+  'de_DE': string
+  'zh_Hant': string
 }
 
 export const languages = [
@@ -30,6 +32,12 @@ export const languages = [
     value: 'zh-Hans',
     name: '简体中文',
     example: '你好，Bonc LOps ！',
+    supported: true,
+  },
+  {
+    value: 'zh-Hant',
+    name: '繁體中文',
+    example: '你好，BoncLops！',
     supported: true,
   },
   {
@@ -54,7 +62,6 @@ export const languages = [
     value: 'de-DE',
     name: 'Deutsch(Deutschland)',
     example: 'Hallo, Bonc LOps !',
-    supported: false,
     supported: true,
   },
   {

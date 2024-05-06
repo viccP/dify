@@ -246,7 +246,7 @@ const NormalForm = () => {
                       <span className='cursor-pointer text-primary-600'>{t('login.forget')}</span>
                     </Tooltip> */}
                   </label>
-                  <div className="relative mt-1 rounded-md shadow-sm">
+                  <div className="relative mt-1">
                     <input
                       id="password"
                       value={password}
@@ -300,6 +300,15 @@ const NormalForm = () => {
               href='https://dify.ai/privacy'
             >{t('login.pp')}</Link>
           </div> */}
+
+          {IS_CE_EDITION && <div className="w-hull text-center block mt-2 text-xs text-gray-600">
+            {t('login.goToInit')}
+            &nbsp;
+            <Link
+              className='text-primary-600'
+              href='/install'
+            >{t('login.setAdminAccount')}</Link>
+          </div>}
 
         </div>
       </div>
