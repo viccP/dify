@@ -16,7 +16,7 @@ const AddModelButton: FC<AddModelButtonProps> = ({
     <span
       className={`
         shrink-0 flex items-center px-1.5 h-6 text-xs font-medium text-gray-500 cursor-pointer
-      hover:bg-primary-50 hover:text-primary-600 rounded-md ${className}
+      hover:bg-dark-0/[0.08] hover:text-primary-600 rounded-md ${className}
       `}
       onClick={onClick}
     >

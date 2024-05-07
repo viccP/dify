@@ -39,7 +39,7 @@ const ModelList: FC<ModelListProps> = ({
 
   return (
     <div className='px-2 pb-2 rounded-b-xl'>
-      <div className='py-1 bg-white rounded-lg'>
+      <div className='py-1 bg-dark-0 rounded-lg'>
         <div className='flex items-center pl-1 pr-[3px]'>
           <span className='group shrink-0 flex items-center mr-2'>
             <span className='group-hover:hidden pl-1 pr-1.5 h-6 leading-6 text-xs font-medium text-gray-500'>
@@ -47,7 +47,7 @@ const ModelList: FC<ModelListProps> = ({
             </span>
             <span
               className={`
-                hidden group-hover:inline-flex items-center pl-1 pr-1.5 h-6 bg-gray-50 
+                hidden group-hover:inline-flex items-center pl-1 pr-1.5 h-6 bg-dark-0/[0.1] 
                 text-xs font-medium text-gray-500 cursor-pointer rounded-lg
               `}
               onClick={() => onCollapse()}
@@ -77,7 +77,7 @@ const ModelList: FC<ModelListProps> = ({
               key={model.model}
               className={`
                 group flex items-center pl-2 pr-2.5 h-8 rounded-lg
-                ${canCustomConfig && 'hover:bg-gray-50'}
+                ${canCustomConfig && 'hover:bg-dark-0'}
                 ${model.deprecated && 'opacity-60'}
               `}
             >
@@ -87,7 +87,7 @@ const ModelList: FC<ModelListProps> = ({
                 modelName={model.model}
               />
               <ModelName
-                className='grow text-sm font-normal text-gray-900'
+                className='grow text-sm font-normal text-dark-1'
                 modelItem={model}
                 showModelType
                 showMode
