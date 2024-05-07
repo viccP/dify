@@ -24,7 +24,7 @@ const ProviderIcon: FC<ProviderIconProps> = ({
 
   return (
     <div className={`inline-flex items-center ${className}`}>
-      <div className='text-xs font-semibold text-dark-0'>
+      <div className='text-xs font-semibold text-dark-1'>
         {provider.label[language] || provider.label.en_US}
       </div>
     </div>
