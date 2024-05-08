@@ -89,7 +89,7 @@ const DatasetCard = ({
     <>
       <Link
         href={`/datasets/${dataset.id}/documents`}
-        className='group flex col-span-1 bg-white border-2 border-solid border-transparent rounded-xl shadow-sm min-h-[160px] flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg'
+        className='group flex col-span-1 bg-dark-120 border-2 border-solid border-transparent rounded-xl shadow-sm min-h-[160px] flex flex-col transition-all duration-200 ease-in-out cursor-pointer hover:shadow-lg'
         data-disable-nprogress={true}
       >
         <div className='flex pt-[14px] px-[14px] pb-3 h-[66px] items-center gap-3 grow-0 shrink-0'>
@@ -157,7 +157,7 @@ const DatasetCard = ({
               />
             </div>
           </div>
-          <div className='!hidden group-hover:!flex shrink-0 mx-1 w-[1px] h-[14px] bg-gray-200'/>
+          <div className='!hidden group-hover:!flex shrink-0 mx-1 w-[1px] h-[14px] bg-gray-200' />
           <div className='!hidden group-hover:!flex shrink-0'>
             <CustomPopover
               htmlContent={<Operations />}

@@ -111,9 +111,9 @@ const Header: FC = () => {
   return (
     <div
       className='absolute top-0 left-0 z-10 flex items-center justify-between w-full px-3 h-14'
-      style={{
-        background: 'linear-gradient(180deg, #F9FAFB 0%, rgba(249, 250, 251, 0.00) 100%)',
-      }}
+    // style={{
+    //   background: 'linear-gradient(180deg, #F9FAFB 0%, rgba(249, 250, 251, 0.00) 100%)',
+    // }}
     >
       <div>
         {

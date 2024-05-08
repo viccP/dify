@@ -58,7 +58,7 @@ export default function Modal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className={`w-full border border-dark-220 max-w-md transform ${overflowVisible ? 'overflow-visible' : 'overflow-hidden'} rounded-2xl !bg-white p-6 text-left align-middle shadow-xl transition-all ${className}`}>
+              <Dialog.Panel className={`w-full border border-dark-220 max-w-md transform ${overflowVisible ? 'overflow-visible' : 'overflow-hidden'} rounded-2xl  p-6 text-left align-middle shadow-xl transition-all ${className} !bg-dark-200`}>
                 {title && <Dialog.Title
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"

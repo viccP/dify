@@ -124,7 +124,7 @@ const ActivateForm = () => {
             <h2 className="text-[32px] font-bold text-gray-900">
               {`${t('login.join')} ${checkRes.workspace_name}`}
             </h2>
-            <p className='mt-1 text-sm text-gray-600 '>
+            <p className='mt-1 text-sm text-gray-500 '>
               {`${t('login.joinTipStart')} ${checkRes.workspace_name} ${t('login.joinTipEnd')}`}
             </p>
           </div>
@@ -143,7 +143,7 @@ const ActivateForm = () => {
                     value={name}
                     onChange={e => setName(e.target.value)}
                     placeholder={t('login.namePlaceholder') || ''}
-                    className={'appearance-none block w-full rounded-lg pl-[14px] px-3 py-2 border border-gray-200 hover:border-gray-300 hover:shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400 caret-primary-600 sm:text-sm pr-10'}
+                    className={'appearance-none bg-dark-0 text-dark-1 block w-full rounded-lg pl-[14px] px-3 py-2 border border-gray-200 hover:border-gray-300 hover:shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400 caret-primary-600 sm:text-sm pr-10'}
                   />
                 </div>
               </div>
@@ -159,7 +159,7 @@ const ActivateForm = () => {
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     placeholder={t('login.passwordPlaceholder') || ''}
-                    className={'appearance-none block w-full rounded-lg pl-[14px] px-3 py-2 border border-gray-200 hover:border-gray-300 hover:shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400 caret-primary-600 sm:text-sm pr-10'}
+                    className={'appearance-none bg-dark-0 text-dark-1 block w-full rounded-lg pl-[14px] px-3 py-2 border border-gray-200 hover:border-gray-300 hover:shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 placeholder-gray-400 caret-primary-600 sm:text-sm pr-10'}
                   />
                 </div>
                 <div className='mt-1 text-xs text-gray-500'>{t('login.error.passwordInvalid')}</div>
