@@ -71,7 +71,7 @@ const Trigger: FC<TriggerProps> = ({
       {
         currentModel && (
           <ModelName
-            className='mr-1.5 text-dark-0'
+            className='mr-1.5 text-dark-1'
             modelItem={currentModel}
             showMode
             modeClassName={cn(!isInWorkflow ? '!text-[#444CE7] !border-[#A4BCFD]' : '!text-gray-500 !border-black/8')}

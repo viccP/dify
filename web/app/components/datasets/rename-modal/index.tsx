@@ -59,7 +59,7 @@ const RenameDatasetModal = ({ show, dataset, onSuccess, onClose }: RenameDataset
       wrapperClassName='z-20'
       className='px-8 py-6 max-w-[520px] w-[520px] rounded-xl'
       isShow={show}
-      onClose={() => {}}
+      onClose={() => { }}
     >
       <div className='relative pb-2 text-xl font-medium leading-[30px] text-gray-900'>{t('datasetSettings.title')}</div>
       <div className='absolute right-4 top-4 p-2 cursor-pointer' onClick={onClose}>
@@ -85,7 +85,7 @@ const RenameDatasetModal = ({ show, dataset, onSuccess, onClose }: RenameDataset
             <textarea
               value={description}
               onChange={e => setDescription(e.target.value)}
-              className='block px-3 py-2 w-full h-[88px] rounded-lg bg-gray-100 text-sm outline-none appearance-none resize-none'
+              className='block px-3 py-2 w-full h-[88px] rounded-lg bg-gray-100 text-sm outline-none appearance-none resize-none text-dark-0'
               placeholder={t('datasetSettings.form.descPlaceholder') || ''}
             />
             <a className='mt-2 flex items-center h-[18px] px-3 text-xs text-gray-500 hover:text-primary-600' href="https://docs.dify.ai/features/datasets#how-to-write-a-good-dataset-description" target='_blank' rel='noopener noreferrer'>
