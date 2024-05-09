@@ -35,6 +35,10 @@ export default function AppSelector({ isMobile }: IAppSelecotr) {
       url: '/logout',
       params: {},
     })
+
+    if (localStorage?.getItem('console_token'))
+      localStorage.removeItem('console_token')
+
     router.push('/signin')
   }
 
