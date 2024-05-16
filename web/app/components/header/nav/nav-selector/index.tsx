@@ -73,11 +73,13 @@ const NavSelector = ({ curNav, navs, createText, isApp, onCreate, onLoadmore }: 
                   navs.map(nav => (
                     <Menu.Item key={nav.id}>
                       <div className='flex items-center w-full px-3 py-[6px] text-dark-0 text-[14px] rounded-lg font-normal hover:bg-dark-120 cursor-pointer truncate' onClick={() => {
+                        if (curNav?.id === nav.id)
+                          return
                         setAppDetail()
                         router.push(nav.link)
                       }} title={nav.name}>
                         <div className='relative w-6 h-6 mr-2 rounded-md'>
-                          <AppIcon size='tiny' icon={nav.icon} background={nav.icon_background} />
+                          <AppIcon size='tiny' icon={nav.icon} background={nav.icon_background}/>
                           {!!nav.mode && (
                             <span className={cn(
                               'absolute w-3.5 h-3.5 -bottom-0.5 -right-0.5 p-0.5 bg-white rounded border-[0.5px] border-[rgba(0,0,0,0.02)] shadow-sm',
