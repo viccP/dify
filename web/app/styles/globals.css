@@ -203,5 +203,8 @@ body {
 textarea:focus-visible {
   outline: none
 }
-
+.bg-c{
+  background: #142949;
+  color: #fff;
+}
 @import '../components/base/button/index.css';

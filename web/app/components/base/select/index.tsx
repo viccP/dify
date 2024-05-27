@@ -47,7 +47,7 @@ const Select: FC<ISelectProps> = ({
   onSelect,
   allowSearch = true,
   bgClassName = 'bg-gray-100',
-  overlayHoverClassName = 'bg-dark-3',
+  overlayHoverClassName = 'bg-dark-200',
   overlayClassName,
 }) => {
   const [query, setQuery] = useState('')
@@ -113,7 +113,8 @@ const Select: FC<ISelectProps> = ({
         </div>
 
         {open && filteredItems.length > 0 && (
-          <Combobox.Options className={`absolute z-10 mt-1 px-1 max-h-60 w-full overflow-auto rounded-md  py-1 text-base  shadow-lg border-gray-200 border-[0.5px] focus:outline-none sm:text-sm ${overlayClassName}`}>
+
+          <Combobox.Options className={`bg-c absolute z-10 mt-1 px-1 max-h-60 w-full overflow-auto rounded-md  py-1 text-base  shadow-lg border-gray-200 border-[0.5px] focus:outline-none sm:text-sm ${overlayClassName}`}>
             {filteredItems.map((item: Item) => (
               <Combobox.Option
                 key={item.value}
