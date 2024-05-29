@@ -1,9 +1,14 @@
+import base64
+import hashlib
 import json
 import logging
 from collections.abc import Generator
 from decimal import Decimal
+import math
+import time
 from typing import Optional, Union, cast
 from urllib.parse import urljoin
+import uuid
 
 import requests
 
@@ -99,13 +104,36 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
         :return:
         """
         try:
+            appid = 'cmdiglm3'
+            appKey = '4d9ef03881443d4136d89766f097432b'
+            uuid = "".join(str(uuid.uuid4()).split("-"))
+            appName = 'cmdi-embeddings'
+            for _ in range(24 - len(appName)):
+                appName += "0"
+            capabilityname = appName
+            csid = appid + capabilityname + uuid
+            tmp_xServerParam = {
+                "appid": appid,
+                "csid": csid
+            }
+            xCurTime = str(math.floor(time.time()))
+            xServerParam = str(base64.b64encode(json.dumps(tmp_xServerParam).encode('utf-8')), encoding="utf8")
+            xCheckSum = hashlib.md5(bytes(appKey + xCurTime + xServerParam, encoding="utf8")).hexdigest()
             headers = {
-                'Content-Type': 'application/json'
+                "appKey": appKey,
+                "X-Server-Param": xServerParam,
+                "X-CurTime": xCurTime,
+                "X-CheckSum": xCheckSum,
+                "content-type": "application/json"
             }
 
-            api_key = credentials.get('api_key')
-            if api_key:
-                headers["Authorization"] = f"Bearer {api_key}"
+            # headers = {
+            #     'Content-Type': 'application/json'
+            # }
+
+            # api_key = credentials.get('api_key')
+            # if api_key:
+            #     headers["Authorization"] = f"Bearer {api_key}"
 
             endpoint_url = credentials['endpoint_url']
             if not endpoint_url.endswith('/'):
@@ -126,7 +154,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
                         "content": "ping"
                     },
                 ]
-                endpoint_url = urljoin(endpoint_url, 'chat/completions')
+                endpoint_url = urljoin(endpoint_url, 'cmdi-embeddings')
             elif completion_type is LLMMode.COMPLETION:
                 data['prompt'] = 'ping'
                 endpoint_url = urljoin(endpoint_url, 'completions')
@@ -276,15 +304,38 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
         :param user: unique user id
         :return: full response or stream response chunk generator result
         """
-        headers = {
-            'Content-Type': 'application/json',
-            'Accept-Charset': 'utf-8',
+        # headers = {
+        #     'Content-Type': 'application/json',
+        #     'Accept-Charset': 'utf-8',
+        # }
+
+        # api_key = credentials.get('api_key')
+        # if api_key:
+        #     headers["Authorization"] = f"Bearer {api_key}"
+
+        appid = 'cmdiglm3'
+        appKey = '4d9ef03881443d4136d89766f097432b'
+        uuid = "".join(str(uuid.uuid4()).split("-"))
+        appName = 'cmdi-embeddings'
+        for _ in range(24 - len(appName)):
+            appName += "0"
+        capabilityname = appName
+        csid = appid + capabilityname + uuid
+        tmp_xServerParam = {
+            "appid": appid,
+            "csid": csid
         }
-
-        api_key = credentials.get('api_key')
-        if api_key:
-            headers["Authorization"] = f"Bearer {api_key}"
-
+        xCurTime = str(math.floor(time.time()))
+        xServerParam = str(base64.b64encode(json.dumps(tmp_xServerParam).encode('utf-8')), encoding="utf8")
+        xCheckSum = hashlib.md5(bytes(appKey + xCurTime + xServerParam, encoding="utf8")).hexdigest()
+        headers = {
+            "appKey": appKey,
+            "X-Server-Param": xServerParam,
+            "X-CurTime": xCurTime,
+            "X-CheckSum": xCheckSum,
+            "content-type": "application/json"
+        }
+        
         endpoint_url = credentials["endpoint_url"]
         if not endpoint_url.endswith('/'):
             endpoint_url += '/'
@@ -298,7 +349,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
         completion_type = LLMMode.value_of(credentials['mode'])
 
         if completion_type is LLMMode.CHAT:
-            endpoint_url = urljoin(endpoint_url, 'chat/completions')
+            endpoint_url = urljoin(endpoint_url, 'cmdi-embeddings')
             data['messages'] = [self._convert_prompt_message_to_dict(m) for m in prompt_messages]
         elif completion_type is LLMMode.COMPLETION:
             endpoint_url = urljoin(endpoint_url, 'completions')
