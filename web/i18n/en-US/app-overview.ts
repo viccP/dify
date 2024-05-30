@@ -34,6 +34,7 @@ const translation = {
       accessibleAddress: 'Public URL',
       preview: 'Preview',
       regenerate: 'Regenerate',
+      regenerateNotice: 'Do you want to regenerate the public URL?',
       preUseReminder: 'Please enable WebApp before continuing.',
       settings: {
         entry: 'Settings',
@@ -49,7 +50,10 @@ const translation = {
           copyRightPlaceholder: 'Enter the name of the author or organization',
           privacyPolicy: 'Privacy Policy',
           privacyPolicyPlaceholder: 'Enter the privacy policy link',
-          privacyPolicyTip: 'Helps visitors understand the data the application collects, see Bonc LOps \'s <privacyPolicyLink>Privacy Policy</privacyPolicyLink>.',
+          privacyPolicyTip: 'Helps visitors understand the data the application collects, see BoncLops\'s <privacyPolicyLink>Privacy Policy</privacyPolicyLink>.',
+          customDisclaimer: 'Custom Disclaimer',
+          customDisclaimerPlaceholder: 'Enter the custom disclaimer text',
+          customDisclaimerTip: 'Custom disclaimer text will be displayed on the client side, providing additional information about the application',
         },
       },
       embedded: {

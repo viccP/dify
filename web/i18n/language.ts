@@ -1,3 +1,4 @@
+import data from './languages.json'
 export type Item = {
   value: number | string
   name: string
@@ -19,107 +20,11 @@ export type I18nText = {
   'vi-VN': string
   'de_DE': string
   'zh_Hant': string
+  'ro-RO': string
   'pl-PL': string
 }
 
-export const languages = [
-  {
-    value: 'en-US',
-    name: 'English(United States)',
-    example: 'Hello, Bonc LOps !',
-    supported: true,
-  },
-  {
-    value: 'zh-Hans',
-    name: '简体中文',
-    example: '你好，Bonc LOps ！',
-    supported: true,
-  },
-  {
-    value: 'zh-Hant',
-    name: '繁體中文',
-    example: '你好，BoncLops！',
-    supported: true,
-  },
-  {
-    value: 'pt-BR',
-    name: 'Português(Brasil)',
-    example: 'Olá, Bonc LOps !',
-    supported: true,
-  },
-  {
-    value: 'es-ES',
-    name: 'Español(España)',
-    example: 'Saluton, Bonc LOps !',
-    supported: false,
-  },
-  {
-    value: 'fr-FR',
-    name: 'Français(France)',
-    example: 'Bonjour, Bonc LOps !',
-    supported: true,
-  },
-  {
-    value: 'de-DE',
-    name: 'Deutsch(Deutschland)',
-    example: 'Hallo, Bonc LOps !',
-    supported: true,
-  },
-  {
-    value: 'ja-JP',
-    name: '日本語(日本)',
-    example: 'こんにちは、Bonc LOps !',
-    supported: true,
-  },
-  {
-    value: 'ko-KR',
-    name: '한국어(대한민국)',
-    example: '안녕, Bonc LOps !',
-    supported: false,
-  },
-  {
-    value: 'ru-RU',
-    name: 'Русский(Россия)',
-    example: ' Привет, Bonc LOps !',
-    supported: false,
-  },
-  {
-    value: 'it-IT',
-    name: 'Italiano(Italia)',
-    example: 'Ciao, Bonc LOps !',
-    supported: false,
-  },
-  {
-    value: 'th-TH',
-    name: 'ไทย(ประเทศไทย)',
-    example: 'สวัสดี Bonc LOps !',
-    supported: false,
-  },
-  {
-    value: 'id-ID',
-    name: 'Bahasa Indonesia',
-    example: 'Saluto, Bonc LOps !',
-    supported: false,
-  },
-  {
-    value: 'uk-UA',
-    name: 'Українська(Україна)',
-    example: 'Привет, Bonc LOps !',
-    supported: true,
-  },
-  {
-    value: 'vi-VN',
-    name: 'Tiếng Việt(Việt Nam)',
-    example: 'Xin chào, Bonc LOps!',
-    supported: true,
-  },
-  {
-    value: 'pl-PL',
-    name: 'Polski (Polish)',
-    example: 'Cześć, Dify!',
-    supported: true,
-  },
-]
+export const languages = data.languages
 
 export const LanguagesSupported = languages.filter(item => item.supported).map(item => item.value)
 
