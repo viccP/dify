@@ -1,4 +1,7 @@
+import base64
+import hashlib
 import json
+import math
 import time
 from decimal import Decimal
 from typing import Optional
@@ -41,13 +44,36 @@ class OAICompatEmbeddingModel(_CommonOAI_API_Compat, TextEmbeddingModel):
         """
        
         # Prepare headers and payload for the request
-        headers = {
-            'Content-Type': 'application/json'
-        }
+        # headers = {
+        #     'Content-Type': 'application/json'
+        # }
 
-        api_key = credentials.get('api_key')
-        if api_key:
-            headers["Authorization"] = f"Bearer {api_key}"
+        # api_key = credentials.get('api_key')
+        # if api_key:
+        #     headers["Authorization"] = f"Bearer {api_key}"
+
+        appid = credentials['panzhi_appid']
+        appKey = credentials['panzhi_appkey']
+        appName = credentials['panzhi_appname']
+        uuid = "".join(str(uuid.uuid4()).split("-"))
+        for _ in range(24 - len(appName)):
+            appName += "0"
+        capabilityname = appName
+        csid = appid + capabilityname + uuid
+        tmp_xServerParam = {
+            "appid": appid,
+            "csid": csid
+        }
+        xCurTime = str(math.floor(time.time()))
+        xServerParam = str(base64.b64encode(json.dumps(tmp_xServerParam).encode('utf-8')), encoding="utf8")
+        xCheckSum = hashlib.md5(bytes(appKey + xCurTime + xServerParam, encoding="utf8")).hexdigest()
+        headers = {
+            "appKey": appKey,
+            "X-Server-Param": xServerParam,
+            "X-CurTime": xCurTime,
+            "X-CheckSum": xCheckSum,
+            "content-type": "application/json"
+        }
 
         endpoint_url = credentials.get('endpoint_url')
         if not endpoint_url.endswith('/'):
@@ -145,20 +171,43 @@ class OAICompatEmbeddingModel(_CommonOAI_API_Compat, TextEmbeddingModel):
         :return:
         """
         try:
-            headers = {
-                'Content-Type': 'application/json'
+            # headers = {
+            #     'Content-Type': 'application/json'
+            # }
+
+            # api_key = credentials.get('api_key')
+
+            # if api_key:
+            #     headers["Authorization"] = f"Bearer {api_key}"
+
+            appid = 'cmdiembd'
+            appKey = '0e8132ce4b89ed4f97eb3c9728f82807'
+            uuid = "".join(str(uuid.uuid4()).split("-"))
+            appName = 'cmdi-chatglm'
+            for _ in range(24 - len(appName)):
+                appName += "0"
+            capabilityname = appName
+            csid = appid + capabilityname + uuid
+            tmp_xServerParam = {
+                "appid": appid,
+                "csid": csid
             }
-
-            api_key = credentials.get('api_key')
-
-            if api_key:
-                headers["Authorization"] = f"Bearer {api_key}"
+            xCurTime = str(math.floor(time.time()))
+            xServerParam = str(base64.b64encode(json.dumps(tmp_xServerParam).encode('utf-8')), encoding="utf8")
+            xCheckSum = hashlib.md5(bytes(appKey + xCurTime + xServerParam, encoding="utf8")).hexdigest()
+            headers = {
+                "appKey": appKey,
+                "X-Server-Param": xServerParam,
+                "X-CurTime": xCurTime,
+                "X-CheckSum": xCheckSum,
+                "content-type": "application/json"
+            }
 
             endpoint_url = credentials.get('endpoint_url')
             if not endpoint_url.endswith('/'):
                 endpoint_url += '/'
 
-            endpoint_url = urljoin(endpoint_url, 'embeddings')
+            endpoint_url = urljoin(endpoint_url, 'cmdi-chatglm')
 
             payload = {
                 'input': 'ping',

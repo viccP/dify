@@ -18,6 +18,30 @@ model_credential_schema:
       en_US: Enter full model name
       zh_Hans: 输入模型全称
   credential_form_schemas:
+    - variable: panzhi_appname
+      label:
+        en_US: Panzhi App Name
+      type: text-input
+      required: false
+      placeholder:
+        zh_Hans: 在此输入您的磐智 APP Name
+        en_US: Enter your Panzhi App Name
+    - variable: panzhi_appkey
+      label:
+        en_US: Panzhi App Key
+      type: secret-input
+      required: false
+      placeholder:
+        zh_Hans: 在此输入您的磐智 APP Key
+        en_US: Enter your Panzhi App Key
+    - variable: panzhi_appid
+      label:
+        en_US: Panzhi App id
+      type: secret-input
+      required: false
+      placeholder:
+        zh_Hans: 在此输入您的磐智 APP Id
+        en_US: Enter your Panzhi App Id
     - variable: api_key
       label:
         en_US: API Key
