@@ -104,10 +104,10 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
         :return:
         """
         try:
-            appid = 'cmdiglm3'
-            appKey = '4d9ef03881443d4136d89766f097432b'
+            appid = credentials['panzhi_appid']
+            appKey = credentials['panzhi_appkey']
+            appName = credentials['panzhi_appname']
             uuid = "".join(str(uuid.uuid4()).split("-"))
-            appName = 'cmdi-embeddings'
             for _ in range(24 - len(appName)):
                 appName += "0"
             capabilityname = appName
@@ -154,7 +154,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
                         "content": "ping"
                     },
                 ]
-                endpoint_url = urljoin(endpoint_url, 'cmdi-embeddings')
+                endpoint_url = urljoin(endpoint_url, 'chat/completions')
             elif completion_type is LLMMode.COMPLETION:
                 data['prompt'] = 'ping'
                 endpoint_url = urljoin(endpoint_url, 'completions')

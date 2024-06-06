@@ -52,10 +52,10 @@ class OAICompatEmbeddingModel(_CommonOAI_API_Compat, TextEmbeddingModel):
         # if api_key:
         #     headers["Authorization"] = f"Bearer {api_key}"
 
-        appid = 'cmdiembd'
-        appKey = '0e8132ce4b89ed4f97eb3c9728f82807'
+        appid = credentials['panzhi_appid']
+        appKey = credentials['panzhi_appkey']
+        appName = credentials['panzhi_appname']
         uuid = "".join(str(uuid.uuid4()).split("-"))
-        appName = 'cmdi-chatglm'
         for _ in range(24 - len(appName)):
             appName += "0"
         capabilityname = appName
@@ -79,7 +79,7 @@ class OAICompatEmbeddingModel(_CommonOAI_API_Compat, TextEmbeddingModel):
         if not endpoint_url.endswith('/'):
             endpoint_url += '/'
 
-        endpoint_url = urljoin(endpoint_url, 'cmdi-chatglm')
+        endpoint_url = urljoin(endpoint_url, 'embeddings')
 
         extra_model_kwargs = {}
         if user:
