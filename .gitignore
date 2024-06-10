@@ -140,6 +140,7 @@ web/.vscode/settings.json
 .ideaDataSources/
 
 api/.env
+api/.idea
 api/storage/*
 
 docker/volumes/app/storage/*
