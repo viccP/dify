@@ -48,7 +48,7 @@ type ValueOf<T> = T[keyof T]
 type StepTwoProps = {
   isSetting?: boolean
   documentDetail?: FullDocumentDetail
-  hasSetAPIKEY: boolean
+  isAPIKeySet: boolean
   onSetting: () => void
   datasetId?: string
   indexingType?: ValueOf<IndexingType>
@@ -74,7 +74,7 @@ enum IndexingType {
 const StepTwo = ({
   isSetting,
   documentDetail,
-  hasSetAPIKEY,
+  isAPIKeySet,
   onSetting,
   datasetId,
   indexingType,
@@ -106,7 +106,7 @@ const StepTwo = ({
   const hasSetIndexType = !!indexingType
   const [indexType, setIndexType] = useState<ValueOf<IndexingType>>(
     (indexingType
-      || hasSetAPIKEY)
+      || isAPIKeySet)
       ? IndexingType.QUALIFIED
       : IndexingType.ECONOMICAL,
   )
@@ -479,8 +479,8 @@ const StepTwo = ({
       setIndexType(indexingType as IndexingType)
 
     else
-      setIndexType(hasSetAPIKEY ? IndexingType.QUALIFIED : IndexingType.ECONOMICAL)
-  }, [hasSetAPIKEY, indexingType, datasetId])
+      setIndexType(isAPIKeySet ? IndexingType.QUALIFIED : IndexingType.ECONOMICAL)
+  }, [isAPIKeySet, indexingType, datasetId])
 
   useEffect(() => {
     if (segmentationType === SegmentType.AUTO) {
@@ -637,14 +637,14 @@ const StepTwo = ({
                   className={cn(
                     s.radioItem,
                     s.indexItem,
-                    !hasSetAPIKEY && s.disabled,
+                    !isAPIKeySet && s.disabled,
                     !hasSetIndexType && indexType === IndexingType.QUALIFIED && s.active,
                     hasSetIndexType && s.disabled,
                     hasSetIndexType && '!w-full',
                     '!bg-dark-200',
                   )}
                   onClick={() => {
-                    if (hasSetAPIKEY)
+                    if (isAPIKeySet)
                       setIndexType(IndexingType.QUALIFIED)
                   }}
                 >
@@ -667,8 +667,8 @@ const StepTwo = ({
                         )
                     }
                   </div>
-                  {!hasSetAPIKEY && (
-                    <div className={cn(s.warningTip, '!bg-dark-120 !text-dark-0 ')}>
+                  {!isAPIKeySet && (
+                    <div className={s.warningTip}>
                       <span>{t('datasetCreation.stepTwo.warning')}&nbsp;</span>
                       <span className={s.click} onClick={onSetting}>{t('datasetCreation.stepTwo.click')}</span>
                     </div>

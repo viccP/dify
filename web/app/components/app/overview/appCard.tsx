@@ -164,7 +164,7 @@ function AppCard({
                 ? t('appOverview.overview.appInfo.accessibleAddress')
                 : t('appOverview.overview.apiInfo.accessibleAddress')}
             </div>
-            <div className="w-full h-9 pl-2 pr-0.5 py-0.5 bg-dark-200 bg-opacity-[0.02] rounded-lg border border-dark-30  justify-start items-center inline-flex">
+            <div className="w-full h-9 pl-2 pr-0.5 py-0.5 bg-black-200 bg-opacity-2 rounded-lg border border-black border-opacity-5 justify-start items-center inline-flex">
               <div className="h-4 px-2 justify-start items-start gap-2 flex flex-1 min-w-0">
                 <div className="text-gray-700 text-xs font-medium text-ellipsis overflow-hidden whitespace-nowrap">
                   {isApp ? appUrl : apiUrl}

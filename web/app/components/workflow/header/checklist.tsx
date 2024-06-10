@@ -61,7 +61,7 @@ const WorkflowChecklist = ({
         >
           <div
             className={`
-              group flex items-center justify-center w-full h-full rounded-md cursor-pointer 
+              group flex items-center justify-center w-full h-full rounded-md cursor-pointer
               hover:bg-dark-180
               ${open && 'bg-dark-180'}
             `}
@@ -122,7 +122,7 @@ const WorkflowChecklist = ({
                             />
                             {node.title}
                           </div>
-                          <div className='border-t-[0.5px] border-t-black/[0.02]'>
+                          <div className='border-t-[0.5px] border-t-black/2'>
                             {
                               node.unConnected && (
                                 <div className='px-3 py-2 bg-dark-120 rounded-b-lg'>

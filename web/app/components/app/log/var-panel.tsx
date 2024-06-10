@@ -41,7 +41,7 @@ const VarPanel: FC<Props> = ({
                 <span className='truncate text-dark-0'>{label}</span>
                 <span className='shrink-0 opacity-60'>{'}}'}</span>
               </div>
-              <div className='pl-2.5 break-all text-dark-0'>{value}</div>
+              <div className='pl-2.5 whitespace-pre-wrap text-dark-0'>{value}</div>
             </div>
           ))}
 
