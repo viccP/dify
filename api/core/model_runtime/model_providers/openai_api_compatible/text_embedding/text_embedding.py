@@ -3,6 +3,7 @@ import hashlib
 import json
 import math
 import time
+import uuid
 from decimal import Decimal
 from typing import Optional
 from urllib.parse import urljoin
@@ -55,11 +56,11 @@ class OAICompatEmbeddingModel(_CommonOAI_API_Compat, TextEmbeddingModel):
         appid = credentials['panzhi_appid']
         appKey = credentials['panzhi_appkey']
         appName = credentials['panzhi_appname']
-        uuid = "".join(str(uuid.uuid4()).split("-"))
+        rndId = "".join(str(uuid.uuid4()).split("-"))
         for _ in range(24 - len(appName)):
             appName += "0"
         capabilityname = appName
-        csid = appid + capabilityname + uuid
+        csid = appid + capabilityname + rndId
         tmp_xServerParam = {
             "appid": appid,
             "csid": csid
