@@ -110,8 +110,6 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
             logger.info("original appid=%s",appName)
             logger.info("model is=%s",model)
             rndId = "".join(str(uuid.uuid4()).split("-"))
-            logger.info("original appid=%s",appName)
-            logger.info("model is=%s",model)
             for _ in range(24 - len(appName)):
                 appName += "0"
             capabilityname = appName
