@@ -107,6 +107,8 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
             appid = credentials['panzhi_appid']
             appKey = credentials['panzhi_appkey']
             appName = credentials['panzhi_appname']
+            logger.info("original appid=%s",appName)
+            logger.info("model is=%s",model)
             rndId = "".join(str(uuid.uuid4()).split("-"))
             logger.info("original appid=%s",appName)
             logger.info("model is=%s",model)
