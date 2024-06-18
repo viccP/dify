@@ -107,11 +107,13 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
             appid = credentials['panzhi_appid']
             appKey = credentials['panzhi_appkey']
             appName = credentials['panzhi_appname']
-            uuid = "".join(str(uuid.uuid4()).split("-"))
+            logger.info("original appid=%s",appName)
+            logger.info("model is=%s",model)
+            rndId = "".join(str(uuid.uuid4()).split("-"))
             for _ in range(24 - len(appName)):
                 appName += "0"
             capabilityname = appName
-            csid = appid + capabilityname + uuid
+            csid = appid + capabilityname + rndId
             tmp_xServerParam = {
                 "appid": appid,
                 "csid": csid
@@ -119,6 +121,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
             xCurTime = str(math.floor(time.time()))
             xServerParam = str(base64.b64encode(json.dumps(tmp_xServerParam).encode('utf-8')), encoding="utf8")
             xCheckSum = hashlib.md5(bytes(appKey + xCurTime + xServerParam, encoding="utf8")).hexdigest()
+            logger.info("xCurTime=%s，xServerParam=%s,xCheckSum=%s",xCurTime,xServerParam,xCheckSum)
             headers = {
                 "appKey": appKey,
                 "X-Server-Param": xServerParam,
@@ -136,6 +139,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
             #     headers["Authorization"] = f"Bearer {api_key}"
 
             endpoint_url = credentials['endpoint_url']
+            logger.info("appid=%s,appKey=%s,appName=%s,csid=%s",appid,appKey,appName,csid)
             if not endpoint_url.endswith('/'):
                 endpoint_url += '/'
 
@@ -155,6 +159,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
                     },
                 ]
                 endpoint_url = urljoin(endpoint_url, 'chat/completions')
+                logger.info("final chat endpoint_url=%s",endpoint_url)
             elif completion_type is LLMMode.COMPLETION:
                 data['prompt'] = 'ping'
                 endpoint_url = urljoin(endpoint_url, 'completions')
@@ -313,14 +318,14 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
         # if api_key:
         #     headers["Authorization"] = f"Bearer {api_key}"
 
-        appid = 'cmdiglm3'
-        appKey = '4d9ef03881443d4136d89766f097432b'
-        uuid = "".join(str(uuid.uuid4()).split("-"))
-        appName = 'cmdi-embeddings'
+        appid = credentials['panzhi_appid']
+        appKey = credentials['panzhi_appkey']
+        appName = credentials['panzhi_appname']
+        rndId = "".join(str(uuid.uuid4()).split("-"))
         for _ in range(24 - len(appName)):
             appName += "0"
         capabilityname = appName
-        csid = appid + capabilityname + uuid
+        csid = appid + capabilityname + rndId
         tmp_xServerParam = {
             "appid": appid,
             "csid": csid
@@ -349,7 +354,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
         completion_type = LLMMode.value_of(credentials['mode'])
 
         if completion_type is LLMMode.CHAT:
-            endpoint_url = urljoin(endpoint_url, 'cmdi-embeddings')
+            endpoint_url = urljoin(endpoint_url, 'chat/completions')
             data['messages'] = [self._convert_prompt_message_to_dict(m) for m in prompt_messages]
         elif completion_type is LLMMode.COMPLETION:
             endpoint_url = urljoin(endpoint_url, 'completions')
