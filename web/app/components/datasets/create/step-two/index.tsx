@@ -11,7 +11,7 @@ import { groupBy } from 'lodash-es'
 import RetrievalMethodInfo from '../../common/retrieval-method-info'
 import PreviewItem, { PreviewType } from './preview-item'
 import s from './index.module.css'
-import type { CreateDocumentReq, CustomFile, FileIndexingEstimateResponse, FullDocumentDetail, IndexingEstimateParams, IndexingEstimateResponse, NotionInfo, PreProcessingRule, ProcessRule, Rules, createDocumentResponse } from '@/models/datasets'
+import type { CrawlOptions, CrawlResultItem, CreateDocumentReq, CustomFile, FileIndexingEstimateResponse, FullDocumentDetail, IndexingEstimateParams, IndexingEstimateResponse, NotionInfo, PreProcessingRule, ProcessRule, Rules, createDocumentResponse } from '@/models/datasets'
 import {
   createDocument,
   createFirstDocument,
@@ -43,6 +43,7 @@ import TooltipPlus from '@/app/components/base/tooltip-plus'
 import { useModelListAndDefaultModelAndCurrentProviderAndModel } from '@/app/components/header/account-setting/model-provider-page/hooks'
 import { LanguagesSupported } from '@/i18n/language'
 import { ModelTypeEnum } from '@/app/components/header/account-setting/model-provider-page/declarations'
+import { Globe01 } from '@/app/components/base/icons/src/vender/line/mapsAndTravel'
 
 type ValueOf<T> = T[keyof T]
 type StepTwoProps = {
@@ -55,6 +56,9 @@ type StepTwoProps = {
   dataSourceType: DataSourceType
   files: CustomFile[]
   notionPages?: NotionPage[]
+  websitePages?: CrawlResultItem[]
+  crawlOptions?: CrawlOptions
+  fireCrawlJobId?: string
   onStepChange?: (delta: number) => void
   updateIndexingTypeCache?: (type: string) => void
   updateResultCache?: (res: createDocumentResponse) => void
@@ -78,9 +82,12 @@ const StepTwo = ({
   onSetting,
   datasetId,
   indexingType,
-  dataSourceType,
+  dataSourceType: inCreatePageDataSourceType,
   files,
   notionPages = [],
+  websitePages = [],
+  crawlOptions,
+  fireCrawlJobId = '',
   onStepChange,
   updateIndexingTypeCache,
   updateResultCache,
@@ -93,6 +100,8 @@ const StepTwo = ({
   const isMobile = media === MediaType.mobile
 
   const { dataset: currentDataset, mutateDatasetRes } = useDatasetDetailContext()
+  const isInCreatePage = !datasetId || (datasetId && !currentDataset?.data_source_type)
+  const dataSourceType = isInCreatePage ? inCreatePageDataSourceType : currentDataset?.data_source_type
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrolled, setScrolled] = useState(false)
   const previewScrollRef = useRef<HTMLDivElement>(null)
@@ -241,6 +250,15 @@ const StepTwo = ({
     }) as NotionInfo[]
   }
 
+  const getWebsiteInfo = () => {
+    return {
+      provider: 'firecrawl',
+      job_id: fireCrawlJobId,
+      urls: websitePages.map(page => page.source_url),
+      only_main_content: crawlOptions?.only_main_content,
+    }
+  }
+
   const getFileIndexingEstimateParams = (docForm: DocForm): IndexingEstimateParams | undefined => {
     if (dataSourceType === DataSourceType.FILE) {
       return {
@@ -262,6 +280,19 @@ const StepTwo = ({
         info_list: {
           data_source_type: dataSourceType,
           notion_info_list: getNotionInfo(),
+        },
+        indexing_technique: getIndexing_technique() as string,
+        process_rule: getProcessRule(),
+        doc_form: docForm,
+        doc_language: docLanguage,
+        dataset_id: datasetId as string,
+      }
+    }
+    if (dataSourceType === DataSourceType.WEB) {
+      return {
+        info_list: {
+          data_source_type: dataSourceType,
+          website_info_list: getWebsiteInfo(),
         },
         indexing_technique: getIndexing_technique() as string,
         process_rule: getProcessRule(),
@@ -334,6 +365,9 @@ const StepTwo = ({
       }
       if (dataSourceType === DataSourceType.NOTION)
         params.data_source.info_list.notion_info_list = getNotionInfo()
+
+      if (dataSourceType === DataSourceType.WEB)
+        params.data_source.info_list.website_info_list = getWebsiteInfo()
     }
     return params
   }
@@ -817,6 +851,22 @@ const StepTwo = ({
                           <span>{t('datasetCreation.stepTwo.other')}</span>
                           <span>{notionPages.length - 1}</span>
                           <span>{t('datasetCreation.stepTwo.notionUnit')}</span>
+                        </span>
+                      )}
+                    </div>
+                  </>
+                )}
+                {dataSourceType === DataSourceType.WEB && (
+                  <>
+                    <div className='mb-2 text-xs font-medium text-gray-500'>{t('datasetCreation.stepTwo.websiteSource')}</div>
+                    <div className='flex items-center text-sm leading-6 font-medium text-gray-800'>
+                      <Globe01 className='shrink-0 mr-1' />
+                      <span className='grow w-0 truncate'>{websitePages[0].source_url}</span>
+                      {websitePages.length > 1 && (
+                        <span className={s.sourceCount}>
+                          <span>{t('datasetCreation.stepTwo.other')}</span>
+                          <span>{websitePages.length - 1}</span>
+                          <span>{t('datasetCreation.stepTwo.webpageUnit')}</span>
                         </span>
                       )}
                     </div>
