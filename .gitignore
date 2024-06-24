@@ -152,6 +152,7 @@ docker/volumes/etcd/*
 docker/volumes/minio/*
 docker/volumes/milvus/*
 docker/volumes/chroma/*
+docker/volumes/neo4j/*
 
 sdks/python-client/build
 sdks/python-client/dist

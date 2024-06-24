@@ -38,7 +38,7 @@ public class Neo4jController {
             String database = prm.getDatabase();
             log.info("查询参数为:{}-{}", query, database);
             dbSelProvider.setDatabase(database);
-            Collection<Node> nodes = neo4jClient.query(query).fetchAs(Node.class).all();
+            Collection<Map<String, Object>> nodes = neo4jClient.query(query).fetch().all();
             List<Map<String, Object>> res = nodes.parallelStream().map(this::convertNodeToMap).collect(Collectors.toList());
             log.info("返回值为:{}", JSONArray.toJSONString(res));
             return res;
@@ -50,16 +50,26 @@ public class Neo4jController {
         }
     }
 
-    public Map<String, Object> convertNodeToMap(Node node) {
-        Map<String, Object> nodeMap = new HashMap<>();
-        // 设置节点的属性（properties）
-        Map<String, Object> properties = new HashMap<>();
-        node.keys().forEach(key -> properties.put(key, node.get(key).asObject()));
-        nodeMap.put("properties", properties);
-        // 获取节点的标签（labels），可以选择是否需要将标签作为属性放入 Map 中
-        node.labels().forEach(label -> nodeMap.put("labels", label));
-        // 可选：将节点的ID作为属性放入 Map 中
-        nodeMap.put("id", node.id());
-        return nodeMap;
+    public Map<String, Object> convertNodeToMap(Map<String, Object> node) {
+        Map<String, Object> res = new HashMap<>();
+        for (Map.Entry<String, Object> obj : node.entrySet()) {
+            Object value = obj.getValue();
+            if (value instanceof Node) {
+                Node tmp = (Node) value;
+                Map<String, Object> nodeMap = new HashMap<>();
+                // 设置节点的属性（properties）
+                Map<String, Object> properties = new HashMap<>();
+                tmp.keys().forEach(key -> properties.put(key, tmp.get(key).asObject()));
+                nodeMap.put("properties", properties);
+                // 获取节点的标签（labels），可以选择是否需要将标签作为属性放入 Map 中
+                tmp.labels().forEach(label -> nodeMap.put("labels", label));
+                // 可选：将节点的ID作为属性放入 Map 中
+                nodeMap.put("id", tmp.id());
+                res.putAll(nodeMap);
+            } else {
+                res.put(obj.getKey(), obj.getValue());
+            }
+        }
+        return res;
     }
 }
