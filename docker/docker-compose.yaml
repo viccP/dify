@@ -2,7 +2,7 @@ version: '3'
 services:
   # API service
   api:
-    image: bonclops-backend:0.6.11-neo4j
+    image: bonclops-backend:0.6.11-neo4j-brightUI
     privileged: true
     restart: always
     environment:
@@ -205,7 +205,7 @@ services:
   # worker service
   # The Celery worker for processing the queue.
   worker:
-    image: bonclops-backend:0.6.11-neo4j
+    image: bonclops-backend:0.6.11-neo4j-brightUI
     privileged: true
     restart: always
     environment:
@@ -347,7 +347,7 @@ services:
 
   # Frontend web application.
   web:
-    image: bonclops-web:0.6.11-neo4j
+    image: bonclops-web:0.6.11-neo4j-brightUI
     restart: always
     environment:
       # The base URL of console application api server, refers to the Console base URL of WEB service if console domain is
