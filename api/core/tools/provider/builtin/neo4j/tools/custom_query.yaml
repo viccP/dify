@@ -1,0 +1,32 @@
+identity:
+  name: customQuery
+  author: BoncLops
+  label:
+    en_US: Custom Query
+    zh_Hans: 自定义查询
+description:
+  human:
+    en_US: A tool for query the neo4j via a given query string.
+    zh_Hans: 自定义查询Neo4j的工具。
+  llm: A tool for query the neo4j via a given query string.
+parameters:
+  - name: query
+    type: string
+    required: true
+    form: llm
+    label:
+      en_US: Query String
+      zh_Hans: 查询语句
+    human_description:
+      en_US: Query String
+      zh_Hans: 查询语句
+  - name: database
+    type: string
+    required: true
+    form: llm
+    label:
+      en_US: Database
+      zh_Hans: 数据库
+    human_description:
+      en_US: Database
+      zh_Hans: 数据库

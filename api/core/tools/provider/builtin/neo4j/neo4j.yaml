@@ -1,0 +1,15 @@
+identity:
+  author: BoncLops
+  name: neo4j
+  label:
+    en_US: Neo4j CustomQuery
+    zh_Hans: Neo4j 工具
+    pt_BR:  Neo4j CustomQuery
+  description:
+    en_US: A tool for custom query the neo4j.
+    zh_Hans: 用于 Neo4j 的工具。
+    pt_BR: A tool for custom query the neo4j.
+  icon: icon.svg
+  tags:
+    - utilities
+credentials_for_provider:
