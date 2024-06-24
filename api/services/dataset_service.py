@@ -4,7 +4,7 @@ import logging
 import random
 import time
 import uuid
-from typing import Optional, cast
+from typing import Optional
 
 from flask import current_app
 from flask_login import current_user
@@ -13,7 +13,6 @@ from sqlalchemy import func
 from core.errors.error import LLMBadRequestError, ProviderTokenNotInitError
 from core.model_manager import ModelManager
 from core.model_runtime.entities.model_entities import ModelType
-from core.model_runtime.model_providers.__base.text_embedding_model import TextEmbeddingModel
 from core.rag.datasource.keyword.keyword_factory import Keyword
 from core.rag.models.document import Document as RAGDocument
 from events.dataset_event import dataset_was_deleted
@@ -32,9 +31,9 @@ from models.dataset import (
     DocumentSegment,
 )
 from models.model import UploadFile
-from models.source import DataSourceBinding
+from models.source import DataSourceOauthBinding
 from services.errors.account import NoPermissionError
-from services.errors.dataset import DatasetNameDuplicateError
+from services.errors.dataset import DatasetInUseError, DatasetNameDuplicateError
 from services.errors.document import DocumentIndexingError
 from services.errors.file import FileNotExistsError
 from services.feature_service import FeatureModel, FeatureService
@@ -43,11 +42,13 @@ from services.vector_service import VectorService
 from tasks.clean_notion_document_task import clean_notion_document_task
 from tasks.deal_dataset_vector_index_task import deal_dataset_vector_index_task
 from tasks.delete_segment_from_index_task import delete_segment_from_index_task
+from tasks.disable_segment_from_index_task import disable_segment_from_index_task
 from tasks.document_indexing_task import document_indexing_task
 from tasks.document_indexing_update_task import document_indexing_update_task
 from tasks.duplicate_document_indexing_task import duplicate_document_indexing_task
 from tasks.recover_document_indexing_task import recover_document_indexing_task
 from tasks.retry_document_indexing_task import retry_document_indexing_task
+from tasks.sync_website_document_indexing_task import sync_website_document_indexing_task
 
 
 class DatasetService:
@@ -131,13 +132,9 @@ class DatasetService:
 
     @staticmethod
     def get_dataset(dataset_id):
-        dataset = Dataset.query.filter_by(
+        return Dataset.query.filter_by(
             id=dataset_id
         ).first()
-        if dataset is None:
-            return None
-        else:
-            return dataset
 
     @staticmethod
     def check_dataset_model_setting(dataset):
@@ -236,7 +233,9 @@ class DatasetService:
 
     @staticmethod
     def delete_dataset(dataset_id, user):
-        # todo: cannot delete dataset if it is being processed
+        count = AppDatasetJoin.query.filter_by(dataset_id=dataset_id).count()
+        if count > 0:
+            raise DatasetInUseError()
 
         dataset = DatasetService.get_dataset(dataset_id)
 
@@ -455,6 +454,27 @@ class DocumentService:
         db.session.commit()
 
     @staticmethod
+    def rename_document(dataset_id: str, document_id: str, name: str) -> Document:
+        dataset = DatasetService.get_dataset(dataset_id)
+        if not dataset:
+            raise ValueError('Dataset not found.')
+
+        document = DocumentService.get_document(dataset_id, document_id)
+
+        if not document:
+            raise ValueError('Document not found.')
+
+        if document.tenant_id != current_user.current_tenant_id:
+            raise ValueError('No permission.')
+
+        document.name = name
+
+        db.session.add(document)
+        db.session.commit()
+
+        return document
+
+    @staticmethod
     def pause_document(document):
         if document.indexing_status not in ["waiting", "parsing", "cleaning", "splitting", "indexing"]:
             raise DocumentIndexingError()
@@ -489,17 +509,39 @@ class DocumentService:
     @staticmethod
     def retry_document(dataset_id: str, documents: list[Document]):
         for document in documents:
+            # add retry flag
+            retry_indexing_cache_key = 'document_{}_is_retried'.format(document.id)
+            cache_result = redis_client.get(retry_indexing_cache_key)
+            if cache_result is not None:
+                raise ValueError("Document is being retried, please try again later")
             # retry document indexing
             document.indexing_status = 'waiting'
             db.session.add(document)
             db.session.commit()
-            # add retry flag
-            retry_indexing_cache_key = 'document_{}_is_retried'.format(document.id)
+
             redis_client.setex(retry_indexing_cache_key, 600, 1)
         # trigger async task
         document_ids = [document.id for document in documents]
         retry_document_indexing_task.delay(dataset_id, document_ids)
 
+    @staticmethod
+    def sync_website_document(dataset_id: str, document: Document):
+        # add sync flag
+        sync_indexing_cache_key = 'document_{}_is_sync'.format(document.id)
+        cache_result = redis_client.get(sync_indexing_cache_key)
+        if cache_result is not None:
+            raise ValueError("Document is being synced, please try again later")
+        # sync document indexing
+        document.indexing_status = 'waiting'
+        data_source_info = document.data_source_info_dict
+        data_source_info['mode'] = 'scrape'
+        document.data_source_info = json.dumps(data_source_info, ensure_ascii=False)
+        db.session.add(document)
+        db.session.commit()
+
+        redis_client.setex(sync_indexing_cache_key, 600, 1)
+
+        sync_website_document_indexing_task.delay(dataset_id, document.id)
     @staticmethod
     def get_documents_position(dataset_id):
         document = Document.query.filter_by(dataset_id=dataset_id).order_by(Document.position.desc()).first()
@@ -526,6 +568,9 @@ class DocumentService:
                     notion_info_list = document_data["data_source"]['info_list']['notion_info_list']
                     for notion_info in notion_info_list:
                         count = count + len(notion_info['pages'])
+                elif document_data["data_source"]["type"] == "website_crawl":
+                    website_info = document_data["data_source"]['info_list']['website_info_list']
+                    count = len(website_info['urls'])
                 batch_upload_limit = int(current_app.config['BATCH_UPLOAD_LIMIT'])
                 if count > batch_upload_limit:
                     raise ValueError(f"You have reached the batch upload limit of {batch_upload_limit}.")
@@ -572,7 +617,7 @@ class DocumentService:
 
         documents = []
         batch = time.strftime('%Y%m%d%H%M%S') + str(random.randint(100000, 999999))
-        if 'original_document_id' in document_data and document_data["original_document_id"]:
+        if document_data.get("original_document_id"):
             document = DocumentService.update_document_with_dataset_id(dataset, document_data, account)
             documents.append(document)
         else:
@@ -664,12 +709,12 @@ class DocumentService:
                         exist_document[data_source_info['notion_page_id']] = document.id
                 for notion_info in notion_info_list:
                     workspace_id = notion_info['workspace_id']
-                    data_source_binding = DataSourceBinding.query.filter(
+                    data_source_binding = DataSourceOauthBinding.query.filter(
                         db.and_(
-                            DataSourceBinding.tenant_id == current_user.current_tenant_id,
-                            DataSourceBinding.provider == 'notion',
-                            DataSourceBinding.disabled == False,
-                            DataSourceBinding.source_info['workspace_id'] == f'"{workspace_id}"'
+                            DataSourceOauthBinding.tenant_id == current_user.current_tenant_id,
+                            DataSourceOauthBinding.provider == 'notion',
+                            DataSourceOauthBinding.disabled == False,
+                            DataSourceOauthBinding.source_info['workspace_id'] == f'"{workspace_id}"'
                         )
                     ).first()
                     if not data_source_binding:
@@ -698,6 +743,28 @@ class DocumentService:
                 # delete not selected documents
                 if len(exist_document) > 0:
                     clean_notion_document_task.delay(list(exist_document.values()), dataset.id)
+            elif document_data["data_source"]["type"] == "website_crawl":
+                website_info = document_data["data_source"]['info_list']['website_info_list']
+                urls = website_info['urls']
+                for url in urls:
+                    data_source_info = {
+                        'url': url,
+                        'provider': website_info['provider'],
+                        'job_id': website_info['job_id'],
+                        'only_main_content': website_info.get('only_main_content', False),
+                        'mode': 'crawl',
+                    }
+                    document = DocumentService.build_document(dataset, dataset_process_rule.id,
+                                                              document_data["data_source"]["type"],
+                                                              document_data["doc_form"],
+                                                              document_data["doc_language"],
+                                                              data_source_info, created_from, position,
+                                                              account, url, batch)
+                    db.session.add(document)
+                    db.session.flush()
+                    document_ids.append(document.id)
+                    documents.append(document)
+                    position += 1
             db.session.commit()
 
             # trigger async task
@@ -753,10 +820,10 @@ class DocumentService:
         if document.display_status != 'available':
             raise ValueError("Document is not available")
         # update document name
-        if 'name' in document_data and document_data['name']:
+        if document_data.get('name'):
             document.name = document_data['name']
         # save process rule
-        if 'process_rule' in document_data and document_data['process_rule']:
+        if document_data.get('process_rule'):
             process_rule = document_data["process_rule"]
             if process_rule["mode"] == "custom":
                 dataset_process_rule = DatasetProcessRule(
@@ -776,7 +843,7 @@ class DocumentService:
             db.session.commit()
             document.dataset_process_rule_id = dataset_process_rule.id
         # update document data source
-        if 'data_source' in document_data and document_data['data_source']:
+        if document_data.get('data_source'):
             file_name = ''
             data_source_info = {}
             if document_data["data_source"]["type"] == "upload_file":
@@ -799,12 +866,12 @@ class DocumentService:
                 notion_info_list = document_data["data_source"]['info_list']['notion_info_list']
                 for notion_info in notion_info_list:
                     workspace_id = notion_info['workspace_id']
-                    data_source_binding = DataSourceBinding.query.filter(
+                    data_source_binding = DataSourceOauthBinding.query.filter(
                         db.and_(
-                            DataSourceBinding.tenant_id == current_user.current_tenant_id,
-                            DataSourceBinding.provider == 'notion',
-                            DataSourceBinding.disabled == False,
-                            DataSourceBinding.source_info['workspace_id'] == f'"{workspace_id}"'
+                            DataSourceOauthBinding.tenant_id == current_user.current_tenant_id,
+                            DataSourceOauthBinding.provider == 'notion',
+                            DataSourceOauthBinding.disabled == False,
+                            DataSourceOauthBinding.source_info['workspace_id'] == f'"{workspace_id}"'
                         )
                     ).first()
                     if not data_source_binding:
@@ -816,6 +883,17 @@ class DocumentService:
                             "notion_page_icon": page['page_icon'],
                             "type": page['type']
                         }
+            elif document_data["data_source"]["type"] == "website_crawl":
+                website_info = document_data["data_source"]['info_list']['website_info_list']
+                urls = website_info['urls']
+                for url in urls:
+                    data_source_info = {
+                        'url': url,
+                        'provider': website_info['provider'],
+                        'job_id': website_info['job_id'],
+                        'only_main_content': website_info.get('only_main_content', False),
+                        'mode': 'crawl',
+                    }
             document.data_source_type = document_data["data_source"]["type"]
             document.data_source_info = json.dumps(data_source_info)
             document.name = file_name
@@ -854,6 +932,9 @@ class DocumentService:
                 notion_info_list = document_data["data_source"]['info_list']['notion_info_list']
                 for notion_info in notion_info_list:
                     count = count + len(notion_info['pages'])
+            elif document_data["data_source"]["type"] == "website_crawl":
+                website_info = document_data["data_source"]['info_list']['website_info_list']
+                count = len(website_info['urls'])
             batch_upload_limit = int(current_app.config['BATCH_UPLOAD_LIMIT'])
             if count > batch_upload_limit:
                 raise ValueError(f"You have reached the batch upload limit of {batch_upload_limit}.")
@@ -874,7 +955,7 @@ class DocumentService:
                 embedding_model.model
             )
             dataset_collection_binding_id = dataset_collection_binding.id
-            if 'retrieval_model' in document_data and document_data['retrieval_model']:
+            if document_data.get('retrieval_model'):
                 retrieval_model = document_data['retrieval_model']
             else:
                 default_retrieval_model = {
@@ -924,9 +1005,9 @@ class DocumentService:
                     and ('process_rule' not in args and not args['process_rule']):
                 raise ValueError("Data source or Process rule is required")
             else:
-                if 'data_source' in args and args['data_source']:
+                if args.get('data_source'):
                     DocumentService.data_source_args_validate(args)
-                if 'process_rule' in args and args['process_rule']:
+                if args.get('process_rule'):
                     DocumentService.process_rule_args_validate(args)
 
     @classmethod
@@ -954,6 +1035,10 @@ class DocumentService:
             if 'notion_info_list' not in args['data_source']['info_list'] or not args['data_source']['info_list'][
                 'notion_info_list']:
                 raise ValueError("Notion source info is required")
+        if args['data_source']['type'] == 'website_crawl':
+            if 'website_info_list' not in args['data_source']['info_list'] or not args['data_source']['info_list'][
+                'website_info_list']:
+                raise ValueError("Website source info is required")
 
     @classmethod
     def process_rule_args_validate(cls, args: dict):
@@ -1126,10 +1211,7 @@ class SegmentService:
                 model=dataset.embedding_model
             )
             # calc embedding use tokens
-            model_type_instance = cast(TextEmbeddingModel, embedding_model.model_type_instance)
-            tokens = model_type_instance.get_num_tokens(
-                model=embedding_model.model,
-                credentials=embedding_model.credentials,
+            tokens = embedding_model.get_text_embedding_num_tokens(
                 texts=[content]
             )
         lock_name = 'add_segment_lock_document_id_{}'.format(document.id)
@@ -1197,10 +1279,7 @@ class SegmentService:
                 tokens = 0
                 if dataset.indexing_technique == 'high_quality' and embedding_model:
                     # calc embedding use tokens
-                    model_type_instance = cast(TextEmbeddingModel, embedding_model.model_type_instance)
-                    tokens = model_type_instance.get_num_tokens(
-                        model=embedding_model.model,
-                        credentials=embedding_model.credentials,
+                    tokens = embedding_model.get_text_embedding_num_tokens(
                         texts=[content]
                     )
                 segment_document = DocumentSegment(
@@ -1245,15 +1324,35 @@ class SegmentService:
         cache_result = redis_client.get(indexing_cache_key)
         if cache_result is not None:
             raise ValueError("Segment is indexing, please try again later")
+        if 'enabled' in args and args['enabled'] is not None:
+            action = args['enabled']
+            if segment.enabled != action:
+                if not action:
+                    segment.enabled = action
+                    segment.disabled_at = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
+                    segment.disabled_by = current_user.id
+                    db.session.add(segment)
+                    db.session.commit()
+                    # Set cache to prevent indexing the same segment multiple times
+                    redis_client.setex(indexing_cache_key, 600, 1)
+                    disable_segment_from_index_task.delay(segment.id)
+                    return segment
+        if not segment.enabled:
+            if 'enabled' in args and args['enabled'] is not None:
+                if not args['enabled']:
+                    raise ValueError("Can't update disabled segment")
+            else:
+                raise ValueError("Can't update disabled segment")
         try:
             content = args['content']
             if segment.content == content:
                 if document.doc_form == 'qa_model':
                     segment.answer = args['answer']
-                if 'keywords' in args and args['keywords']:
+                if args.get('keywords'):
                     segment.keywords = args['keywords']
-                if 'enabled' in args and args['enabled'] is not None:
-                    segment.enabled = args['enabled']
+                segment.enabled = True
+                segment.disabled_at = None
+                segment.disabled_by = None
                 db.session.add(segment)
                 db.session.commit()
                 # update segment index task
@@ -1283,10 +1382,7 @@ class SegmentService:
                     )
 
                     # calc embedding use tokens
-                    model_type_instance = cast(TextEmbeddingModel, embedding_model.model_type_instance)
-                    tokens = model_type_instance.get_num_tokens(
-                        model=embedding_model.model,
-                        credentials=embedding_model.credentials,
+                    tokens = embedding_model.get_text_embedding_num_tokens(
                         texts=[content]
                     )
                 segment.content = content
@@ -1298,12 +1394,16 @@ class SegmentService:
                 segment.completed_at = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
                 segment.updated_by = current_user.id
                 segment.updated_at = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
+                segment.enabled = True
+                segment.disabled_at = None
+                segment.disabled_by = None
                 if document.doc_form == 'qa_model':
                     segment.answer = args['answer']
                 db.session.add(segment)
                 db.session.commit()
                 # update segment vector index
                 VectorService.update_segment_vector(args['keywords'], segment, dataset)
+
         except Exception as e:
             logging.exception("update segment index failed")
             segment.enabled = False

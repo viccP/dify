@@ -23,6 +23,7 @@ def parse_app_site_args():
     parser.add_argument('customize_domain', type=str, required=False, location='json')
     parser.add_argument('copyright', type=str, required=False, location='json')
     parser.add_argument('privacy_policy', type=str, required=False, location='json')
+    parser.add_argument('custom_disclaimer', type=str, required=False, location='json')
     parser.add_argument('customize_token_strategy', type=str, choices=['must', 'allow', 'not_allow'],
                         required=False,
                         location='json')
@@ -39,8 +40,8 @@ class AppSite(Resource):
     def post(self, app_model):
         args = parse_app_site_args()
 
-        # The role of the current user in the ta table must be admin or owner
-        if not current_user.is_admin_or_owner:
+        # The role of the current user in the ta table must be editor, admin, or owner
+        if not current_user.is_editor:
             raise Forbidden()
 
         site = db.session.query(Site). \
@@ -56,19 +57,13 @@ class AppSite(Resource):
             'customize_domain',
             'copyright',
             'privacy_policy',
+            'custom_disclaimer',
             'customize_token_strategy',
             'prompt_public'
         ]:
             value = args.get(attr_name)
             if value is not None:
                 setattr(site, attr_name, value)
-
-                if attr_name == 'title':
-                    app_model.name = value
-                elif attr_name == 'icon':
-                    app_model.icon = value
-                elif attr_name == 'icon_background':
-                    app_model.icon_background = value
 
         db.session.commit()
 

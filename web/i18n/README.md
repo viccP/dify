@@ -122,8 +122,8 @@ export const languages = [
   {
     value: 'ko-KR',
     name: '한국어(대한민국)',
-    example: '안녕, Bonc LOps !',
-    supported: false,
+    example: '안녕, Bonclops!',
+    supported: true,
   },
   {
     value: 'ru-RU',

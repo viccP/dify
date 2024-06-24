@@ -15,6 +15,7 @@ from core.model_runtime.entities.message_entities import (
     ToolPromptMessage,
     UserPromptMessage,
 )
+from core.prompt.agent_history_prompt_transform import AgentHistoryPromptTransform
 from core.tools.entities.tool_entities import ToolInvokeMeta
 from core.tools.tool.tool import Tool
 from core.tools.tool_engine import ToolEngine
@@ -42,9 +43,9 @@ class CotAgentRunner(BaseAgentRunner, ABC):
         self._init_react_state(query)
 
         # check model mode
-        if 'Observation' not in app_generate_entity.model_config.stop:
-            if app_generate_entity.model_config.provider not in self._ignore_observation_providers:
-                app_generate_entity.model_config.stop.append('Observation')
+        if 'Observation' not in app_generate_entity.model_conf.stop:
+            if app_generate_entity.model_conf.provider not in self._ignore_observation_providers:
+                app_generate_entity.model_conf.stop.append('Observation')
 
         app_config = self.app_config
 
@@ -108,9 +109,9 @@ class CotAgentRunner(BaseAgentRunner, ABC):
             # invoke model
             chunks: Generator[LLMResultChunk, None, None] = model_instance.invoke_llm(
                 prompt_messages=prompt_messages,
-                model_parameters=app_generate_entity.model_config.parameters,
+                model_parameters=app_generate_entity.model_conf.parameters,
                 tools=[],
-                stop=app_generate_entity.model_config.stop,
+                stop=app_generate_entity.model_conf.stop,
                 stream=True,
                 user=self.user_id,
                 callbacks=[],
@@ -121,7 +122,7 @@ class CotAgentRunner(BaseAgentRunner, ABC):
                 raise ValueError("failed to invoke llm")
             
             usage_dict = {}
-            react_chunks = CotAgentOutputParser.handle_react_stream_output(chunks)
+            react_chunks = CotAgentOutputParser.handle_react_stream_output(chunks, usage_dict)
             scratchpad = AgentScratchpadUnit(
                 agent_response='',
                 thought='',
@@ -140,8 +141,8 @@ class CotAgentRunner(BaseAgentRunner, ABC):
                 if isinstance(chunk, AgentScratchpadUnit.Action):
                     action = chunk
                     # detect action
-                    scratchpad.agent_response += json.dumps(chunk.dict())
-                    scratchpad.action_str = json.dumps(chunk.dict())
+                    scratchpad.agent_response += json.dumps(chunk.model_dump())
+                    scratchpad.action_str = json.dumps(chunk.model_dump())
                     scratchpad.action = action
                 else:
                     scratchpad.agent_response += chunk
@@ -189,7 +190,7 @@ class CotAgentRunner(BaseAgentRunner, ABC):
 
             if not scratchpad.action:
                 # failed to extract action, return final answer directly
-                final_answer = scratchpad.agent_response or ''
+                final_answer = ''
             else:
                 if scratchpad.action.action_name.lower() == "final answer":
                     # action is final answer, return final answer directly
@@ -219,7 +220,7 @@ class CotAgentRunner(BaseAgentRunner, ABC):
                         tool_input={scratchpad.action.action_name: scratchpad.action.action_input},
                         thought=scratchpad.thought,
                         observation={scratchpad.action.action_name: tool_invoke_response},
-                        tool_invoke_meta=tool_invoke_meta.to_dict(),
+                        tool_invoke_meta={scratchpad.action.action_name: tool_invoke_meta.to_dict()},
                         answer=scratchpad.agent_response,
                         messages_ids=message_file_ids,
                         llm_usage=usage_dict['usage']
@@ -373,13 +374,20 @@ class CotAgentRunner(BaseAgentRunner, ABC):
 
         return message
 
-    def _organize_historic_prompt_messages(self) -> list[PromptMessage]:
+    def _organize_historic_prompt_messages(self, current_session_messages: list[PromptMessage] = None) -> list[PromptMessage]:
         """
             organize historic prompt messages
         """
         result: list[PromptMessage] = []
         scratchpad: list[AgentScratchpadUnit] = []
         current_scratchpad: AgentScratchpadUnit = None
+
+        self.history_prompt_messages = AgentHistoryPromptTransform(
+            model_config=self.model_config,
+            prompt_messages=current_session_messages or [],
+            history_messages=self.history_prompt_messages,
+            memory=self.memory
+        ).get_prompt()
 
         for message in self.history_prompt_messages:
             if isinstance(message, AssistantPromptMessage):
