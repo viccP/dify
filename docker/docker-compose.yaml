@@ -2,7 +2,7 @@ version: '3'
 services:
   # API service
   api:
-    image: bonclops-backend:0.6.11
+    image: bonclops-backend:0.6.11-neo4j
     privileged: true
     restart: always
     environment:
@@ -188,6 +188,7 @@ services:
       SSRF_PROXY_HTTPS_URL: 'http://ssrf_proxy:3128'
       # Indexing configuration
       INDEXING_MAX_SEGMENTATION_TOKENS_LENGTH: 1000
+      NEO_SERVICE_URL: 'http://custom:8080/neo4j/query'
     depends_on:
       - db
       - redis
@@ -204,7 +205,7 @@ services:
   # worker service
   # The Celery worker for processing the queue.
   worker:
-    image: bonclops-backend:0.6.11
+    image: bonclops-backend:0.6.11-neo4j
     privileged: true
     restart: always
     environment:
@@ -346,7 +347,7 @@ services:
 
   # Frontend web application.
   web:
-    image: bonclops-web:0.6.11
+    image: bonclops-web:0.6.11-neo4j
     restart: always
     environment:
       # The base URL of console application api server, refers to the Console base URL of WEB service if console domain is
@@ -515,6 +516,33 @@ services:
     ports:
       - "80:80"
       #- "443:443"
+  custom:
+    image: bonclops-custom:1.0
+    privileged: true
+    restart: always
+    environment:
+      CONSOLE_WEB_URL: http://api
+      spring.datasource.password: difyai123456
+      spring.datasource.url: jdbc:postgresql://db:5432/dify
+      spring.datasource.username: postgres
+      spring.neo4j.uri: bolt://neo4j:7687
+      spring.neo4j.authentication.username: neo4j
+      spring.neo4j.authentication.password: bonc1q2w3e
+      SECRET_KEY: sk-9f73s3ljTXVcMT3Blb3ljTqtsKiGHXVcMT3BlbkFJLK7U
+      TOKEN_TIME_OUT: 30
+  neo4j:
+    image: neo4j:latest
+    restart: always
+    environment:
+      NEO4J_AUTH: neo4j/bonc1q2w3e
+    volumes:
+      - ./volumes/neo4j/data:/data
+      - ./volumes/neo4j/logs:/logs
+      - ./volumes/neo4j/import:/import
+      - ./volumes/neo4j/conf:/conf
+    ports:
+      - 7474:7474
+      - 7687:7687
 networks:
   # create a network between sandbox, api and ssrf_proxy, and can not access outside.
   ssrf_proxy_network:
