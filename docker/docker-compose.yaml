@@ -515,6 +515,7 @@ services:
       - web
     ports:
       - "80:80"
+      - "7474:7474"
       #- "443:443"
   custom:
     image: bonclops-custom:1.0
@@ -541,7 +542,6 @@ services:
       - ./volumes/neo4j/import:/import
       - ./volumes/neo4j/conf:/conf
     ports:
-      - 7474:7474
       - 7687:7687
 networks:
   # create a network between sandbox, api and ssrf_proxy, and can not access outside.
