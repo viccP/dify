@@ -33,10 +33,10 @@ const ModelTrigger: FC<ModelTriggerProps> = ({
   return (
     <div
       className={`
-        group flex items-center px-2 h-8 rounded-lg bg-gray-100 text-dark-0
-        ${!readonly && 'hover:bg-gray-200 cursor-pointer'}
+        group flex items-center px-2 h-8 rounded-lg bg-dark-101 text-dark-0
+        ${!readonly && 'hover:bg-gray-201 cursor-pointer'}
         ${className}
-        ${open && '!bg-gray-200'}
+        ${open && '!bg-gray-201'}
         ${model.status !== ModelStatusEnum.active && '!bg-[#FFFAEB]'}
       `}
     >
@@ -62,7 +62,7 @@ const ModelTrigger: FC<ModelTriggerProps> = ({
               )
               : (
                 <ChevronDown
-                  className='w-3.5 h-3.5 text-gray-500'
+                  className='w-3.5 h-3.5 text-gray-100'
                 />
               )
           }

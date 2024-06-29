@@ -96,7 +96,7 @@ const Form: FC<FormProps> = ({
       const disabed = readonly || (isEditMode && (variable === '__model_type' || variable === '__model_name'))
       return (
         <div key={variable} className={cn(itemClassName, 'py-3')}>
-          <div className={cn(fieldLabelClassName, 'py-2 text-sm text-gray-900')}>
+          <div className={cn(fieldLabelClassName, 'py-2 text-sm text-gray-100')}>
             {label[language] || label.en_US}
             {
               required && (
@@ -137,7 +137,7 @@ const Form: FC<FormProps> = ({
 
       return (
         <div key={variable} className={cn(itemClassName, 'py-3')}>
-          <div className={cn(fieldLabelClassName, 'py-2 text-sm text-gray-900')}>
+          <div className={cn(fieldLabelClassName, 'py-2 text-sm text-gray-100')}>
             {label[language] || label.en_US}
             {
               required && (
@@ -167,7 +167,7 @@ const Form: FC<FormProps> = ({
                     flex justify-center items-center mr-2 w-4 h-4 border border-gray-300 rounded-full
                     ${value[variable] === option.value && 'border-[5px] border-primary-600'}
                   `} />
-                  <div className='text-sm text-gray-900'>{option.label[language] || option.label.en_US}</div>
+                  <div className='text-sm text-gray-100'>{option.label[language] || option.label.en_US}</div>
                 </div>
               ))
             }
@@ -193,7 +193,7 @@ const Form: FC<FormProps> = ({
 
       return (
         <div key={variable} className={cn(itemClassName, 'py-3')}>
-          <div className={cn(fieldLabelClassName, 'py-2 text-sm text-gray-900')}>
+          <div className={cn(fieldLabelClassName, 'py-2 text-sm text-gray-100')}>
             {label[language] || label.en_US}
 
             {

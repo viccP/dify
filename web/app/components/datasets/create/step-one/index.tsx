@@ -138,6 +138,7 @@ const StepOne = ({
                     s.dataSourceItem,
                     dataSourceType === DataSourceType.FILE && s.active,
                     dataSourceTypeDisable && dataSourceType !== DataSourceType.FILE && s.disabled,
+                    '!text-dark-0 !bg-gray-201',
                   )}
                   onClick={() => {
                     if (dataSourceTypeDisable)
@@ -155,6 +156,7 @@ const StepOne = ({
                     s.dataSourceItem,
                     dataSourceType === DataSourceType.NOTION && s.active,
                     dataSourceTypeDisable && dataSourceType !== DataSourceType.NOTION && s.disabled,
+                    '!text-dark-0 !bg-gray-201',
                   )}
                   onClick={() => {
                     if (dataSourceTypeDisable)
@@ -172,6 +174,7 @@ const StepOne = ({
                     s.dataSourceItem,
                     dataSourceType === DataSourceType.WEB && s.active,
                     dataSourceTypeDisable && dataSourceType !== DataSourceType.WEB && s.disabled,
+                    '!text-dark-0 !bg-gray-201',
                   )}
                   onClick={() => changeType(DataSourceType.WEB)}
                 >

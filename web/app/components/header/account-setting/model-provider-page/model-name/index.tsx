@@ -33,7 +33,7 @@ const ModelName: FC<ModelNameProps> = ({
   children,
 }) => {
   const language = useLanguage()
-
+  className = '\!text-dark-500'
   if (!modelItem)
     return null
   return (

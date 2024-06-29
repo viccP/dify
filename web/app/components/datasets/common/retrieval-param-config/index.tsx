@@ -66,7 +66,7 @@ const RetrievalParamConfig: FC<Props> = ({
               />
             )}
             <div className='flex items-center'>
-              <span className='mr-0.5'>{t('common.modelProvider.rerankModel.key')}</span>
+              <span className='mr-0.5 text-gray-400'>{t('common.modelProvider.rerankModel.key')}</span>
               <Tooltip popupContent={<div className="w-[200px]">{t('common.modelProvider.rerankModel.tip')}</div>}>
                 <HelpCircle className='w-[14px] h-[14px] text-gray-400' />
               </Tooltip>

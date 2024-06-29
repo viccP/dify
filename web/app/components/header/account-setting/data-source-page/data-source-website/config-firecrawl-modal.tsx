@@ -96,7 +96,7 @@ const ConfigFirecrawlModal: FC<Props> = ({
           <div className='mx-2 w-[640px] max-h-[calc(100vh-120px)] bg-white shadow-xl rounded-2xl overflow-y-auto'>
             <div className='px-8 pt-8'>
               <div className='flex justify-between items-center mb-4'>
-                <div className='text-xl font-semibold text-gray-900'>{t(`${I18N_PREFIX}.configFirecrawl`)}</div>
+                <div className='text-xl font-semibold text-gray-100'>{t(`${I18N_PREFIX}.configFirecrawl`)}</div>
               </div>
 
               <div className='space-y-4'>

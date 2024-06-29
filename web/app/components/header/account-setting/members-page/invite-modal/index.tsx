@@ -72,16 +72,16 @@ const InviteModal = ({
     <div className={cn(s.wrap)}>
       <Modal overflowVisible isShow onClose={() => {}} className={cn(s.modal)} wrapperClassName='z-20'>
         <div className='flex justify-between mb-2'>
-          <div className='text-xl font-semibold text-gray-900'>{t('common.members.inviteTeamMember')}</div>
+          <div className='text-xl font-semibold text-gray-100'>{t('common.members.inviteTeamMember')}</div>
           <XMarkIcon className='w-4 h-4 cursor-pointer text-dark-0' onClick={onCancel} />
         </div>
         <div className='mb-7 text-[13px] text-gray-500'>{t('common.members.inviteTeamMemberTip')}</div>
         <div>
-          <div className='mb-2 text-sm font-medium text-gray-900'>{t('common.members.email')}</div>
+          <div className='mb-2 text-sm font-medium text-gray-100'>{t('common.members.email')}</div>
           <div className='mb-8 h-36 flex items-stretch'>
             <ReactMultiEmail
               className={cn('w-full pt-2 px-3 outline-none border-none',
-                'appearance-none text-sm !bg-gray-100 !text-dark-0 rounded-lg overflow-y-auto',
+                'appearance-none text-sm !bg-gray-100 !text-dark-300 rounded-lg overflow-y-auto',
                 s.emailsInput,
               )}
               autoFocus
@@ -131,7 +131,7 @@ const InviteModal = ({
                             {selected && (<CheckIcon className="h-5 w-5" aria-hidden="true" />)}
                           </span>
                           <div className=' flex flex-col flex-grow'>
-                            <span className={`${selected ? 'font-medium' : 'font-normal'} capitalize block truncate`}>
+                            <span className={`${selected ? 'font-medium' : 'font-normal'} capitalize block truncate text-gray-700`}>
                               {t(`common.members.${role.name}`)}
                             </span>
                             <span className={`${selected ? 'font-medium' : 'font-normal'} capitalize block text-gray-500`}>

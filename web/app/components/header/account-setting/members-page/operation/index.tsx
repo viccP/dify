@@ -11,16 +11,16 @@ import { deleteMemberOrCancelInvitation, updateMemberRole } from '@/service/comm
 import { ToastContext } from '@/app/components/base/toast'
 
 const itemClassName = `
-  flex px-3 py-2 cursor-pointer hover:bg-gray-50 rounded-lg
+  flex px-3 py-2 cursor-pointer hover:bg-gray-51 rounded-lg
 `
 const itemIconClassName = `
-  w-4 h-4 mt-[2px] mr-1 text-primary-600
+  w-4 h-4 mt-[2px] mr-1 text-gray-701
 `
 const itemTitleClassName = `
-  leading-[20px] text-sm text-gray-700 whitespace-nowrap
+  leading-[20px] text-sm text-gray-701 whitespace-nowrap
 `
 const itemDescClassName = `
-  leading-[18px] text-xs text-gray-500 whitespace-nowrap
+  leading-[18px] text-xs text-gray-701 whitespace-nowrap
 `
 
 type IOperationProps = {
@@ -72,8 +72,8 @@ const Operation = ({
             <Menu.Button className={cn(
               `
                   group flex items-center justify-between w-full h-full
-                  hover:bg-gray-100 cursor-pointer ${open && 'bg-gray-100'}
-                  text-[13px] text-gray-700 px-3
+                  hover:bg-gray-101 cursor-pointer ${open && 'bg-gray-101'}
+                  text-[13px] text-gray-701 px-3
                 `,
             )}>
               {RoleMap[member.role] || RoleMap.normal}

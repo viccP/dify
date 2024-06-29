@@ -133,7 +133,7 @@ const Panel = (props: PanelProps) => {
       </div>
       {keywords && notExisted && (
         <div className='p-1'>
-          <div className='flex items-center gap-2 pl-3 py-[6px] pr-2 rounded-lg cursor-pointer hover:bg-gray-100' onClick={createNewTag}>
+          <div className='flex items-center gap-2 pl-3 py-[6px] pr-2 rounded-lg cursor-pointer hover:bg-gray-101' onClick={createNewTag}>
             <Plus className='h-4 w-4 text-gray-500' />
             <div className='grow text-sm text-gray-700 leading-5 truncate'>
               {`${t('common.tag.create')} `}
@@ -150,7 +150,7 @@ const Panel = (props: PanelProps) => {
           {filteredSelectedTagList.map(tag => (
             <div
               key={tag.id}
-              className='flex items-center gap-2 pl-3 py-[6px] pr-2 rounded-lg cursor-pointer hover:bg-gray-100'
+              className='flex items-center gap-2 pl-3 py-[6px] pr-2 rounded-lg cursor-pointer hover:bg-gray-101'
               onClick={() => selectTag(tag)}
             >
               <Checkbox
@@ -158,13 +158,13 @@ const Panel = (props: PanelProps) => {
                 checked={selectedTagIDs.includes(tag.id)}
                 onCheck={() => {}}
               />
-              <div title={tag.name} className='grow text-sm text-gray-700 leading-5 truncate'>{tag.name}</div>
+              <div title={tag.name} className='grow text-sm text-gray-701 leading-5 truncate'>{tag.name}</div>
             </div>
           ))}
           {filteredTagList.map(tag => (
             <div
               key={tag.id}
-              className='flex items-center gap-2 pl-3 py-[6px] pr-2 rounded-lg cursor-pointer hover:bg-gray-100'
+              className='flex items-center gap-2 pl-3 py-[6px] pr-2 rounded-lg cursor-pointer hover:bg-gray-101'
               onClick={() => selectTag(tag)}
             >
               <Checkbox
@@ -172,7 +172,7 @@ const Panel = (props: PanelProps) => {
                 checked={selectedTagIDs.includes(tag.id)}
                 onCheck={() => {}}
               />
-              <div title={tag.name} className='grow text-sm text-gray-700 leading-5 truncate'>{tag.name}</div>
+              <div title={tag.name} className='grow text-sm text-gray-701 leading-5 truncate'>{tag.name}</div>
             </div>
           ))}
         </div>
@@ -181,15 +181,15 @@ const Panel = (props: PanelProps) => {
         <div className='p-1'>
           <div className='p-3 flex flex-col items-center gap-1'>
             <Tag03 className='h-6 w-6 text-gray-300' />
-            <div className='text-gray-500 text-xs leading-[14px]'>{t('common.tag.noTag')}</div>
+            <div className='text-gray-701 text-xs leading-[14px]'>{t('common.tag.noTag')}</div>
           </div>
         </div>
       )}
       <Divider className='!h-[1px] !my-0' />
       <div className='p-1'>
-        <div className='flex items-center gap-2 pl-3 py-[6px] pr-2 rounded-lg cursor-pointer hover:bg-gray-100' onClick={() => setShowTagManagementModal(true)}>
-          <Tag03 className='h-4 w-4 text-gray-500' />
-          <div className='grow text-sm text-gray-700 leading-5 truncate'>
+        <div className='flex items-center gap-2 pl-3 py-[6px] pr-2 rounded-lg cursor-pointer hover:bg-gray-101' onClick={() => setShowTagManagementModal(true)}>
+          <Tag03 className='h-4 w-4 text-gray-701' />
+          <div className='grow text-sm text-gray-701 leading-5 truncate'>
             {t('common.tag.manageTags')}
           </div>
         </div>
@@ -226,10 +226,10 @@ const TagSelector: FC<TagSelectorProps> = ({
   const Trigger = () => {
     return (
       <div className={cn(
-        'group/tip relative w-full flex items-center gap-1 px-2 py-[7px] rounded-md cursor-pointer hover:bg-gray-100',
+        'group/tip relative w-full flex items-center gap-1 px-2 py-[7px] rounded-md cursor-pointer hover:bg-gray-101',
       )}>
-        <Tag01 className='shrink-0 w-3 h-3' />
-        <div className='grow text-xs text-start leading-[18px] font-normal truncate'>
+        <Tag01 className='shrink-0 w-3 h-3 text-dark-10' />
+        <div className='grow text-xs text-start leading-[18px] font-normal truncate text-dark-10'>
           {!triggerContent ? t('common.tag.addTag') : triggerContent}
         </div>
       </div>
@@ -255,8 +255,8 @@ const TagSelector: FC<TagSelectorProps> = ({
           btnElement={<Trigger />}
           btnClassName={open =>
             cn(
-              open ? '!bg-gray-100 !text-gray-700' : '!bg-transparent',
-              '!w-full !p-0 !border-0 !text-gray-500 hover:!bg-gray-100 hover:!text-gray-700',
+              open ? '!bg-gray-101 !text-gray-701' : '!bg-transparent',
+              '!w-full !p-0 !border-0 !text-gray-500 hover:!bg-gray-101 hover:!text-gray-701',
             )
           }
           popupClassName='!w-full !ring-0'

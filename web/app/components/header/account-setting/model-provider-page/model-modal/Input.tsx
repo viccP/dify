@@ -41,10 +41,10 @@ const Input: FC<InputProps> = ({
       <input
         tabIndex={0}
         className={`
-          block px-3 w-full h-9 bg-gray-100 text-sm rounded-lg border border-transparent
-          appearance-none outline-none caret-dark-0 text-dark-0
+          block px-3 w-full h-9 bg-dark-101 text-sm rounded-lg border border-transparent
+          appearance-none outline-none caret-dark-0 text-gray-100
 
-          placeholder:text-sm placeholder:text-dark-0
+          placeholder:text-sm placeholder:text-dark-500
           ${validated && 'pr-[30px]'}
           ${className}
         `}

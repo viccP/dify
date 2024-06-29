@@ -14,10 +14,8 @@ import BillingPage from '@/app/components/billing/billing-page'
 import CustomPage from '@/app/components/custom/custom-page'
 import Modal from '@/app/components/base/modal'
 import {
-  Database03,
   Webhooks,
 } from '@/app/components/base/icons/src/vender/line/development'
-import { Database03 as Database03Solid } from '@/app/components/base/icons/src/vender/solid/development'
 import { User01, Users01 } from '@/app/components/base/icons/src/vender/line/users'
 import { User01 as User01Solid, Users01 as Users01Solid } from '@/app/components/base/icons/src/vender/solid/users'
 import { XClose } from '@/app/components/base/icons/src/vender/line/general'
@@ -158,12 +156,12 @@ export default function AccountSetting({
     >
       <div className='flex'>
         <div className='w-[44px] sm:w-[200px] px-[1px] py-4 sm:p-4 border border-dark-30 shrink-0 sm:shrink-1 flex flex-col items-center sm:items-start'>
-          <div className='mb-8 ml-0 sm:ml-2 text-sm sm:text-base font-medium leading-6 text-gray-900'>{t('common.userProfile.settings')}</div>
+          <div className='mb-8 ml-0 sm:ml-2 text-sm sm:text-base font-medium leading-6 text-gray-100'>{t('common.userProfile.settings')}</div>
           <div className='w-full'>
             {
               menuItems.map(menuItem => (
                 <div key={menuItem.key} className='mb-4'>
-                  <div className='px-2 mb-[6px] text-[10px] sm:text-xs font-medium text-gray-500'>{menuItem.name}</div>
+                  <div className='px-2 mb-[6px] text-[10px] sm:text-xs font-medium text-dark-10'>{menuItem.name}</div>
                   <div>
                     {
                       menuItem.items.map(item => (
@@ -171,7 +169,7 @@ export default function AccountSetting({
                           key={item.key}
                           className={`
                             flex items-center h-[37px] mb-[2px] text-sm cursor-pointer rounded-lg
-                            ${activeMenu === item.key ? 'font-semibold text-primary-600 bg-primary-50' : 'font-light text-gray-700'}
+                            ${activeMenu === item.key ? 'font-semibold text-primary-600 bg-primary-50' : 'font-light text-dark-10'}
                           `}
                           title={item.name}
                           onClick={() => setActiveMenu(item.key)}
@@ -188,7 +186,7 @@ export default function AccountSetting({
           </div>
         </div>
         <div ref={scrollRef} className='relative w-[824px] h-[720px] pb-4 overflow-y-auto'>
-          <div className={cn('sticky top-0 px-6 py-4 flex items-center h-14 mb-4 bg-white text-base font-medium text-gray-900 z-20', scrolled && scrolledClassName)}>
+          <div className={cn('sticky top-0 px-6 py-4 flex items-center h-14 mb-4 bg-white text-base font-medium text-gray-100 z-20', scrolled && scrolledClassName)}>
             <div className='shrink-0'>{activeItem?.name}</div>
             {
               activeItem?.description && (

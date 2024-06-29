@@ -66,7 +66,7 @@ const DatasetCard = ({
     return (
       <div className="relative w-full py-1" onMouseLeave={onMouseLeave}>
         <div className='h-8 py-[6px] px-3 mx-1 flex items-center gap-2 hover:bg-gray-100 rounded-lg cursor-pointer' onClick={onClickRename}>
-          <span className='text-gray-700 text-sm'>{t('common.operation.settings')}</span>
+          <span className='text-gray-701 text-sm'>{t('common.operation.settings')}</span>
         </div>
         <Divider className="!my-1" />
         <div
@@ -100,7 +100,7 @@ const DatasetCard = ({
             <Folder className='w-5 h-5 text-[#444CE7]' />
           </div>
           <div className='grow w-0 py-[1px]'>
-            <div className='flex items-center text-sm leading-5 font-semibold text-gray-800'>
+            <div className='flex items-center text-sm leading-5 font-semibold text-dark-0'>
               <div className={cn('truncate', !dataset.embedding_available && 'opacity-50 hover:opacity-100')} title={dataset.name}>{dataset.name}</div>
               {!dataset.embedding_available && (
                 <Tooltip
@@ -111,7 +111,7 @@ const DatasetCard = ({
                 </Tooltip>
               )}
             </div>
-            <div className='flex items-center mt-[1px] text-xs leading-[18px] text-gray-500'>
+            <div className='flex items-center mt-[1px] text-xs leading-[18px] text-gray-501'>
               <div
                 className={cn('truncate', (!dataset.embedding_available || !dataset.document_count) && 'opacity-50')}
                 title={`${dataset.document_count}${t('dataset.documentCount')} · ${Math.round(dataset.word_count / 1000)}${t('dataset.wordCount')} · ${dataset.app_count}${t('dataset.appCount')}`}
@@ -127,7 +127,7 @@ const DatasetCard = ({
         </div>
         <div
           className={cn(
-            'grow mb-2 px-[14px] max-h-[72px] text-xs leading-normal text-gray-500 group-hover:line-clamp-2 group-hover:max-h-[36px]',
+            'grow mb-2 px-[14px] max-h-[72px] text-xs leading-normal text-gray-501 group-hover:line-clamp-2 group-hover:max-h-[36px]',
             tags.length ? 'line-clamp-2' : 'line-clamp-4',
             !dataset.embedding_available && 'opacity-50 hover:opacity-100',
           )}

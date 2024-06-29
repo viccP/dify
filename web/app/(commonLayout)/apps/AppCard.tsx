@@ -268,7 +268,7 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
         </div>
         <div
           className={cn(
-            'grow mb-2 px-[14px] max-h-[72px] text-xs leading-normal text-gray-500 group-hover:line-clamp-2 group-hover:max-h-[36px]',
+            'grow mb-2 px-[14px] max-h-[72px] text-xs leading-normal text-dark-10 group-hover:line-clamp-2 group-hover:max-h-[36px]',
             tags.length ? 'line-clamp-2' : 'line-clamp-4',
           )}
           title={app.description}

@@ -24,23 +24,23 @@ const SearchInput: FC<SearchInputProps> = ({
 
   return (
     <div className={cn(
-      'group flex items-center px-2 h-8 rounded-lg bg-gray-200 hover:bg-dark-200 border border-transparent overflow-hidden',
+      'group flex items-center px-2 h-8 rounded-lg bg-gray-201 hover:bg-dark-200 border border-transparent overflow-hidden',
       focus && '!bg-white hover:bg-white shawdow-xs !border-dark-200',
       !focus && value && 'hover:!bg-gray-200 hover:!shawdow-xs hover:!border-black/5',
       white && '!bg-white hover:!bg-white shawdow-xs !border-gray-300 hover:!border-gray-300',
       className,
     )}>
       <div className="pointer-events-none shrink-0 flex items-center mr-1.5 justify-center w-4 h-4">
-        <SearchLg className="h-3.5 w-3.5 text-gray-500" aria-hidden="true" />
+        <SearchLg className="h-3.5 w-3.5 text-gray-701" aria-hidden="true" />
       </div>
       <input
         type="text"
         name="query"
         className={cn(
-          'grow block h-[18px] bg-gray-200 rounded-md border-0 text-gray-700 text-[13px] placeholder:text-gray-500 appearance-none outline-none group-hover:bg-dark-200 caret-dark-10',
-          focus && '!bg-white hover:bg-white group-hover:bg-white placeholder:!text-gray-400',
-          !focus && value && 'hover:!bg-gray-200 group-hover:!bg-gray-200',
-          white && '!bg-white hover:!bg-white group-hover:!bg-white placeholder:!text-gray-400',
+          'grow block h-[18px] bg-gray-201 rounded-md border-0 text-gray-701 text-[13px] placeholder:text-gray-701 appearance-none outline-none group-hover:bg-dark-200 caret-dark-10',
+          focus && '!bg-white hover:bg-white group-hover:bg-white placeholder:!text-gray-701',
+          !focus && value && 'hover:!bg-gray-201 group-hover:!bg-gray-200',
+          white && '!bg-white hover:!bg-white group-hover:!bg-white placeholder:!text-gray-701',
         )}
         placeholder={placeholder || t('common.operation.search')!}
         value={value}

@@ -87,7 +87,7 @@ const Tooltip: FC<TooltipProps> = ({
       >
         <div
           className={cn(
-            'relative px-3 py-2 text-xs font-normal text-gray-700 bg-dark-180 rounded-md shadow-lg',
+            'relative px-3 py-2 text-xs font-normal text-gray-400 bg-dark-180 rounded-md shadow-lg',
             popupClassName,
           )}
           onMouseEnter={() => triggerMethod === 'hover' && setHoverPopup()}
