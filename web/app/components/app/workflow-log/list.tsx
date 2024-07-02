@@ -94,7 +94,7 @@ const WorkflowAppLogList: FC<ILogs> = ({ logs, appDetail, onRefresh }) => {
             const endUser = log.created_by_end_user ? log.created_by_end_user.session_id : defaultValue
             return <tr
               key={log.id}
-              className={`border-b border-gray-200 h-8 hover:bg-gray-50 cursor-pointer ${currentLog?.id !== log.id ? '' : 'bg-gray-50'}`}
+              className={`border-b border-gray-200 h-8 hover:bg-gray-51 cursor-pointer ${currentLog?.id !== log.id ? '' : 'bg-gray-51'}`}
               onClick={() => {
                 setCurrentLog(log)
                 setShowDrawer(true)

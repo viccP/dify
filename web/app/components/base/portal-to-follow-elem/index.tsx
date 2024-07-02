@@ -129,7 +129,7 @@ React.HTMLProps<HTMLElement> & { asChild?: boolean }
   return (
     <div
       ref={ref}
-      className={cn('inline-block', props.className)}
+      className={cn('inline-block !text-gray-701', props.className)}
       // The user can style the trigger based on the state
       data-state={context.open ? 'open' : 'closed'}
       {...context.getReferenceProps(props)}

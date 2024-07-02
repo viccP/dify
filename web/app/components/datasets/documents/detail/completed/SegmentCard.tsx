@@ -95,10 +95,11 @@ const SegmentCard: FC<ISegmentCardProps> = ({
     <div
       className={cn(
         s.segWrapper,
-        (isDocScene && !enabled) ? 'bg-gray-25' : '',
+        (isDocScene && !enabled) ? '!bg-gray-201' : '',
         'group',
         !loading ? 'pb-4 hover:pb-[10px]' : '',
         className,
+        '!bg-gray-201 !text-gray-100',
       )}
       onClick={() => onClick?.()}
     >
@@ -165,7 +166,7 @@ const SegmentCard: FC<ISegmentCardProps> = ({
                 className={cn(
                   s.segContent,
                   enabled ? '' : 'opacity-50',
-                  'group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-b',
+                  ' group-hover:bg-clip-text group-hover:bg-gradient-to-b',
                 )}
               >
                 {renderContent()}

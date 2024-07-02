@@ -753,7 +753,7 @@ const Configuration: FC = () => {
             <div className='absolute top-0 left-0 w-full bg-white h-14'>
               <div className='flex items-center justify-between px-6 h-14'>
                 <div className='flex items-center'>
-                  <div className='text-base font-semibold leading-6 text-gray-900'>{t('appDebug.orchestrate')}</div>
+                  <div className='text-base font-semibold leading-6 text-gray-100'>{t('appDebug.orchestrate')}</div>
                   <div className='flex items-center h-[14px] space-x-1 text-xs'>
                     {isAdvancedMode && (
                       <div className='ml-1 flex items-center h-5 px-1.5 border border-gray-100 rounded-md text-[11px] font-medium text-gray-500 uppercase'>{t('appDebug.promptMode.advanced')}</div>
@@ -816,7 +816,7 @@ const Configuration: FC = () => {
               <Config />
             </div>
             {!isMobile && <div className="relative flex flex-col w-1/2 h-full overflow-y-auto grow " style={{ borderColor: 'rgba(0, 0, 0, 0.02)' }}>
-              <div className='flex flex-col h-0 border-t border-l grow rounded-tl-2xl bg-gray-50 '>
+              <div className='flex flex-col h-0 border-t border-l grow rounded-tl-2xl bg-gray-51 '>
                 <Debug
                   isAPIKeySet={isAPIKeySet}
                   onSetting={() => setShowAccountSettingModal({ payload: 'provider' })}

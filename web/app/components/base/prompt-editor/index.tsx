@@ -144,7 +144,7 @@ const PromptEditor: FC<PromptEditorProps> = ({
     <LexicalComposer initialConfig={{ ...initialConfig, editable }}>
       <div className='relative h-full'>
         <RichTextPlugin
-          contentEditable={<ContentEditable className={`${className} outline-none ${compact ? 'leading-5 text-[13px]' : 'leading-6 text-sm'} text-gray-700`} style={style || {}} />}
+          contentEditable={<ContentEditable className={`${className} outline-none ${compact ? 'leading-5 text-[13px]' : 'leading-6 text-sm'} text-gray-701`} style={style || {}} />}
           placeholder={<Placeholder value={placeholder} className={placeholderClassName} compact={compact} />}
           ErrorBoundary={LexicalErrorBoundary}
         />

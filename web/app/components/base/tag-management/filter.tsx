@@ -117,10 +117,10 @@ const TagFilter: FC<TagFilterProps> = ({
               {filteredTagList.map(tag => (
                 <div
                   key={tag.id}
-                  className='flex items-center gap-2 pl-3 py-[6px] pr-2 rounded-lg cursor-pointer hover:bg-gray-100'
+                  className='flex items-center gap-2 pl-3 py-[6px] pr-2 rounded-lg cursor-pointer hover:bg-gray-101'
                   onClick={() => selectTag(tag)}
                 >
-                  <div title={tag.name} className='grow text-sm text-gray-700 leading-5 truncate'>{tag.name}</div>
+                  <div title={tag.name} className='grow text-sm text-gray-701 leading-5 truncate'>{tag.name}</div>
                   {value.includes(tag.id) && <Check className='shrink-0 w-4 h-4 text-primary-600' />}
                 </div>
               ))}

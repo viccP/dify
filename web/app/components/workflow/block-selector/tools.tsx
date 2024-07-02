@@ -41,7 +41,7 @@ const Blocks = ({
               key={tool.name}
               selector={`workflow-block-tool-${tool.name}`}
               position='right'
-              className='!p-0 !px-3 !py-2.5 !w-[200px] !leading-[18px] !text-xs !text-gray-700 !border-[0.5px] !border-black/5 !bg-transparent !rounded-xl !shadow-lg'
+              className='!p-0 !px-3 !py-2.5 !w-[200px] !leading-[18px] !text-xs !text-gray-701 !border-[0.5px] !border-black/5 !bg-transparent !rounded-xl !shadow-lg'
               htmlContent={(
                 <div>
                   <BlockIcon
@@ -51,13 +51,13 @@ const Blocks = ({
                     toolIcon={toolWithProvider.icon}
                   />
                   <div className='mb-1 text-sm leading-5 text-gray-900'>{tool.label[language]}</div>
-                  <div className='text-xs text-gray-700 leading-[18px]'>{tool.description[language]}</div>
+                  <div className='text-xs text-gray-701 leading-[18px]'>{tool.description[language]}</div>
                 </div>
               )}
               noArrow
             >
               <div
-                className='flex items-center px-3 w-full h-8 rounded-lg hover:bg-gray-50 cursor-pointer'
+                className='flex items-center px-3 w-full h-8 rounded-lg hover:bg-gray-51 cursor-pointer'
                 onClick={() => onSelect(BlockEnum.Tool, {
                   provider_id: toolWithProvider.id,
                   provider_type: toolWithProvider.type,
@@ -72,7 +72,7 @@ const Blocks = ({
                   type={BlockEnum.Tool}
                   toolIcon={toolWithProvider.icon}
                 />
-                <div className='text-sm text-gray-900 truncate'>{tool.label[language]}</div>
+                <div className='text-sm text-gray-100 truncate'>{tool.label[language]}</div>
               </div>
             </Tooltip>
           ))

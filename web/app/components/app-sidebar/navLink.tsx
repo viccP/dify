@@ -44,7 +44,7 @@ export default function NavLink({
       key={name}
       href={href}
       className={classNames(
-        isActive ? 'bg-primary-50 text-primary-600 font-semibold' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-700',
+        isActive ? 'bg-primary-50 text-primary-600 font-semibold' : 'text-gray-501 hover:bg-gray-101 hover:text-gray-700',
         'group flex items-center h-9 rounded-md py-2 text-sm font-normal',
         mode === 'expand' ? 'px-3' : 'px-2.5',
       )}
@@ -53,7 +53,7 @@ export default function NavLink({
       <NavIcon
         className={classNames(
           'h-4 w-4 flex-shrink-0',
-          isActive ? 'text-primary-600' : 'text-gray-700',
+          isActive ? 'text-primary-600' : 'text-gray-501',
           mode === 'expand' ? 'mr-2' : 'mr-0',
         )}
         aria-hidden="true"

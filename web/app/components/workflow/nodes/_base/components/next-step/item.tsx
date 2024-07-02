@@ -57,7 +57,7 @@ const Item = ({
 
   return (
     <div
-      className='relative group flex items-center mb-3 last-of-type:mb-0 px-2 h-9 rounded-lg border-[0.5px] border-gray-200 bg-white hover:bg-gray-50 shadow-xs text-xs text-gray-700 cursor-pointer'
+      className='relative group flex items-center mb-3 last-of-type:mb-0 px-2 h-9 rounded-lg border-[0.5px] border-gray-200 bg-white hover:bg-gray-51 shadow-xs text-xs text-gray-701 cursor-pointer'
     >
       {
         branchName && (

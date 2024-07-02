@@ -99,11 +99,11 @@ const Answer: FC<AnswerProps> = ({
       </div>
       <div className='chat-answer-container group grow w-0 ml-4' ref={containerRef}>
         <div className={`group relative pr-10 ${chatAnswerContainerInner}`}>
-          <AnswerTriangle className='absolute -left-2 top-0 w-2 h-3 text-gray-100' />
+          <AnswerTriangle className='absolute -left-2 top-0 w-2 h-3 text-gray-101' />
           <div
             ref={contentRef}
             className={`
-              relative inline-block px-4 py-3 max-w-full bg-gray-100 rounded-b-2xl rounded-tr-2xl text-sm text-gray-900
+              relative inline-block px-4 py-3 max-w-full bg-gray-101 rounded-b-2xl rounded-tr-2xl text-sm text-gray-900
               ${workflowProcess && 'w-full'}
             `}
           >

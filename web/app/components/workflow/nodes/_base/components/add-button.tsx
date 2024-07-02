@@ -17,7 +17,7 @@ const AddButton: FC<Props> = ({
 }) => {
   return (
     <div
-      className={cn(className, 'flex items-center h-7 justify-center bg-gray-100 hover:bg-gray-200 rounded-lg cursor-pointer text-xs font-medium text-gray-700 space-x-1')}
+      className={cn(className, 'flex items-center h-7 justify-center bg-gray-101 hover:bg-gray-201 rounded-lg cursor-pointer text-xs font-medium text-gray-701 space-x-1')}
       onClick={onClick}
     >
       <Plus className='w-3.5 h-3.5' />

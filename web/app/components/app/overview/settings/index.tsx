@@ -105,7 +105,7 @@ const SettingsModal: FC<ISettingsModalProps> = ({
         onClose={onHide}
         className={`${s.settingsModal}`}
       >
-        <div className={`mt-6 font-medium ${s.settingTitle} text-gray-900`}>{t(`${prefixSettings}.webName`)}</div>
+        <div className={`mt-6 font-medium ${s.settingTitle} text-gray-100`}>{t(`${prefixSettings}.webName`)}</div>
         <div className='flex mt-2'>
           <AppIcon size='large'
             onClick={() => { setShowEmojiPicker(true) }}
@@ -113,22 +113,22 @@ const SettingsModal: FC<ISettingsModalProps> = ({
             icon={emoji.icon}
             background={emoji.icon_background}
           />
-          <input className={`flex-grow rounded-lg h-10 box-border px-3 ${s.projectName} bg-gray-100 text-dark-0`}
+          <input className={`flex-grow rounded-lg h-10 box-border px-3 ${s.projectName} bg-gray-101 text-dark-0`}
             value={inputInfo.title}
             onChange={onChange('title')}
             placeholder={t('app.appNamePlaceholder') || ''}
           />
         </div>
-        <div className={`mt-6 font-medium ${s.settingTitle} text-gray-900 `}>{t(`${prefixSettings}.webDesc`)}</div>
+        <div className={`mt-6 font-medium ${s.settingTitle} text-gray-100 `}>{t(`${prefixSettings}.webDesc`)}</div>
         <p className={`mt-1 ${s.settingsTip} text-gray-500`}>{t(`${prefixSettings}.webDescTip`)}</p>
         <textarea
           rows={3}
-          className={`mt-2 pt-2 pb-2 px-3 rounded-lg bg-gray-100 w-full ${s.settingsTip} text-gray-900`}
+          className={`mt-2 pt-2 pb-2 px-3 rounded-lg bg-gray-101 w-full ${s.settingsTip} text-gray-900`}
           value={inputInfo.desc}
           onChange={onChange('desc')}
           placeholder={t(`${prefixSettings}.webDescPlaceholder`) as string}
         />
-        <div className={`mt-6 mb-2 font-medium ${s.settingTitle} text-gray-900 `}>{t(`${prefixSettings}.language`)}</div>
+        <div className={`mt-6 mb-2 font-medium ${s.settingTitle} text-gray-100 `}>{t(`${prefixSettings}.language`)}</div>
         <SimpleSelect
           items={languages.filter(item => item.supported)}
           defaultValue={language}
@@ -136,7 +136,7 @@ const SettingsModal: FC<ISettingsModalProps> = ({
         />
         {!isShowMore && <div className='w-full cursor-pointer mt-8' onClick={() => setIsShowMore(true)}>
           <div className='flex justify-between'>
-            <div className={`font-medium ${s.settingTitle} flex-grow text-gray-900`}>{t(`${prefixSettings}.more.entry`)}</div>
+            <div className={`font-medium ${s.settingTitle} flex-grow text-gray-100`}>{t(`${prefixSettings}.more.entry`)}</div>
             <div className='flex-shrink-0 w-4 h-4 text-gray-500'>
               <ChevronRightIcon />
             </div>
@@ -145,27 +145,27 @@ const SettingsModal: FC<ISettingsModalProps> = ({
         </div>}
         {isShowMore && <>
           <hr className='w-full mt-6' />
-          <div className={`mt-6 font-medium ${s.settingTitle} text-gray-900`}>{t(`${prefixSettings}.more.copyright`)}</div>
-          <input className={`w-full mt-2 rounded-lg h-10 box-border px-3 ${s.projectName} bg-gray-100`}
+          <div className={`mt-6 font-medium ${s.settingTitle} text-gray-100`}>{t(`${prefixSettings}.more.copyright`)}</div>
+          <input className={`w-full mt-2 rounded-lg h-10 box-border px-3 ${s.projectName} bg-gray-101`}
             value={inputInfo.copyright}
             onChange={onChange('copyright')}
             placeholder={t(`${prefixSettings}.more.copyRightPlaceholder`) as string}
           />
-          <div className={`mt-8 font-medium ${s.settingTitle} text-gray-900`}>{t(`${prefixSettings}.more.privacyPolicy`)}</div>
+          <div className={`mt-8 font-medium ${s.settingTitle} text-gray-100`}>{t(`${prefixSettings}.more.privacyPolicy`)}</div>
           <p className={`mt-1 ${s.settingsTip} text-gray-500`}>
             <Trans
               i18nKey={`${prefixSettings}.more.privacyPolicyTip`}
               components={{ privacyPolicyLink: <Link href={'https://docs.dify.ai/user-agreement/privacy-policy'} target='_blank' rel='noopener noreferrer' className='text-primary-600' /> }}
             />
           </p>
-          <input className={`w-full mt-2 rounded-lg h-10 box-border px-3 ${s.projectName} bg-gray-100`}
+          <input className={`w-full mt-2 rounded-lg h-10 box-border px-3 ${s.projectName} bg-gray-101`}
             value={inputInfo.privacyPolicy}
             onChange={onChange('privacyPolicy')}
             placeholder={t(`${prefixSettings}.more.privacyPolicyPlaceholder`) as string}
           />
-          <div className={`mt-8 font-medium ${s.settingTitle} text-gray-900`}>{t(`${prefixSettings}.more.customDisclaimer`)}</div>
+          <div className={`mt-8 font-medium ${s.settingTitle} text-gray-100`}>{t(`${prefixSettings}.more.customDisclaimer`)}</div>
           <p className={`mt-1 ${s.settingsTip} text-gray-500`}>{t(`${prefixSettings}.more.customDisclaimerTip`)}</p>
-          <input className={`w-full mt-2 rounded-lg h-10 box-border px-3 ${s.projectName} bg-gray-100`}
+          <input className={`w-full mt-2 rounded-lg h-10 box-border px-3 ${s.projectName} bg-gray-101`}
             value={inputInfo.customDisclaimer}
             onChange={onChange('customDisclaimer')}
             placeholder={t(`${prefixSettings}.more.customDisclaimerPlaceholder`) as string}

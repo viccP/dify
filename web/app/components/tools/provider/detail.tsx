@@ -208,12 +208,12 @@ const ProviderDetail = ({
           )}
         </div>
         <div className='grow w-0 py-[1px]'>
-          <div className='flex items-center text-md leading-6 font-semibold text-gray-900'>
+          <div className='flex items-center text-md leading-6 font-semibold text-gray-100'>
             <div className='truncate' title={collection.label[language]}>{collection.label[language]}</div>
           </div>
         </div>
       </div>
-      <div className='mt-2 min-h-[36px] text-gray-500 text-sm leading-[18px]'>{collection.description[language]}</div>
+      <div className='mt-2 min-h-[36px] text-gray-501 text-sm leading-[18px]'>{collection.description[language]}</div>
       <div className='flex gap-1 border-b-[0.5px] border-black/5'>
         {(collection.type === CollectionType.builtIn) && needAuth && (
           <Button
@@ -265,7 +265,7 @@ const ProviderDetail = ({
       <div className='pt-3'>
         {isDetailLoading && <div className='flex h-[200px]'><Loading type='app'/></div>}
         {!isDetailLoading && (
-          <div className='text-xs font-medium leading-6 text-gray-500'>
+          <div className='text-xs font-medium leading-6 text-gray-501'>
             {collection.type === CollectionType.workflow && <span className=''>{t('tools.createTool.toolInput.title').toLocaleUpperCase()}</span>}
             {collection.type !== CollectionType.workflow && <span className=''>{t('tools.includeToolNum', { num: toolList.length }).toLocaleUpperCase()}</span>}
             {needAuth && (isBuiltIn || isModel) && !isAuthed && (

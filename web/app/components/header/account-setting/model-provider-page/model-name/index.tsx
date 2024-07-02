@@ -33,7 +33,7 @@ const ModelName: FC<ModelNameProps> = ({
   children,
 }) => {
   const language = useLanguage()
-  className = '\!text-dark-500'
+  className = '\!text-dark-501'
   if (!modelItem)
     return null
   return (
@@ -44,7 +44,7 @@ const ModelName: FC<ModelNameProps> = ({
       `}
     >
       <div
-        className='truncate'
+        className='truncate text-gray-100'
         title={modelItem.label[language] || modelItem.label.en_US}
       >
         {modelItem.label[language] || modelItem.label.en_US}

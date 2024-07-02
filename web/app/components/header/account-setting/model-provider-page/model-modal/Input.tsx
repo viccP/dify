@@ -41,12 +41,13 @@ const Input: FC<InputProps> = ({
       <input
         tabIndex={0}
         className={`
-          block px-3 w-full h-9 bg-dark-101 text-sm rounded-lg border border-transparent
+          block px-3 w-full h-9 bg-dark-120 text-sm rounded-lg border border-transparent
           appearance-none outline-none caret-dark-0 text-gray-100
 
-          placeholder:text-sm placeholder:text-dark-500
+          placeholder:text-sm placeholder:text-dark-501
           ${validated && 'pr-[30px]'}
           ${className}
+          !bg-white
         `}
         // hover:border-[rgba(0,0,0,0.08)] hover:bg-gray-50
         // focus:bg-white focus:border-gray-300 focus:shadow-xs

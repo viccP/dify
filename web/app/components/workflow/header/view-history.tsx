@@ -121,7 +121,7 @@ const ViewHistory = ({
               maxHeight: 'calc(2 / 3 * 100vh)',
             }}
           >
-            <div className='sticky top-0 bg-white flex items-center justify-between px-4 pt-3 text-base font-semibold text-gray-900'>
+            <div className='sticky top-0 bg-white flex items-center justify-between px-4 pt-3 text-base font-semibold text-gray-100'>
               <div className='grow'>{t('workflow.common.runHistory')}</div>
               <div
                 className='shrink-0 flex items-center justify-center w-6 h-6 cursor-pointer'

@@ -202,9 +202,9 @@ const Panel: FC<NodePanelProps<LLMNodeType>> = ({
         {/* Memory put place examples. */}
         {isChatMode && isChatModel && !!inputs.memory && (
           <div className='mt-4'>
-            <div className='flex justify-between items-center h-8 pl-3 pr-2 rounded-lg bg-gray-100'>
+            <div className='flex justify-between items-center h-8 pl-3 pr-2 rounded-lg bg-gray-101'>
               <div className='flex items-center space-x-1'>
-                <div className='text-xs font-semibold text-gray-700 uppercase'>{t('workflow.nodes.common.memories.title')}</div>
+                <div className='text-xs font-semibold text-gray-701 uppercase'>{t('workflow.nodes.common.memories.title')}</div>
                 <TooltipPlus
                   popupContent={t('workflow.nodes.common.memories.tip')}
                 >
@@ -217,7 +217,7 @@ const Panel: FC<NodePanelProps<LLMNodeType>> = ({
             <div className='mt-4'>
               <Editor
                 title={<div className='flex items-center space-x-1'>
-                  <div className='text-xs font-semibold text-gray-700 uppercase'>user</div>
+                  <div className='text-xs font-semibold text-gray-701 uppercase'>user</div>
                   <TooltipPlus
                     popupContent={
                       <div className='max-w-[180px]'>{t('workflow.nodes.llm.roleDescription.user')}</div>

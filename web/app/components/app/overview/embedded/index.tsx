@@ -32,12 +32,12 @@ const OPTION_MAP = {
       `<script>
  window.difyChatbotConfig = {
   token: '${token}'${isTestEnv
-        ? `,
+  ? `,
   isDev: true`
-        : ''}${IS_CE_EDITION
-          ? `,
+  : ''}${IS_CE_EDITION
+  ? `,
   baseUrl: '${url}'`
-          : ''}
+  : ''}
  }
 </script>
 <script
@@ -105,7 +105,7 @@ const Embedded = ({ isShow, onClose, appBaseUrl, accessToken, className }: Props
       wrapperClassName={className}
       closable={true}
     >
-      <div className="mb-4 mt-8 text-gray-900 text-[14px] font-medium leading-tight">
+      <div className="mb-4 mt-8 text-gray-100 text-[14px] font-medium leading-tight">
         {t(`${prefixEmbedded}.explanation`)}
       </div>
       <div className="flex flex-wrap items-center justify-between gap-y-2">
@@ -135,9 +135,9 @@ const Embedded = ({ isShow, onClose, appBaseUrl, accessToken, className }: Props
           </div>
         </div>
       )}
-      <div className={cn('w-full bg-gray-100 rounded-lg flex-col justify-start items-start inline-flex',
+      <div className={cn('w-full bg-gray-101 rounded-lg flex-col justify-start items-start inline-flex',
         'mt-6')}>
-        <div className="inline-flex items-center self-stretch justify-start gap-2 py-1 pl-3 pr-1 border border-black rounded-tl-lg rounded-tr-lg bg-gray-50 border-opacity-5">
+        <div className="inline-flex items-center self-stretch justify-start gap-2 py-1 pl-3 pr-1 border border-black rounded-tl-lg rounded-tr-lg bg-gray-51 border-opacity-5">
           <div className="grow shrink basis-0 text-dark-0 text-[13px] font-medium leading-none">
             {t(`${prefixEmbedded}.${option}`)}
           </div>

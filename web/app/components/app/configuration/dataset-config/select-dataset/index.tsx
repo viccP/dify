@@ -132,13 +132,13 @@ const SelectDataSet: FC<ISelectDataSetProps> = ({
                   <div className={cn('mr-2', !item.embedding_available && 'opacity-50')}>
                     <TypeIcon type="upload_file" size='md' />
                   </div>
-                  <div className={cn('max-w-[200px] text-[13px] font-medium text-gray-800 overflow-hidden text-ellipsis whitespace-nowrap', !item.embedding_available && 'opacity-50 !max-w-[120px]')}>{item.name}</div>
+                  <div className={cn('max-w-[200px] text-[13px] font-medium text-gray-100 overflow-hidden text-ellipsis whitespace-nowrap', !item.embedding_available && 'opacity-50 !max-w-[120px]')}>{item.name}</div>
                   {!item.embedding_available && (
-                    <span className='ml-1 shrink-0 px-1 border boder-gray-200 rounded-md text-gray-500 text-xs font-normal leading-[18px]'>{t('dataset.unavailable')}</span>
+                    <span className='ml-1 shrink-0 px-1 border boder-gray-200 rounded-md text-gray-501 text-xs font-normal leading-[18px]'>{t('dataset.unavailable')}</span>
                   )}
                 </div>
 
-                <div className={cn('shrink-0 flex text-xs text-gray-500 overflow-hidden whitespace-nowrap', !item.embedding_available && 'opacity-50')}>
+                <div className={cn('shrink-0 flex text-xs text-gray-501 overflow-hidden whitespace-nowrap', !item.embedding_available && 'opacity-50')}>
                   <span className='max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap'>{formatNumber(item.word_count)}</span>
                   {t('appDebug.feature.dataSet.words')}
                   <span className='px-0.5'>·</span>
@@ -152,7 +152,7 @@ const SelectDataSet: FC<ISelectDataSetProps> = ({
       )}
       {loaded && (
         <div className='flex justify-between items-center mt-8'>
-          <div className='text-sm  font-medium text-gray-700'>
+          <div className='text-sm  font-medium text-gray-701'>
             {selected.length > 0 && `${selected.length} ${t('appDebug.feature.dataSet.selected')}`}
           </div>
           <div className='flex space-x-2'>

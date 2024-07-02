@@ -57,7 +57,7 @@ const Category = ({
         {t('tools.type.all')}
       </div>
       {labelList.map(label => (
-        <div key={label.name} title={label.label[language]} className={cn('mb-0.5 p-1 pl-3 flex items-center cursor-pointer text-gray-700 text-sm leading-5 rounded-lg hover:bg-white truncate overflow-hidden', value === label.name && '!bg-white !text-primary-600 font-medium')} onClick={() => onSelect(label.name)}>
+        <div key={label.name} title={label.label[language]} className={cn('mb-0.5 p-1 pl-3 flex items-center cursor-pointer text-gray-701 text-sm leading-5 rounded-lg hover:bg-white truncate overflow-hidden', value === label.name && '!bg-white !text-primary-600 font-medium')} onClick={() => onSelect(label.name)}>
           <div className='shrink-0 w-4 h-4 mr-2'>
             <Icon active={value === label.name} svgString={label.icon} />
           </div>

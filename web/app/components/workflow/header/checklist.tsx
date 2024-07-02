@@ -89,7 +89,7 @@ const WorkflowChecklist = ({
             maxHeight: 'calc(2 / 3 * 100vh)',
           }}
         >
-          <div className='sticky top-0 bg-white flex items-center pl-4 pr-3 pt-3 h-[44px] text-md font-semibold text-gray-900 z-[1]'>
+          <div className='sticky top-0 bg-white flex items-center pl-4 pr-3 pt-3 h-[44px] text-md font-semibold text-gray-100 z-[1]'>
             <div className='grow'>{t('workflow.panel.checklist')}{needWarningNodes.length ? `(${needWarningNodes.length})` : ''}</div>
             <div
               className='shrink-0 flex items-center justify-center w-6 h-6 cursor-pointer'

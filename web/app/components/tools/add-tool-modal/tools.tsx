@@ -48,7 +48,7 @@ const Blocks = ({
         key={toolWithProvider.id}
         className='group mb-1 last-of-type:mb-0'
       >
-        <div className='flex items-center justify-between w-full pl-3 pr-1 h-[22px] text-xs font-medium text-gray-500'>
+        <div className='flex items-center justify-between w-full pl-3 pr-1 h-[22px] text-xs font-medium text-gray-501'>
           {toolWithProvider.label[language]}
           <a className='hidden cursor-pointer items-center group-hover:flex' href={`/tools?category=${toolWithProvider.type}`} target='_blank'>{t('tools.addToolModal.manageInTools')}<ArrowUpRight className='ml-0.5 w-3 h-3' /></a>
         </div>
@@ -76,12 +76,12 @@ const Blocks = ({
                     type={BlockEnum.Tool}
                     toolIcon={toolWithProvider.icon}
                   />
-                  <div className='mb-1 text-sm leading-5 text-gray-900'>{tool.label[language]}</div>
-                  <div className='text-xs text-gray-700 leading-[18px]'>{tool.description[language]}</div>
+                  <div className='mb-1 text-sm leading-5 text-gray-100'>{tool.label[language]}</div>
+                  <div className='text-xs text-gray-701 leading-[18px]'>{tool.description[language]}</div>
                   {tool.labels?.length > 0 && (
                     <div className='flex items-center shrink-0 mt-1'>
-                      <div className='relative w-full flex items-center gap-1 py-1 rounded-md text-gray-500' title={labelContent}>
-                        <Tag01 className='shrink-0 w-3 h-3 text-gray-500' />
+                      <div className='relative w-full flex items-center gap-1 py-1 rounded-md text-gray-501' title={labelContent}>
+                        <Tag01 className='shrink-0 w-3 h-3 text-gray-501' />
                         <div className='grow text-xs text-start leading-[18px] font-normal truncate'>{labelContent}</div>
                       </div>
                     </div>
@@ -90,13 +90,13 @@ const Blocks = ({
               )}
               noArrow
             >
-              <div className='group/item flex items-center w-full pl-3 pr-1 h-8 rounded-lg hover:bg-gray-50 cursor-pointer'>
+              <div className='group/item flex items-center w-full pl-3 pr-1 h-8 rounded-lg hover:bg-gray-51 cursor-pointer'>
                 <BlockIcon
-                  className={cn('mr-2 shrink-0', needAuth && 'opacity-30')}
+                  className={cn('mr-2 shrink-0 !text-gray-101', needAuth && 'opacity-30')}
                   type={BlockEnum.Tool}
                   toolIcon={toolWithProvider.icon}
                 />
-                <div className={cn('grow text-sm text-gray-900 truncate', needAuth && 'opacity-30')}>{tool.label[language]}</div>
+                <div className={cn('grow text-sm text-gray-100 truncate', needAuth && 'opacity-30')}>{tool.label[language]}</div>
                 {!needAuth && added && (
                   <div className='flex items-center gap-1 rounded-[6px] border border-gray-100 px-2 py-[3px] bg-white text-gray-300 text-xs font-medium leading-[18px]'>
                     <Check className='w-3 h-3'/>

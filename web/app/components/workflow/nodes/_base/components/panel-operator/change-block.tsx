@@ -47,7 +47,7 @@ const ChangeBlock = ({
 
   const renderTrigger = useCallback(() => {
     return (
-      <div className='flex items-center px-3 w-[232px] h-8 text-sm text-gray-700 rounded-lg cursor-pointer hover:bg-gray-50'>
+      <div className='flex items-center px-3 w-[232px] h-8 text-sm text-gray-700 rounded-lg cursor-pointer hover:bg-gray-51'>
         {t('workflow.panel.changeBlock')}
       </div>
     )

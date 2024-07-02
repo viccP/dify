@@ -47,7 +47,7 @@ const Nav = ({
           onClick={() => setAppDetail()}
           className={classNames(`
             flex items-center h-7 px-2.5 cursor-pointer rounded-[10px]
-            ${isActived ? 'text-dark-0' : 'text-gray-500'}
+            ${isActived ? 'text-dark-0' : 'text-gray-501'}
             ${curNav && isActived && 'hover:bg-dark-200'}
           `)}
           onMouseEnter={() => setHovered(true)}

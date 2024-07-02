@@ -31,7 +31,7 @@ const RadioGroup: FC<Props> = ({
           onClick={() => onChange(item.value)}
         >
           <div className={s.radio}></div>
-          <div className='text-[13px] font-medium text-gray-900'>{item.label}</div>
+          <div className='text-[13px] font-medium text-gray-100'>{item.label}</div>
         </div>
       ))}
     </div>

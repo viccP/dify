@@ -160,14 +160,14 @@ function AppCard({
         </div>
         <div className="flex flex-col justify-center py-2">
           <div className="py-1">
-            <div className="pb-1 text-xs text-gray-500">
+            <div className="pb-1 text-xs text-gray-501">
               {isApp
                 ? t('appOverview.overview.appInfo.accessibleAddress')
                 : t('appOverview.overview.apiInfo.accessibleAddress')}
             </div>
             <div className="w-full h-9 pl-2 pr-0.5 py-0.5 bg-black-200 bg-opacity-2 rounded-lg border border-black border-opacity-5 justify-start items-center inline-flex">
               <div className="h-4 px-2 justify-start items-start gap-2 flex flex-1 min-w-0">
-                <div className="text-gray-700 text-xs font-medium text-ellipsis overflow-hidden whitespace-nowrap">
+                <div className="text-gray-701 text-xs font-medium text-ellipsis overflow-hidden whitespace-nowrap">
                   {isApp ? appUrl : apiUrl}
                 </div>
               </div>
@@ -234,8 +234,8 @@ function AppCard({
                   className={disabled ? 'mt-[-8px]' : '!hidden'}
                 >
                   <div className="flex flex-row items-center">
-                    <op.opIcon className="h-4 w-4 mr-1.5 stroke-[1.8px]" />
-                    <span className="text-[13px]">{op.opName}</span>
+                    <op.opIcon className="h-4 w-4 mr-1.5 stroke-[1.8px] !text-gray-701" />
+                    <span className="text-[13px] !text-gray-701">{op.opName}</span>
                   </div>
                 </Tooltip>
               </Button>

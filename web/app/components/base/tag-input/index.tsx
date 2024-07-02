@@ -68,12 +68,12 @@ const TagInput: FC<TagInputProps> = ({
   }
 
   return (
-    <div className={cn('flex flex-wrap', !isInWorkflow && 'min-w-[200px]', isSpecialMode ? 'bg-gray-100 rounded-lg pb-1 pl-1' : '')}>
+    <div className={cn('flex flex-wrap', !isInWorkflow && 'min-w-[200px]', isSpecialMode ? 'bg-gray-101 rounded-lg pb-1 pl-1' : '')}>
       {
         (items || []).map((item, index) => (
           <div
             key={item}
-            className={cn('flex items-center mr-1 mt-1 px-2 py-1 text-sm text-dark-0 border border-gray-200', isSpecialMode ? 'bg-white rounded-md' : 'rounded-lg')}>
+            className={cn('flex items-center mr-1 mt-1 px-2 py-1 text-sm text-dark-0 border border-gray-201', isSpecialMode ? 'bg-white rounded-md' : 'rounded-lg')}>
             {item}
             {
               !disableRemove && (
@@ -89,7 +89,7 @@ const TagInput: FC<TagInputProps> = ({
       {
         !disableAdd && (
           <AutosizeInput
-            inputClassName={cn('outline-none text-dark-0 appearance-none placeholder:text-gray-300 caret-dark-0 hover:placeholder:text-gray-400', isSpecialMode ? 'bg-transparent' : '')}
+            inputClassName={cn('outline-none text-dark-1 appearance-none placeholder:text-gray-500 caret-dark-0 hover:placeholder:text-gray-500', isSpecialMode ? 'bg-transparent' : '')}
             className={cn(
               !isInWorkflow && 'max-w-[300px]',
               isInWorkflow && 'max-w-[146px]',

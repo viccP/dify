@@ -20,7 +20,7 @@ const Log: FC<LogProps> = ({
 
   return (
     <div
-      className='shrink-0 p-1 flex items-center justify-center rounded-[6px] font-medium text-gray-500 hover:bg-gray-50 cursor-pointer hover:text-gray-700'
+      className='shrink-0 p-1 flex items-center justify-center rounded-[6px] font-medium text-gray-501 hover:bg-gray-51 cursor-pointer hover:text-gray-701'
       onClick={(e) => {
         e.stopPropagation()
         e.nativeEvent.stopImmediatePropagation()
@@ -33,7 +33,7 @@ const Log: FC<LogProps> = ({
           setShowPromptLogModal(true)
       }}
     >
-      <File02 className='mr-1 w-4 h-4' />
+      <File02 className='mr-1 w-4 h-4 text-gray-501' />
       <div className='text-xs leading-4'>{runID ? t('appLog.viewLog') : isAgent ? t('appLog.agentLog') : t('appLog.promptLog')}</div>
     </div>
   )

@@ -38,7 +38,7 @@ const AutoHeightTextarea = forwardRef<HTMLTextAreaElement, AutoHeightTextareaPro
           <textarea
             ref={ref}
             placeholder={placeholder}
-            className={cn(className, 'bg-dark-120 disabled:bg-transparent absolute inset-0 outline-none border-none appearance-none resize-none w-full h-full')}
+            className={cn(className, '!text-gray-100 bg-dark-120 disabled:bg-transparent absolute inset-0 outline-none border-none appearance-none resize-none w-full h-full')}
             value={value}
             disabled={disabled}
             {...rest}

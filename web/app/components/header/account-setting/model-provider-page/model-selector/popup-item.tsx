@@ -79,7 +79,7 @@ const PopupItem: FC<PopupItemProps> = ({
               key={modelItem.model}
               className={`
                 group relative flex items-center px-3 py-1.5 h-8 rounded-lg
-                ${modelItem.status === ModelStatusEnum.active ? 'cursor-pointer hover:bg-gray-50' : 'cursor-not-allowed hover:bg-gray-50/60'}
+                ${modelItem.status === ModelStatusEnum.active ? 'cursor-pointer hover:bg-gray-51' : 'cursor-not-allowed hover:bg-gray-51/60'}
               `}
               onClick={() => handleSelect(model.provider, modelItem)}
             >

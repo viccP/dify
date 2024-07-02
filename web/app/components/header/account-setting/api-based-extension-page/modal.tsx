@@ -92,7 +92,7 @@ const ApiBasedExtensionModal: FC<ApiBasedExtensionModalProps> = ({
         <input
           value={localeData.name || ''}
           onChange={e => handleDataChange('name', e.target.value)}
-          className='block px-3 w-full h-9 bg-gray-100 rounded-lg text-sm text-gray-900 outline-none appearance-none'
+          className='block px-3 w-full h-9 bg-gray-101 rounded-lg text-sm text-gray-100 outline-none appearance-none'
           placeholder={t('common.apiBasedExtension.modal.name.placeholder') || ''}
         />
       </div>

@@ -194,10 +194,10 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
           <>
             <Divider className="!my-1" />
             <div
-              className='h-9 py-2 px-3 mx-1 flex items-center hover:bg-gray-50 rounded-lg cursor-pointer'
+              className='h-9 py-2 px-3 mx-1 flex items-center hover:bg-gray-51 rounded-lg cursor-pointer'
               onClick={onClickSwitch}
             >
-              <span className='text-gray-700 text-sm leading-5'>{t('app.switch')}</span>
+              <span className='text-gray-701 text-sm leading-5'>{t('app.switch')}</span>
             </div>
           </>
         )}

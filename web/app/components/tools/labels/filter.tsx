@@ -80,15 +80,15 @@ const LabelFilter: FC<LabelFilterProps> = ({
           className='block'
         >
           <div className={cn(
-            'flex items-center gap-1 px-2 h-8 rounded-lg border-[0.5px] border-transparent bg-gray-200 cursor-pointer hover:bg-gray-300',
+            'flex items-center gap-1 px-2 h-8 rounded-lg border-[0.5px] border-transparent bg-gray-201 cursor-pointer hover:bg-dark-200',
             open && !value.length && '!bg-gray-300 hover:bg-gray-300',
             !open && !!value.length && '!bg-white/80 shadow-xs !border-black/5 hover:!bg-gray-200',
             open && !!value.length && '!bg-gray-200 !border-black/5 shadow-xs hover:!bg-gray-200',
           )}>
             <div className='p-[1px]'>
-              <Tag01 className='h-3.5 w-3.5 text-gray-700' />
+              <Tag01 className='h-3.5 w-3.5 text-gray-701' />
             </div>
-            <div className='text-[13px] leading-[18px] text-gray-700'>
+            <div className='text-[13px] leading-[18px] text-gray-701'>
               {!value.length && t('common.tag.placeholder')}
               {!!value.length && currentLabel?.label[language]}
             </div>
@@ -97,7 +97,7 @@ const LabelFilter: FC<LabelFilterProps> = ({
             )}
             {!value.length && (
               <div className='p-[1px]'>
-                <ChevronDown className='h-3.5 w-3.5 text-gray-700'/>
+                <ChevronDown className='h-3.5 w-3.5 text-gray-701'/>
               </div>
             )}
             {!!value.length && (
@@ -119,10 +119,10 @@ const LabelFilter: FC<LabelFilterProps> = ({
               {filteredLabelList.map(label => (
                 <div
                   key={label.name}
-                  className='flex items-center gap-2 pl-3 py-[6px] pr-2 rounded-lg cursor-pointer hover:bg-gray-100'
+                  className='flex items-center gap-2 pl-3 py-[6px] pr-2 rounded-lg cursor-pointer hover:bg-gray-101'
                   onClick={() => selectLabel(label)}
                 >
-                  <div title={label.label[language]} className='grow text-sm text-gray-700 leading-5 truncate'>{label.label[language]}</div>
+                  <div title={label.label[language]} className='grow text-sm text-gray-701 leading-5 truncate'>{label.label[language]}</div>
                   {value.includes(label.name) && <Check className='shrink-0 w-4 h-4 text-primary-600'/>}
                 </div>
               ))}

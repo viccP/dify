@@ -27,9 +27,9 @@ const ModerationContent: FC<ModerationContentProps> = ({
 
   return (
     <div className='py-2'>
-      <div className='rounded-lg bg-gray-50 border border-gray-200'>
+      <div className='rounded-lg bg-gray-51 border border-gray-200'>
         <div className='flex items-center justify-between px-3 h-10 rounded-lg'>
-          <div className='shrink-0 text-sm font-medium text-gray-900'>{title}</div>
+          <div className='shrink-0 text-sm font-medium text-gray-100'>{title}</div>
           <div className='grow flex items-center justify-end'>
             {
               info && (
@@ -50,14 +50,14 @@ const ModerationContent: FC<ModerationContentProps> = ({
                 {t('appDebug.feature.moderation.modal.content.preset')}
                 <span className='text-xs font-normal text-gray-500'>{t('appDebug.feature.moderation.modal.content.supportMarkdown')}</span>
               </div>
-              <div className='relative px-3 py-2 h-20 rounded-lg bg-gray-100 text-dark-0'>
+              <div className='relative px-3 py-2 h-20 rounded-lg bg-gray-101 text-dark-1'>
                 <textarea
                   value={config.preset_response || ''}
                   className='block w-full h-full bg-transparent text-sm outline-none appearance-none resize-none'
                   placeholder={t('appDebug.feature.moderation.modal.content.placeholder') || ''}
                   onChange={e => handleConfigChange('preset_response', e.target.value)}
                 />
-                <div className='absolute bottom-2 right-2 flex items-center px-1 h-5 rounded-md bg-gray-50 text-xs font-medium text-gray-300'>
+                <div className='absolute bottom-2 right-2 flex items-center px-1 h-5 rounded-md bg-gray-51 text-xs font-medium text-gray-500'>
                   <span>{(config.preset_response || '').length}</span>/<span className='text-gray-500'>100</span>
                 </div>
               </div>
