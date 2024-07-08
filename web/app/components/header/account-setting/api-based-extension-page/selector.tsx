@@ -52,8 +52,8 @@ const ApiBasedExtensionSelector: FC<ApiBasedExtensionSelectorProps> = ({
         {
           currentItem
             ? (
-              <div className='flex items-center justify-between pl-3 pr-2.5 h-9 bg-gray-100 rounded-lg cursor-pointer'>
-                <div className='text-sm text-gray-900'>{currentItem.name}</div>
+              <div className='flex items-center justify-between pl-3 pr-2.5 h-9 bg-gray-101 rounded-lg cursor-pointer'>
+                <div className='text-sm text-gray-100'>{currentItem.name}</div>
                 <div className='flex items-center'>
                   <div className='mr-1.5 w-[270px] text-xs text-gray-400 truncate text-right'>
                     {currentItem.api_endpoint}

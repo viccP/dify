@@ -158,7 +158,7 @@ const BasePanel: FC<BasePanelProps> = ({
         {
           !!availableNextBlocks.length && (
             <div className='p-4 border-t-[0.5px] border-t-black/5'>
-              <div className='flex items-center mb-1 text-gray-700 text-[13px] font-semibold'>
+              <div className='flex items-center mb-1 text-gray-701 text-[13px] font-semibold'>
                 {t('workflow.panel.nextStep').toLocaleUpperCase()}
               </div>
               <div className='mb-2 text-xs text-gray-400'>

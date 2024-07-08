@@ -110,7 +110,7 @@ const BeforeRunForm: FC<BeforeRunFormProps> = ({
     }}>
       <div className='h-full rounded-2xl bg-white flex flex-col'>
         <div className='shrink-0 flex justify-between items-center h-8 pl-4 pr-3 pt-3'>
-          <div className='text-base font-semibold text-gray-900 truncate'>
+          <div className='text-base font-semibold text-gray-100 truncate'>
             {t(`${i18nPrefix}.testRun`)} {nodeName}
           </div>
           <div className='ml-2 shrink-0 p-1 cursor-pointer' onClick={onHide}>

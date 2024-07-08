@@ -65,13 +65,13 @@ const TagManagementModal = ({ show, type }: TagManagementModalProps) => {
       isShow={show}
       onClose={() => setShowTagManagementModal(false)}
     >
-      <div className='relative pb-2 text-xl font-semibold leading-[30px] text-gray-900'>{t('common.tag.manageTags')}</div>
+      <div className='relative pb-2 text-xl font-semibold leading-[30px] text-gray-100'>{t('common.tag.manageTags')}</div>
       <div className='absolute right-4 top-4 p-2 cursor-pointer' onClick={() => setShowTagManagementModal(false)}>
         <XClose className='w-4 h-4 text-gray-500' />
       </div>
       <div className='mt-3 flex flex-wrap gap-2'>
         <input
-          className='shrink-0 w-[100px] px-2 py-1 rounded-lg border border-dashed border-gray-200 text-sm leading-5 text-gray-700 outline-none appearance-none  placeholder:text-gray-300 caret-primary-600 focus:border-solid'
+          className='shrink-0 w-[100px] px-2 py-1 rounded-lg border border-gray-201 text-sm leading-5 bg-gray-201 text-gray-701 outline-none appearance-none  placeholder:text-gray-300 caret-primary-600 focus:border-solid'
           placeholder={t('common.tag.addNew') || ''}
           autoFocus
           value={name}

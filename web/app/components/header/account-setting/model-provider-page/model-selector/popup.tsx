@@ -45,7 +45,7 @@ const Popup: FC<PopupProps> = ({
       <div className='sticky top-0 pl-3 pt-3 pr-2 pb-1 bg-white z-10'>
         <div className={`
           flex items-center pl-[9px] pr-[10px] h-8 rounded-lg border
-          ${searchText ? 'bg-white border-gray-300 shadow-xs' : 'bg-gray-100 border-transparent'}
+          ${searchText ? 'bg-white border-gray-300 shadow-xs' : 'bg-gray-101 border-transparent'}
         `}>
           <SearchLg
             className={`
@@ -54,7 +54,7 @@ const Popup: FC<PopupProps> = ({
             `}
           />
           <input
-            className='block grow h-[18px] text-[13px] appearance-none outline-none bg-transparent'
+            className='block grow h-[18px] text-[13px] appearance-none outline-none bg-transparent text-gray-100'
             placeholder='Search model'
             value={searchText}
             onChange={e => setSearchText(e.target.value)}

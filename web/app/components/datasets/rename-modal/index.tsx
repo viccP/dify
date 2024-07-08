@@ -61,13 +61,13 @@ const RenameDatasetModal = ({ show, dataset, onSuccess, onClose }: RenameDataset
       isShow={show}
       onClose={() => { }}
     >
-      <div className='relative pb-2 text-xl font-medium leading-[30px] text-gray-900'>{t('datasetSettings.title')}</div>
+      <div className='relative pb-2 text-xl font-medium leading-[30px] text-gray-100'>{t('datasetSettings.title')}</div>
       <div className='absolute right-4 top-4 p-2 cursor-pointer' onClick={onClose}>
         <XClose className='w-4 h-4 text-gray-500' />
       </div>
       <div>
         <div className={cn('flex justify-between py-4 flex-wrap items-center')}>
-          <div className='shrink-0 py-2 text-sm font-medium leading-[20px] text-gray-900'>
+          <div className='shrink-0 py-2 text-sm font-medium leading-[20px] text-gray-100'>
             {t('datasetSettings.form.name')}
           </div>
           <input
@@ -78,14 +78,14 @@ const RenameDatasetModal = ({ show, dataset, onSuccess, onClose }: RenameDataset
           />
         </div>
         <div className={cn('flex justify-between py-4 flex-wrap items-center')}>
-          <div className='shrink-0 py-2 text-sm font-medium leading-[20px] text-gray-900'>
+          <div className='shrink-0 py-2 text-sm font-medium leading-[20px] text-gray-100'>
             {t('datasetSettings.form.desc')}
           </div>
           <div className='w-full'>
             <textarea
               value={description}
               onChange={e => setDescription(e.target.value)}
-              className='block px-3 py-2 w-full h-[88px] rounded-lg bg-gray-100 text-sm outline-none appearance-none resize-none text-dark-0'
+              className='block px-3 py-2 w-full h-[88px] rounded-lg bg-gray-100 text-sm outline-none appearance-none resize-none .text-gray-900'
               placeholder={t('datasetSettings.form.descPlaceholder') || ''}
             />
             <a className='mt-2 flex items-center h-[18px] px-3 text-xs text-gray-500 hover:text-primary-600' href="https://docs.dify.ai/features/datasets#how-to-write-a-good-dataset-description" target='_blank' rel='noopener noreferrer'>

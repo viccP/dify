@@ -281,7 +281,7 @@ const ModelModal: FC<ModelModalProps> = ({
           <div className='mx-2 w-[640px] max-h-[calc(100vh-120px)] bg-white shadow-xl rounded-2xl overflow-y-auto'>
             <div className='px-8 pt-8'>
               <div className='flex justify-between items-center mb-2'>
-                <div className='text-xl font-semibold text-gray-900'>{renderTitlePrefix()}</div>
+                <div className='text-xl font-semibold text-gray-100'>{renderTitlePrefix()}</div>
                 <ProviderIcon provider={provider} className={'text-dark-0'} />
               </div>
 
@@ -332,7 +332,7 @@ const ModelModal: FC<ModelModalProps> = ({
                     )
                   }
                   <Button
-                    className='mr-2 h-9 text-sm font-medium text-gray-700'
+                    className='mr-2 h-9 text-sm font-medium text-gray-701'
                     onClick={onCancel}
                   >
                     {t('common.operation.cancel')}

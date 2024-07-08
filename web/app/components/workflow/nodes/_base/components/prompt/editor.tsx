@@ -114,12 +114,12 @@ const Editor: FC<Props> = ({
   return (
     <Wrap className={cn(className, wrapClassName)} style={wrapStyle} isInNode isExpand={isExpand}>
       <div ref={ref} className={cn(isFocus ? s.gradientBorder : 'bg-gray-100', isExpand && 'h-full', '!rounded-[9px] p-0.5')}>
-        <div className={cn(isFocus ? 'bg-gray-50' : 'bg-gray-100', isExpand && 'h-full flex flex-col', 'rounded-lg')}>
+        <div className={cn(isFocus ? 'bg-gray-51' : 'bg-gray-101', isExpand && 'h-full flex flex-col', 'rounded-lg')}>
           <div className={cn(headerClassName, 'pt-1 pl-3 pr-2 flex justify-between h-6 items-center')}>
-            <div className='leading-4 text-xs font-semibold text-gray-700 uppercase'>{title}</div>
+            <div className='leading-4 text-xs font-semibold text-gray-701 uppercase'>{title}</div>
             <div className='flex items-center'>
-              <div className='leading-[18px] text-xs font-medium text-gray-500'>{value?.length || 0}</div>
-              <div className='w-px h-3 ml-2 mr-2 bg-gray-200'></div>
+              <div className='leading-[18px] text-xs font-medium text-gray-501'>{value?.length || 0}</div>
+              <div className='w-px h-3 ml-2 mr-2 bg-gray-201'></div>
               {/* Operations */}
               <div className='flex items-center space-x-2'>
                 {isSupportJinja && (

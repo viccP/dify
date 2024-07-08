@@ -54,7 +54,7 @@ const PermissionsRadio = ({
             }}
           >
             <div className={classNames(s['user-icon'], 'mr-3')} />
-            <div className='grow text-sm text-gray-900'>{option.text}</div>
+            <div className='grow text-sm text-gray-400'>{option.text}</div>
             <div className={classNames(radioClass, s.radio)} />
           </div>
         ))

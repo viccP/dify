@@ -20,7 +20,7 @@ const ToolsNav = ({
     <Link href="/tools" className={classNames(
       className, 'group',
       actived && 'bg-dark-15 shadow-md',
-      actived ? 'text-dark-0' : 'text-gray-500 hover:bg-dark-200',
+      actived ? 'text-dark-0' : 'text-gray-501 hover:bg-dark-200',
     )}>
       {
         actived

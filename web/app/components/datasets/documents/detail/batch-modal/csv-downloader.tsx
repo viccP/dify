@@ -50,7 +50,7 @@ const CSVDownload: FC<{ docForm: DocForm }> = ({ docForm }) => {
 
   return (
     <div className='mt-6'>
-      <div className='text-sm text-gray-900 font-medium'>{t('share.generation.csvStructureTitle')}</div>
+      <div className='text-sm text-gray-100 font-medium'>{t('share.generation.csvStructureTitle')}</div>
       <div className='mt-2 max-h-[500px] overflow-auto'>
         {docForm === DocForm.QA && (
           <table className='table-fixed w-full border-separate border-spacing-0 border border-gray-200 rounded-lg text-xs'>

@@ -44,9 +44,9 @@ const PreviewItem: FC<IPreviewItemProps> = ({
   const formatedIndex = (() => String(index).padStart(3, '0'))()
 
   return (
-    <div className='p-4 rounded-xl bg-gray-50'>
-      <div className='flex items-center justify-between h-5 text-xs text-gray-500'>
-        <div className='flex items-center h-[18px] space-x-1 border border-gray-200 box-border rounded-md italic pl-1 pr-1.5 font-medium'>
+    <div className='p-4 rounded-xl bg-gray-51'>
+      <div className='flex items-center justify-between h-5 text-xs text-gray-501'>
+        <div className='flex items-center h-[18px] space-x-1 border border-gray-201 box-border rounded-md italic pl-1 pr-1.5 font-medium'>
           {sharpIcon}
           <span>{formatedIndex}</span>
         </div>
@@ -55,7 +55,7 @@ const PreviewItem: FC<IPreviewItemProps> = ({
           <span>{charNums} {t('datasetCreation.stepTwo.characters')}</span>
         </div>
       </div>
-      <div className='mt-2 max-h-[120px] line-clamp-6 overflow-hidden text-sm text-gray-800'>
+      <div className='mt-2 max-h-[120px] line-clamp-6 overflow-hidden text-sm text-dark-0'>
         {type === PreviewType.TEXT && (
           <div style={{ whiteSpace: 'pre-line' }}>{content}</div>
         )}

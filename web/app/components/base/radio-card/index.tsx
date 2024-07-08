@@ -35,7 +35,7 @@ const RadioCard: FC<Props> = ({
           {icon}
         </div>
         <div className='grow'>
-          <div className='leading-5 text-sm font-medium text-gray-900'>{title}</div>
+          <div className='leading-5 text-sm font-medium text-gray-500'>{title}</div>
           <div className='leading-[18px] text-xs font-normal text-[#667085]'>{description}</div>
         </div>
         {!noRadio && (

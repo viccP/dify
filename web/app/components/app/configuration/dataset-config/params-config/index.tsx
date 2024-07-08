@@ -61,7 +61,7 @@ const ParamsConfig: FC = () => {
   return (
     <div>
       <div
-        className={cn('flex items-center rounded-md h-7 px-3 space-x-1 text-gray-700 cursor-pointer hover:bg-gray-200', open && 'bg-gray-200')}
+        className={cn('flex items-center rounded-md h-7 px-3 space-x-1 text-gray-701 cursor-pointer hover:bg-gray-200', open && 'bg-gray-200')}
         onClick={() => {
           setTempDataSetConfigs({
             ...datasetConfigs,

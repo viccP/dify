@@ -10,7 +10,8 @@
   font-weight: 600;
   font-size: 20px;
   line-height: 32px;
-  color: #101828;
+  /* color: #101828; */
+color: #fff;
 }
 .modalHeader .close {
   @apply shrink-0 h-4 w-4 bg-center bg-no-repeat cursor-pointer;
@@ -35,4 +36,5 @@
   font-size: 14px;
   line-height: 20px;
   color: #101828;
+  color: #fff;
 }

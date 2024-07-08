@@ -16,14 +16,14 @@ import Avatar from '@/app/components/base/avatar'
 import { IS_CE_EDITION } from '@/config'
 
 const titleClassName = `
-  text-sm font-medium text-gray-900
+  text-sm font-medium text-gray-100
 `
 const descriptionClassName = `
   mt-1 text-xs font-normal text-gray-500
 `
 const inputClassName = `
-  mt-2 w-full px-3 py-2 bg-gray-100 rounded
-  text-sm font-normal text-gray-800
+  mt-2 w-full px-3 py-2 bg-dark-101 rounded
+  text-sm font-normal text-gray-100
 `
 
 const validPassword = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/
@@ -119,7 +119,7 @@ export default function AccountPage() {
         <div className='mr-3'>
           <AppIcon size='tiny' />
         </div>
-        <div className='mt-[3px] text-xs font-medium text-gray-700 leading-[18px]'>{item.name}</div>
+        <div className='mt-[3px] text-xs font-medium text-gray-701 leading-[18px]'>{item.name}</div>
       </div>
     )
   }
@@ -132,9 +132,9 @@ export default function AccountPage() {
       </div>
       <div className='mb-8'>
         <div className={titleClassName}>{t('common.account.name')}</div>
-        <div className={classNames('flex items-center justify-between mt-2 w-full h-9 px-3 bg-gray-100 rounded text-sm font-normal text-gray-800 cursor-pointer group')}>
+        <div className={classNames('flex items-center justify-between mt-2 w-full h-9 px-3 bg-dark-101 rounded text-sm font-normal text-gray-100 cursor-pointer group')}>
           {userProfile.name}
-          <div className='items-center hidden h-6 px-2 text-xs font-normal bg-white border border-gray-200 rounded-md group-hover:flex' onClick={handleEditName}>{t('common.operation.edit')}</div>
+          <div className='items-center hidden h-6 px-2 text-xs font-normal bg-white border border-gray-200 text-gray-100 rounded-md group-hover:flex' onClick={handleEditName}>{t('common.operation.edit')}</div>
         </div>
       </div>
       <div className='mb-8'>
@@ -143,9 +143,9 @@ export default function AccountPage() {
       </div>
       {IS_CE_EDITION && (
         <div className='mb-8'>
-          <div className='mb-1 text-sm font-medium text-gray-900'>{t('common.account.password')}</div>
-          <div className='mb-2 text-xs text-gray-500'>{t('common.account.passwordTip')}</div>
-          <Button className='font-medium !text-gray-700 !px-3 !py-[7px] !text-[13px]' onClick={() => setEditPasswordModalVisible(true)}>{userProfile.is_password_set ? t('common.account.resetPassword') : t('common.account.setPassword')}</Button>
+          <div className='mb-1 text-sm font-medium text-gray-100'>{t('common.account.password')}</div>
+          <div className='mb-2 text-xs text-gray-501'>{t('common.account.passwordTip')}</div>
+          <Button className='font-medium !text-gray-701 !px-3 !py-[7px] !text-[13px]' onClick={() => setEditPasswordModalVisible(true)}>{userProfile.is_password_set ? t('common.account.resetPassword') : t('common.account.setPassword')}</Button>
         </div>
       )}
       {!!apps.length && (
@@ -170,7 +170,7 @@ export default function AccountPage() {
           className={s.modal}
           wrapperClassName='z-20'
         >
-          <div className='mb-6 text-lg font-medium text-gray-900'>{t('common.account.editName')}</div>
+          <div className='mb-6 text-lg font-medium text-gray-100'>{t('common.account.editName')}</div>
           <div className={titleClassName}>{t('common.account.name')}</div>
           <input
             className={inputClassName}
@@ -200,7 +200,7 @@ export default function AccountPage() {
           className={s.modal}
           wrapperClassName='z-20'
         >
-          <div className='mb-6 text-lg font-medium text-gray-900'>{userProfile.is_password_set ? t('common.account.resetPassword') : t('common.account.setPassword')}</div>
+          <div className='mb-6 text-lg font-medium text-gray-100'>{userProfile.is_password_set ? t('common.account.resetPassword') : t('common.account.setPassword')}</div>
           {userProfile.is_password_set && (
             <>
               <div className={titleClassName}>{t('common.account.currentPassword')}</div>
@@ -212,7 +212,7 @@ export default function AccountPage() {
               />
             </>
           )}
-          <div className='mt-8 text-sm font-medium text-gray-900'>
+          <div className='mt-8 text-sm font-medium text-gray-100'>
             {userProfile.is_password_set ? t('common.account.newPassword') : t('common.account.password')}
           </div>
           <input
@@ -221,7 +221,7 @@ export default function AccountPage() {
             value={password}
             onChange={e => setPassword(e.target.value)}
           />
-          <div className='mt-8 text-sm font-medium text-gray-900'>{t('common.account.confirmPassword')}</div>
+          <div className='mt-8 text-sm font-medium text-gray-100'>{t('common.account.confirmPassword')}</div>
           <input
             type="password"
             className={inputClassName}

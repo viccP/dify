@@ -78,7 +78,7 @@ const ApiBasedExtensionModal: FC<ApiBasedExtensionModalProps> = ({
       wrapperClassName='!z-[103]'
       className='!p-8 !pb-6 !max-w-none !w-[640px]'
     >
-      <div className='mb-2 text-xl font-semibold text-gray-900'>
+      <div className='mb-2 text-xl font-semibold text-gray-100'>
         {
           data.name
             ? t('common.apiBasedExtension.modal.editTitle')
@@ -86,18 +86,18 @@ const ApiBasedExtensionModal: FC<ApiBasedExtensionModalProps> = ({
         }
       </div>
       <div className='py-2'>
-        <div className='leading-9 text-sm font-medium text-gray-900'>
+        <div className='leading-9 text-sm font-medium text-gray-100'>
           {t('common.apiBasedExtension.modal.name.title')}
         </div>
         <input
           value={localeData.name || ''}
           onChange={e => handleDataChange('name', e.target.value)}
-          className='block px-3 w-full h-9 bg-gray-100 rounded-lg text-sm text-gray-900 outline-none appearance-none'
+          className='block px-3 w-full h-9 bg-gray-101 rounded-lg text-sm text-gray-100 outline-none appearance-none'
           placeholder={t('common.apiBasedExtension.modal.name.placeholder') || ''}
         />
       </div>
       <div className='py-2'>
-        <div className='flex justify-between items-center h-9 text-sm font-medium text-gray-900'>
+        <div className='flex justify-between items-center h-9 text-sm font-medium text-gray-100'>
           {t('common.apiBasedExtension.modal.apiEndpoint.title')}
           <a
             href={t('common.apiBasedExtension.linkUrl') || '/'}
@@ -116,7 +116,7 @@ const ApiBasedExtensionModal: FC<ApiBasedExtensionModalProps> = ({
         />
       </div>
       <div className='py-2'>
-        <div className='leading-9 text-sm font-medium text-gray-900'>
+        <div className='leading-9 text-sm font-medium text-gray-100'>
           {t('common.apiBasedExtension.modal.apiKey.title')}
         </div>
         <div className='flex items-center'>

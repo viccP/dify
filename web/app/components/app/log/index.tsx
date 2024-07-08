@@ -95,7 +95,7 @@ const Logs: FC<ILogsProps> = ({ appDetail }) => {
 
   return (
     <div className='flex flex-col h-full'>
-      <p className='flex text-sm font-normal text-gray-500'>{t('appLog.description')}</p>
+      <p className='flex text-sm font-normal text-gray-501'>{t('appLog.description')}</p>
       <div className='flex flex-col py-4 flex-1'>
         <Filter appId={appDetail.id} queryParams={queryParams} setQueryParams={setQueryParams} />
         {total === undefined

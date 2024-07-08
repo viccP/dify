@@ -42,7 +42,7 @@ const UserInput = () => {
       <div
         className={`
           flex items-center px-2 pt-4 h-[18px] text-[13px] font-semibold cursor-pointer
-          ${!expanded ? 'text-indigo-800' : 'text-gray-800'}
+          ${!expanded ? 'text-indigo-800' : 'text-gray-100'}
         `}
         onClick={() => setExpanded(!expanded)}
       >

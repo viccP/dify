@@ -16,7 +16,7 @@ type IFilterProps = {
 const Filter: FC<IFilterProps> = ({ queryParams, setQueryParams }: IFilterProps) => {
   const { t } = useTranslation()
   return (
-    <div className='flex flex-row flex-wrap gap-y-2 gap-x-4 items-center mb-4 text-gray-900 text-base'>
+    <div className='flex flex-row flex-wrap gap-y-2 gap-x-4 items-center mb-4 text-gray-100 text-base'>
       <div className="relative rounded-md">
         <SimpleSelect
           defaultValue={'all'}
@@ -40,7 +40,7 @@ const Filter: FC<IFilterProps> = ({ queryParams, setQueryParams }: IFilterProps)
         <input
           type="text"
           name="query"
-          className="block w-[240px] bg-gray-100 shadow-sm rounded-md border-0 py-1.5 pl-10 text-gray-900 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-200 focus-visible:outline-none sm:text-sm sm:leading-6"
+          className="block w-[240px] bg-gray-101 shadow-sm rounded-md border-0 py-1.5 pl-10 text-gray-100 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-gray-200 focus-visible:outline-none sm:text-sm sm:leading-6"
           placeholder={t('common.operation.search')!}
           value={queryParams.keyword}
           onChange={(e) => {

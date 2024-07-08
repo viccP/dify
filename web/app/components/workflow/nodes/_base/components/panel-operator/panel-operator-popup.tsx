@@ -93,7 +93,7 @@ const PanelOperatorPopup = ({
                   <div
                     className={`
                       flex items-center px-3 h-8 text-sm text-gray-700 rounded-lg cursor-pointer
-                      hover:bg-gray-50
+                      hover:bg-gray-51
                     `}
                     onClick={() => {
                       handleNodeSelect(id)
@@ -125,7 +125,7 @@ const PanelOperatorPopup = ({
           <>
             <div className='p-1'>
               <div
-                className='flex items-center justify-between px-3 h-8 text-sm text-gray-700 rounded-lg cursor-pointer hover:bg-gray-50'
+                className='flex items-center justify-between px-3 h-8 text-sm text-gray-700 rounded-lg cursor-pointer hover:bg-gray-51'
                 onClick={() => {
                   onClosePopup()
                   handleNodesCopy()
@@ -135,7 +135,7 @@ const PanelOperatorPopup = ({
                 <ShortcutsName keys={['ctrl', 'c']} />
               </div>
               <div
-                className='flex items-center justify-between px-3 h-8 text-sm text-gray-700 rounded-lg cursor-pointer hover:bg-gray-50'
+                className='flex items-center justify-between px-3 h-8 text-sm text-gray-700 rounded-lg cursor-pointer hover:bg-gray-51'
                 onClick={() => {
                   onClosePopup()
                   handleNodesDuplicate()
@@ -150,7 +150,7 @@ const PanelOperatorPopup = ({
               <div
                 className={`
                 flex items-center justify-between px-3 h-8 text-sm text-gray-700 rounded-lg cursor-pointer
-                hover:bg-rose-50 hover:text-red-500
+                hover:bg-gray-51 hover:text-red-500
                 `}
                 onClick={() => handleNodeDelete(id)}
               >
@@ -169,7 +169,7 @@ const PanelOperatorPopup = ({
               <a
                 href={link}
                 target='_blank'
-                className='flex items-center px-3 h-8 text-sm text-gray-700 rounded-lg cursor-pointer hover:bg-gray-50'
+                className='flex items-center px-3 h-8 text-sm text-gray-700 rounded-lg cursor-pointer hover:bg-gray-51'
               >
                 {t('workflow.panel.helpLink')}
               </a>

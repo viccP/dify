@@ -650,7 +650,7 @@ const StepTwo = ({
                       {rules.map(rule => (
                         <div key={rule.id} className={s.ruleItem}>
                           <input id={rule.id} type="checkbox" checked={rule.enabled} onChange={() => ruleChangeHandle(rule.id)} className="w-4 h-4 rounded border-gray-300 text-blue-700 focus:ring-blue-700" />
-                          <label htmlFor={rule.id} className="ml-2 text-sm font-normal cursor-pointer text-gray-800">{getRuleName(rule.id)}</label>
+                          <label htmlFor={rule.id} className="ml-2 text-sm font-normal cursor-pointer text-gray-500">{getRuleName(rule.id)}</label>
                         </div>
                       ))}
                     </div>
@@ -746,7 +746,7 @@ const StepTwo = ({
                     <MessageChatSquare className='w-4 h-4' />
                   </div>
                   <div className='grow mx-3'>
-                    <div className='mb-[2px] text-md font-medium text-gray-900'>{t('datasetCreation.stepTwo.QATitle')}</div>
+                    <div className='mb-[2px] text-md font-medium text-gray-100'>{t('datasetCreation.stepTwo.QATitle')}</div>
                     <div className='inline-flex items-center text-[13px] leading-[18px] text-gray-500'>
                       <span className='pr-1'>{t('datasetCreation.stepTwo.QALanguage')}</span>
                       {/* <LanguageSelect currentLanguage={docLanguage} onSelect={handleSelect} /> */}

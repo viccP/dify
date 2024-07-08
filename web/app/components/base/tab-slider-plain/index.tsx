@@ -26,7 +26,7 @@ const Item: FC<ItemProps> = ({
       className={cn(className, !isActive && 'cursor-pointer', 'relative pb-2.5  leading-6 text-base font-semibold')}
       onClick={() => !isActive && onClick(option.value)}
     >
-      <div className={cn(isActive ? 'text-gray-900' : 'text-gray-600')}>{option.text}</div>
+      <div className={cn(isActive ? 'text-gray-100' : 'text-gray-500')}>{option.text}</div>
       {isActive && (
         <div className='absolute bottom-0 left-0 right-0 h-0.5 bg-[#155EEF]'></div>
       )}

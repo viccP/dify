@@ -111,7 +111,7 @@ const ModelLoadBalancingModal = ({ provider, model, open = false, onClose, onSav
       className='max-w-none pt-8 px-8 w-[640px]'
       title={
         <div className='pb-3 font-semibold'>
-          <div className='h-[30px]'>{t('common.modelProvider.configLoadBalancing')}</div>
+          <div className='h-[30px] text-gray-100'>{t('common.modelProvider.configLoadBalancing')}</div>
           {Boolean(model) && (
             <div className='flex items-center h-5'>
               <ModelIcon

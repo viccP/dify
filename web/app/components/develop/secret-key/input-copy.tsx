@@ -36,10 +36,10 @@ const InputCopy = ({
   }, [isCopied])
 
   return (
-    <div className={`flex rounded-lg bg-gray-50 hover:bg-gray-50 py-2 items-center ${className}`}>
+    <div className={`flex rounded-lg bg-gray-51 hover:bg-gray-51 py-2 items-center ${className}`}>
       <div className="flex items-center flex-grow h-5">
         {children}
-        <div className='flex-grow bg-gray-50 text-[13px] relative h-full'>
+        <div className='flex-grow bg-gray-51 text-[13px] relative h-full'>
           <Tooltip
             selector={selector.current}
             content={isCopied ? `${t('appApi.copied')}` : `${t('appApi.copy')}`}

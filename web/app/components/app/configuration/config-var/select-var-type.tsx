@@ -28,11 +28,11 @@ type ItemProps = {
 const SelectItem: FC<ItemProps> = ({ text, type, value, Icon, onClick }) => {
   return (
     <div
-      className='flex items-center px-3 h-8 rounded-lg hover:bg-gray-50 cursor-pointer'
+      className='flex items-center px-3 h-8 rounded-lg hover:bg-gray-51 cursor-pointer'
       onClick={() => onClick(value)}
     >
-      {Icon ? <Icon className='w-4 h-4 text-gray-500' /> : <InputVarTypeIcon type={type!} className='w-4 h-4 text-gray-500' />}
-      <div className='ml-2 text-xs text-gray-600 truncate'>{text}</div>
+      {Icon ? <Icon className='w-4 h-4 text-gray-501' /> : <InputVarTypeIcon type={type!} className='w-4 h-4 text-gray-501' />}
+      <div className='ml-2 text-xs text-gray-501 truncate'>{text}</div>
     </div>
   )
 }

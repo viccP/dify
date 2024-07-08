@@ -233,7 +233,7 @@ const VarReferencePicker: FC<Props> = ({
                 <AddButton onClick={() => { }}></AddButton>
               </div>
             )
-            : (<div ref={triggerRef} className={cn((open || isFocus) ? 'border-gray-300' : 'border-gray-100', 'relative group/wrap flex items-center w-full h-8 p-1 rounded-lg bg-gray-100 border')}>
+            : (<div ref={triggerRef} className={cn((open || isFocus) ? 'border-gray-101' : 'border-gray-101', 'relative group/wrap flex items-center w-full h-8 p-1 rounded-lg bg-gray-101 border')}>
               {isSupportConstantValue
                 ? <div onClick={(e) => {
                   e.stopPropagation()

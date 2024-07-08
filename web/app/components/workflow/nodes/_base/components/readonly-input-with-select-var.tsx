@@ -50,7 +50,7 @@ const ReadonlyInputWithSelectVar: FC<Props> = ({
                 type={node?.type || BlockEnum.Start}
               />
             </div>
-            <div className='max-w-[60px] mx-0.5 text-xs font-medium text-gray-700 truncate' title={node?.title}>{node?.title}</div>
+            <div className='max-w-[60px] mx-0.5 text-xs font-medium text-gray-701 truncate' title={node?.title}>{node?.title}</div>
             <Line3 className='mr-0.5'></Line3>
           </div>
           <div className='flex items-center text-primary-600'>

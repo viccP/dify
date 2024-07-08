@@ -77,22 +77,22 @@ const Blocks = ({
                     className='mb-2'
                     type={block.type}
                   />
-                  <div className='mb-1 text-sm leading-5 text-gray-900'>{block.title}</div>
-                  <div className='text-xs text-gray-700 leading-[18px]'>{nodesExtraData[block.type].about}</div>
+                  <div className='mb-1 text-sm leading-5 text-gray-100'>{block.title}</div>
+                  <div className='text-xs text-gray-701 leading-[18px]'>{nodesExtraData[block.type].about}</div>
                 </div>
               )}
               noArrow
             >
               <div
                 key={block.type}
-                className='flex items-center px-3 w-full h-8 rounded-lg hover:bg-gray-50 cursor-pointer'
+                className='flex items-center px-3 w-full h-8 rounded-lg hover:bg-gray-51 cursor-pointer'
                 onClick={() => onSelect(block.type)}
               >
                 <BlockIcon
                   className='mr-2 shrink-0'
                   type={block.type}
                 />
-                <div className='text-sm text-gray-900'>{block.title}</div>
+                <div className='text-sm text-gray-100'>{block.title}</div>
               </div>
             </Tooltip>
           ))

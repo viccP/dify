@@ -133,7 +133,7 @@ const ChatInput: FC<ChatInputProps> = ({
       <div className='relative'>
         <div
           className={`
-            p-[5.5px] max-h-[150px] bg-white border-[1.5px] border-gray-200 rounded-xl overflow-y-auto
+            p-[5.5px] max-h-[150px] bg-white border-[1.5px] border-gray-201 rounded-xl overflow-y-auto
             ${isDragActive && 'border-primary-600'} mb-2
           `}
         >
@@ -177,7 +177,7 @@ const ChatInput: FC<ChatInputProps> = ({
             autoSize
           />
           <div className='absolute bottom-[7px] right-2 flex items-center h-8'>
-            <div className='flex items-center px-1 h-5 rounded-md bg-gray-100 text-xs font-medium text-gray-500'>
+            <div className='flex items-center px-1 h-5 rounded-md bg-gray-101 text-xs font-medium text-gray-501'>
               {query.trim().length}
             </div>
             {

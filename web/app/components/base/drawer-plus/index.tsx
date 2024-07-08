@@ -58,7 +58,7 @@ const DrawerPlus: FC<Props> = ({
       panelClassname={cn('mt-16 mx-2 sm:mr-2 mb-3 !p-0 rounded-xl', panelClassName, maxWidthClassName)}
     >
       <div
-        className={cn(contentClassName, 'w-full flex flex-col bg-white border-[0.5px] border-gray-200 rounded-xl shadow-xl')}
+        className={cn(contentClassName, '!bg-gray-101 w-full flex flex-col bg-white border-[0.5px] border-gray-200 rounded-xl shadow-xl')}
         style={{
           height,
         }}
@@ -66,7 +66,7 @@ const DrawerPlus: FC<Props> = ({
       >
         <div className={cn(headerClassName, 'shrink-0 border-b border-b-gray-100 py-4')}>
           <div className='flex justify-between items-center pl-6 pr-5 h-6'>
-            <div className='text-base font-semibold text-gray-900'>
+            <div className='text-base font-semibold text-gray-100'>
               {title}
             </div>
             <div className='flex items-center'>
@@ -74,12 +74,12 @@ const DrawerPlus: FC<Props> = ({
                 onClick={onHide}
                 className='flex justify-center items-center w-6 h-6 cursor-pointer'
               >
-                <XClose className='w-4 h-4 text-gray-500' />
+                <XClose className='w-4 h-4 text-gray-501' />
               </div>
             </div>
           </div>
           {titleDescription && (
-            <div className='pl-6 pr-10 leading-[18px] text-xs font-normal text-gray-500'>
+            <div className='pl-6 pr-10 leading-[18px] text-xs font-normal text-gray-501'>
               {titleDescription}
             </div>
           )}

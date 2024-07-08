@@ -6,7 +6,7 @@
   };
 
   .btn-default {
-    @apply border-solid border border-gray-200 cursor-pointer text-gray-700 hover:bg-white hover:shadow-sm hover:border-gray-300;
+    @apply border-solid border border-gray-201 cursor-pointer text-gray-701 hover:bg-white hover:shadow-sm hover:border-gray-300;
   }
 
   .btn-default:hover {

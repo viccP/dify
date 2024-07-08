@@ -13,24 +13,24 @@ const ModelTrigger: FC<ModelTriggerProps> = ({
   return (
     <div
       className={`
-        flex items-center px-2 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer
+        flex items-center px-2 h-8 rounded-lg bg-gray-101 hover:bg-gray-201 cursor-pointer
         ${className}
         ${open && '!bg-gray-200'}
       `}
     >
       <div className='grow flex items-center'>
         <div className='mr-1.5 flex items-center justify-center w-4 h-4 rounded-[5px] border border-dashed border-black/5'>
-          <CubeOutline className='w-3 h-3 text-gray-400' />
+          <CubeOutline className='w-3 h-3 text-gray-501' />
         </div>
         <div
-          className='text-[13px] text-gray-500 truncate'
+          className='text-[13px] text-gray-501 truncate'
           title='Select model'
         >
           Select model
         </div>
       </div>
       <div className='shrink-0 flex items-center justify-center w-4 h-4'>
-        <ChevronDown className='w-3.5 h-3.5 text-gray-500' />
+        <ChevronDown className='w-3.5 h-3.5 text-gray-501' />
       </div>
     </div>
   )

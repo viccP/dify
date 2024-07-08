@@ -56,24 +56,24 @@ const CustomizeModal: FC<IShareLinkProps> = ({
   >
     <div className='w-full mt-4 px-6 py-5 border-gray-200 rounded-lg border-[0.5px]'>
       <Tag bordered={true} hideBg={true} className='text-primary-600 border-primary-600 uppercase'>{t(`${prefixCustomize}.way`)} 1</Tag>
-      <p className='my-2 text-base font-medium text-gray-800'>{t(`${prefixCustomize}.way1.name`)}</p>
+      <p className='my-2 text-base font-medium text-gray-100'>{t(`${prefixCustomize}.way1.name`)}</p>
       <div className='flex py-4'>
         <StepNum>1</StepNum>
         <div className='flex flex-col'>
-          <div className='text-gray-900'>{t(`${prefixCustomize}.way1.step1`)}</div>
+          <div className='text-gray-100'>{t(`${prefixCustomize}.way1.step1`)}</div>
           <div className='text-gray-500 text-xs mt-1 mb-2'>{t(`${prefixCustomize}.way1.step1Tip`)}</div>
           <a href={`https://github.com/langgenius/${isChatApp ? 'webapp-conversation' : 'webapp-text-generator'}`} target='_blank' rel='noopener noreferrer'>
-            <Button className='text-gray-800 text-sm w-fit'><GithubIcon className='text-dark-800 mr-2' />{t(`${prefixCustomize}.way1.step1Operation`)}</Button>
+            <Button className='text-gray-100 text-sm w-fit'><GithubIcon className='text-dark-100 mr-2' />{t(`${prefixCustomize}.way1.step1Operation`)}</Button>
           </a>
         </div>
       </div>
       <div className='flex pt-4'>
         <StepNum>2</StepNum>
         <div className='flex flex-col'>
-          <div className='text-gray-900'>{t(`${prefixCustomize}.way1.step3`)}</div>
+          <div className='text-gray-100'>{t(`${prefixCustomize}.way1.step3`)}</div>
           <div className='text-gray-500 text-xs mt-1 mb-2'>{t(`${prefixCustomize}.way1.step2Tip`)}</div>
           <a href="https://vercel.com/docs/concepts/deployments/git/vercel-for-github" target='_blank' rel='noopener noreferrer'>
-            <Button className='text-gray-800 text-sm w-fit'>
+            <Button className='text-gray-100 text-sm w-fit'>
               <div className='mr-1.5 border-solid border-t-0 border-r-[7px] border-l-[7px] border-b-[12px] border-r-transparent border-b-[#FFFFFF] border-l-transparent border-t-transparent'></div>
               <span>{t(`${prefixCustomize}.way1.step2Operation`)}</span>
             </Button>
@@ -83,7 +83,7 @@ const CustomizeModal: FC<IShareLinkProps> = ({
       <div className='flex py-4'>
         <StepNum>3</StepNum>
         <div className='flex flex-col w-full overflow-hidden'>
-          <div className='text-gray-900'>{t(`${prefixCustomize}.way1.step3`)}</div>
+          <div className='text-gray-100'>{t(`${prefixCustomize}.way1.step3`)}</div>
           <div className='text-gray-500 text-xs mt-1 mb-2'>{t(`${prefixCustomize}.way1.step3Tip`)}</div>
           <pre className='overflow-x-scroll box-border py-3 px-4 bg-dark-120 text-xs font-medium rounded-lg select-text text-dark-0'>
             NEXT_PUBLIC_APP_ID={`'${appId}'`} <br />
@@ -96,9 +96,9 @@ const CustomizeModal: FC<IShareLinkProps> = ({
     </div>
     <div className='w-full mt-4 px-6 py-5 border-gray-200 rounded-lg border-[0.5px]'>
       <Tag bordered={true} hideBg={true} className='text-primary-600 border-primary-600 uppercase'>{t(`${prefixCustomize}.way`)} 2</Tag>
-      <p className='mt-2 text-base font-medium text-gray-800'>{t(`${prefixCustomize}.way2.name`)}</p>
+      <p className='mt-2 text-base font-medium text-gray-100'>{t(`${prefixCustomize}.way2.name`)}</p>
       <Button
-        className='w-36 mt-2'
+        className='w-36 mt-2 text-gray-100'
         onClick={() =>
           window.open(
             `https://docs.dify.ai/${locale !== LanguagesSupported[1]
@@ -109,7 +109,7 @@ const CustomizeModal: FC<IShareLinkProps> = ({
           )
         }
       >
-        <span className='text-sm text-gray-800'>{t(`${prefixCustomize}.way2.operation`)}</span>
+        <span className='text-sm text-gray-100'>{t(`${prefixCustomize}.way2.operation`)}</span>
         <ArrowTopRightOnSquareIcon className='w-4 h-4 ml-1 text-gray-800 shrink-0' />
       </Button>
     </div>

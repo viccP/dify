@@ -100,15 +100,15 @@ const TagItemEditor: FC<TagItemEditorProps> = ({
 
   return (
     <>
-      <div className={cn('shrink-0 flex items-center gap-0.5 pr-1 pl-2 py-1 rounded-lg border border-gray-200 text-sm leading-5 text-gray-700')}>
+      <div className={cn('shrink-0 flex items-center gap-0.5 pr-1 pl-2 py-1 rounded-lg border border-gray-201 text-sm leading-5 text-gray-701')}>
         {!isEditing && (
           <>
-            <div className='text-sm leading-5 text-gray-700'>
+            <div className='text-sm leading-5 text-gray-701'>
               {tag.name}
             </div>
-            <div className='shrink-0 px-1 text-sm leading-4.5 text-gray-500 font-medium'>{tag.binding_count}</div>
+            <div className='shrink-0 px-1 text-sm leading-4.5 text-gray-701 font-medium'>{tag.binding_count}</div>
             <div className='group/edit shrink-0 p-1 rounded-md cursor-pointer hover:bg-black/5' onClick={() => setIsEditing(true)}>
-              <Edit03 className='w-3 h-3 text-gray-500 group-hover/edit:text-gray-800' />
+              <Edit03 className='w-3 h-3 text-gray-701 group-hover/edit:text-dark-0' />
             </div>
             <div className='group/remove shrink-0 p-1 rounded-md cursor-pointer hover:bg-black/5' onClick={() => {
               if (tag.binding_count)
@@ -116,7 +116,7 @@ const TagItemEditor: FC<TagItemEditorProps> = ({
               else
                 handleRemove()
             }}>
-              <Trash03 className='w-3 h-3 text-gray-500 group-hover/remove:text-gray-800' />
+              <Trash03 className='w-3 h-3 text-gray-701 group-hover/remove:text-dark-0' />
             </div>
           </>
         )}

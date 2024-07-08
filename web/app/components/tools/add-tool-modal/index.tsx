@@ -170,9 +170,9 @@ const AddToolModal: FC<Props> = ({
             height: 'calc(100vh - 16px)',
           }}
         >
-          <div className='relative shrink-0 w-[200px] pb-3 bg-gray-100 rounded-l-xl border-r-[0.5px] border-black/2 overflow-y-auto'>
+          <div className='relative shrink-0 w-[200px] pb-3 bg-gray-101 rounded-l-xl border-r-[0.5px] border-black/2 overflow-y-auto'>
             <div className='sticky top-0 left-0 right-0'>
-              <div className='sticky top-0 left-0 right-0 px-5 py-3 text-md font-semibold text-gray-900'>{t('tools.addTool')}</div>
+              <div className='sticky top-0 left-0 right-0 px-5 py-3 text-md font-semibold text-gray-100'>{t('tools.addTool')}</div>
               <div className='px-3 pt-2 pb-4'>
                 <Button type='primary' className='w-[176px] text-[13px] leading-[18px] font-medium' onClick={() => setIsShowEditCustomCollectionModal(true)}>
                   <Plus className='w-4 h-4 mr-1'/>

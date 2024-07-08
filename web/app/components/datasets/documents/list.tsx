@@ -416,7 +416,7 @@ const DocumentList: FC<IDocumentListProps> = ({ embeddingAvailable, documents = 
             const fileType = isFile ? doc.data_source_detail_dict?.upload_file.extension : ''
             return <tr
               key={doc.id}
-              className={'border-b border-gray-200 h-8 hover:bg-gray-50 cursor-pointer'}
+              className={'border-b border-gray-200 h-8 hover:bg-gray-51 cursor-pointer'}
               onClick={() => {
                 router.push(`/datasets/${datasetId}/documents/${doc.id}`)
               }}>

@@ -62,14 +62,14 @@ const TypeSelector: FC<Props> = ({
         : (
           <div
             onClick={toggleShow}
-            className={cn(showOption && 'bg-black/5', 'flex items-center h-5 pl-1 pr-0.5 rounded-md text-xs font-semibold text-gray-700 cursor-pointer hover:bg-black/5')}>
+            className={cn(showOption && 'bg-black/5', 'flex items-center h-5 pl-1 pr-0.5 rounded-md text-xs font-semibold text-gray-701 cursor-pointer hover:bg-black/5')}>
             <div className={cn(triggerClassName, 'text-sm font-semibold', uppercase && 'uppercase', noValue && 'text-gray-400')}>{!noValue ? item?.label : placeholder}</div>
             {!readonly && <DropDownIcon className='w-3 h-3 ' />}
           </div>
         )}
 
       {(showOption && !readonly) && (
-        <div className={cn(popupClassName, 'absolute z-10 top-[24px] w-[120px]  p-1 border border-gray-200 shadow-lg rounded-lg bg-white')}>
+        <div className={cn(popupClassName, 'absolute z-10 top-[24px] w-[120px]  p-1 border border-gray-201 shadow-lg rounded-lg bg-white')}>
           {list.map(item => (
             <div
               key={item.value}
@@ -77,7 +77,7 @@ const TypeSelector: FC<Props> = ({
                 setHide()
                 onChange(item.value)
               }}
-              className={cn(itemClassName, uppercase && 'uppercase', 'flex items-center h-[30px] justify-between min-w-[44px] px-3 rounded-lg cursor-pointer text-[13px] font-medium text-gray-700 hover:bg-gray-50')}
+              className={cn(itemClassName, uppercase && 'uppercase', 'flex items-center h-[30px] justify-between min-w-[44px] px-3 rounded-lg cursor-pointer text-[13px] font-medium text-gray-701 hover:bg-gray-51')}
             >
               <div>{item.label}</div>
               {showChecked && item.value === value && <Check className='text-primary-600 w-4 h-4' />}

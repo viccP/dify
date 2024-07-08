@@ -51,17 +51,17 @@ const ProviderCard = ({
           )}
         </div>
         <div className='grow w-0 py-[1px]'>
-          <div className='flex items-center text-sm leading-5 font-semibold text-gray-800'>
+          <div className='flex items-center text-sm leading-5 font-semibold text-dark-0'>
             <div className='truncate' title={collection.label[language]}>{collection.label[language]}</div>
           </div>
-          <div className='flex items-center text-[10px] leading-[18px] text-gray-500 font-medium'>
+          <div className='flex items-center text-[10px] leading-[18px] text-gray-501 font-medium'>
             <div className='truncate'>{t('tools.author')}&nbsp;{collection.author}</div>
           </div>
         </div>
       </div>
       <div
         className={cn(
-          'grow mb-2 px-[14px] max-h-[72px] text-xs leading-normal text-gray-500',
+          'grow mb-2 px-[14px] max-h-[72px] text-xs leading-normal text-gray-501',
           collection.labels?.length ? 'line-clamp-2' : 'line-clamp-4',
           collection.labels?.length > 0 && 'group-hover:line-clamp-2 group-hover:max-h-[36px]',
         )}
@@ -71,7 +71,7 @@ const ProviderCard = ({
       </div>
       {collection.labels?.length > 0 && (
         <div className='flex items-center shrink-0 mt-1 pt-1 pl-[14px] pr-[6px] pb-[6px] h-[42px]'>
-          <div className='relative w-full flex items-center gap-1 py-[7px] rounded-md text-gray-500' title={labelContent}>
+          <div className='relative w-full flex items-center gap-1 py-[7px] rounded-md text-gray-501' title={labelContent}>
             <Tag01 className='shrink-0 w-3 h-3' />
             <div className='grow text-xs text-start leading-[18px] font-normal truncate'>{labelContent}</div>
           </div>

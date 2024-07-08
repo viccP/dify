@@ -58,8 +58,8 @@ const RenameModal: FC<Props> = ({
       isShow
       onClose={onClose}
     >
-      <div className={'mt-6 font-medium text-sm leading-[21px] text-gray-900'}>{t('datasetDocuments.list.table.name')}</div>
-      <input className={'mt-2 w-full rounded-lg h-10 box-border px-3 text-sm leading-10 bg-gray-100'}
+      <div className={'mt-6 font-medium text-sm leading-[21px] text-gray-100'}>{t('datasetDocuments.list.table.name')}</div>
+      <input className={'mt-2 w-full rounded-lg h-10 box-border px-3 text-sm leading-10 bg-gray-101'}
         value={newName}
         onChange={e => setNewName(e.target.value)}
       />

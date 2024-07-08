@@ -47,10 +47,10 @@ const MembersPage = () => {
   return (
     <>
       <div className='flex flex-col'>
-        <div className='flex items-center mb-4 p-3 bg-gray-50 rounded-2xl'>
+        <div className='flex items-center mb-4 p-3 bg-gray-51 rounded-2xl'>
           <LogoEmbededChatHeader className='!w-10 !h-10' />
           <div className='grow mx-2'>
-            <div className='text-sm font-medium text-gray-900'>{currentWorkspace?.name}</div>
+            <div className='text-sm font-medium text-gray-100'>{currentWorkspace?.name}</div>
             {enableBilling && (
               <div className='text-xs text-gray-500'>
                 {isNotUnlimitedMemberPlan
@@ -76,7 +76,7 @@ const MembersPage = () => {
             <UpgradeBtn className='mr-2' loc='member-invite' />
           )}
           <div className={
-            `shrink-0 flex items-center py-[7px] px-3 border-[0.5px] border-gray-200
+            `shrink-0 flex items-center py-[7px] px-3 border-[0.5px] border-gray-51
             text-[13px] font-medium text-primary-600 bg-white
             shadow-xs rounded-lg ${(isCurrentWorkspaceManager && !isMemberFull) ? 'cursor-pointer' : 'grayscale opacity-50 cursor-default'}`
           } onClick={() => (isCurrentWorkspaceManager && !isMemberFull) && setInviteModalVisible(true)}>
@@ -86,9 +86,9 @@ const MembersPage = () => {
         </div>
         <div className='overflow-visible lg:overflow-visible'>
           <div className='flex items-center py-[7px] border-b border-gray-200 min-w-[480px]'>
-            <div className='grow px-3 text-xs font-medium text-gray-500'>{t('common.members.name')}</div>
-            <div className='shrink-0 w-[104px] text-xs font-medium text-gray-500'>{t('common.members.lastActive')}</div>
-            <div className='shrink-0 w-[96px] px-3 text-xs font-medium text-gray-500'>{t('common.members.role')}</div>
+            <div className='grow px-3 text-xs font-medium text-gray-701'>{t('common.members.name')}</div>
+            <div className='shrink-0 w-[104px] text-xs font-medium text-gray-701'>{t('common.members.lastActive')}</div>
+            <div className='shrink-0 w-[96px] px-3 text-xs font-medium text-gray-701'>{t('common.members.role')}</div>
           </div>
           <div className='min-w-[480px] relative'>
             {
@@ -97,20 +97,20 @@ const MembersPage = () => {
                   <div className='grow flex items-center py-2 px-3'>
                     <Avatar size={24} className='mr-2' name={account.name} />
                     <div className=''>
-                      <div className='text-[13px] font-medium text-gray-700 leading-[18px]'>
+                      <div className='text-[13px] font-medium text-gray-701 leading-[18px]'>
                         {account.name}
                         {account.status === 'pending' && <span className='ml-1 text-xs text-[#DC6803]'>{t('common.members.pending')}</span>}
-                        {userProfile.email === account.email && <span className='text-xs text-gray-500'>{t('common.members.you')}</span>}
+                        {userProfile.email === account.email && <span className='text-xs text-gray-701'>{t('common.members.you')}</span>}
                       </div>
-                      <div className='text-xs text-gray-500 leading-[18px]'>{account.email}</div>
+                      <div className='text-xs text-gray-701 leading-[18px]'>{account.email}</div>
                     </div>
                   </div>
-                  <div className='shrink-0 flex items-center w-[104px] py-2 text-[13px] text-gray-700'>{dayjs(Number((account.last_active_at || account.created_at)) * 1000).locale(locale === 'zh-Hans' ? 'zh-cn' : 'en').fromNow()}</div>
+                  <div className='shrink-0 flex items-center w-[104px] py-2 text-[13px] text-gray-701'>{dayjs(Number((account.last_active_at || account.created_at)) * 1000).locale(locale === 'zh-Hans' ? 'zh-cn' : 'en').fromNow()}</div>
                   <div className='shrink-0 w-[96px] flex items-center'>
                     {
                       (owner && account.role !== 'owner')
                         ? <Operation member={account} onOperate={mutate} />
-                        : <div className='px-3 text-[13px] text-gray-700'>{RoleMap[account.role] || RoleMap.normal}</div>
+                        : <div className='px-3 text-[13px] text-gray-701'>{RoleMap[account.role] || RoleMap.normal}</div>
                     }
                   </div>
                 </div>

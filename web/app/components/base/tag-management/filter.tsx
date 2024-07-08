@@ -78,15 +78,15 @@ const TagFilter: FC<TagFilterProps> = ({
           className='block'
         >
           <div className={cn(
-            'flex items-center gap-1 px-2 h-8 rounded-lg border-[0.5px] border-transparent bg-gray-200 cursor-pointer hover:bg-dark-200',
-            open && !value.length && '!bg-dark-200 hover:bg-gray-300',
+            'flex items-center gap-1 px-2 h-8 rounded-lg border-[0.5px] border-transparent bg-gray-201 cursor-pointer hover:bg-dark-200',
+            open && !value.length && '!bg-dark-201 hover:bg-gray-300',
             !open && !!value.length && '!bg-white/80 shadow-xs !border-black/5 hover:!bg-gray-200',
-            open && !!value.length && '!bg-gray-200 !border-black/5 shadow-xs hover:!bg-gray-200',
+            open && !!value.length && '!bg-gray-201 !border-black/5 shadow-xs hover:!bg-gray-200',
           )}>
             <div className='p-[1px]'>
-              <Tag01 className='h-3.5 w-3.5 text-gray-700' />
+              <Tag01 className='h-3.5 w-3.5 text-gray-701' />
             </div>
-            <div className='text-[13px] leading-[18px] text-gray-700'>
+            <div className='text-[13px] leading-[18px] text-gray-701'>
               {!value.length && t('common.tag.placeholder')}
               {!!value.length && currentTag?.name}
             </div>
@@ -95,7 +95,7 @@ const TagFilter: FC<TagFilterProps> = ({
             )}
             {!value.length && (
               <div className='p-[1px]'>
-                <ChevronDown className='h-3.5 w-3.5 text-gray-700' />
+                <ChevronDown className='h-3.5 w-3.5 text-gray-701' />
               </div>
             )}
             {!!value.length && (
@@ -117,10 +117,10 @@ const TagFilter: FC<TagFilterProps> = ({
               {filteredTagList.map(tag => (
                 <div
                   key={tag.id}
-                  className='flex items-center gap-2 pl-3 py-[6px] pr-2 rounded-lg cursor-pointer hover:bg-gray-100'
+                  className='flex items-center gap-2 pl-3 py-[6px] pr-2 rounded-lg cursor-pointer hover:bg-gray-101'
                   onClick={() => selectTag(tag)}
                 >
-                  <div title={tag.name} className='grow text-sm text-gray-700 leading-5 truncate'>{tag.name}</div>
+                  <div title={tag.name} className='grow text-sm text-gray-701 leading-5 truncate'>{tag.name}</div>
                   {value.includes(tag.id) && <Check className='shrink-0 w-4 h-4 text-primary-600' />}
                 </div>
               ))}

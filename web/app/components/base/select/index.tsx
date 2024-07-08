@@ -182,8 +182,8 @@ const SimpleSelect: FC<ISelectProps> = ({
       }}
     >
       <div className={`relative h-9 ${wrapperClassName}`}>
-        <Listbox.Button className={`w-full h-full text-dark-0 rounded-lg border-0 bg-gray-100 py-1.5 pl-3 pr-10 sm:text-sm sm:leading-6 focus-visible:outline-none focus-visible:bg-gray-200 group-hover:bg-gray-200 ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} ${className}`}>
-          <span className={classNames('block truncate text-left', !selectedItem?.name && 'text-gray-400')}>{selectedItem?.name ?? localPlaceholder}</span>
+        <Listbox.Button className={`w-full h-full text-dark-0 rounded-lg border-0 !bg-gray-101 py-1.5 pl-3 pr-10 sm:text-sm sm:leading-6 focus-visible:outline-none focus-visible:bg-gray-201 group-hover:bg-gray-201 ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} ${className}`}>
+          <span className={classNames('block truncate text-left', !selectedItem?.name && 'text-gray-100')}>{selectedItem?.name ?? localPlaceholder}</span>
           <span className="absolute inset-y-0 right-0 flex items-center pr-2">
             {selectedItem
               ? (
@@ -217,7 +217,7 @@ const SimpleSelect: FC<ISelectProps> = ({
                 <Listbox.Option
                   key={item.value}
                   className={({ active }) =>
-                    `relative cursor-pointer select-none py-2 pl-3 pr-9 rounded-lg hover:bg-gray-100 text-gray-700 ${active ? 'bg-gray-100' : ''
+                    `relative cursor-pointer select-none py-2 pl-3 pr-9 rounded-lg hover:bg-gray-101 text-gray-701 ${active ? 'bg-gray-101' : ''
                     }`
                   }
                   value={item}

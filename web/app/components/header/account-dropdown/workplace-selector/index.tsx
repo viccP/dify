@@ -17,7 +17,7 @@ const itemIconClassName = `
   shrink-0 mr-2 flex items-center justify-center w-6 h-6 bg-[#EFF4FF] rounded-md text-xs font-medium text-primary-600
 `
 const itemNameClassName = `
-  grow mr-2 text-sm text-gray-700 text-left
+  grow mr-2 text-sm text-gray-701 text-left
 `
 const itemCheckClassName = `
   shrink-0 w-4 h-4 text-primary-600
@@ -50,12 +50,12 @@ const WorkplaceSelector = () => {
             <Menu.Button className={cn(
               `
                 ${itemClassName} w-full
-                group hover:bg-dark-200 cursor-pointer ${open && 'bg-dark-200'} rounded-lg
+                group hover:bg-dark-201 cursor-pointer ${open && 'bg-dark-201'} rounded-lg
               `,
             )}>
               <div className={itemIconClassName}>{currentWorkspace?.name[0].toLocaleUpperCase()}</div>
               <div className={`${itemNameClassName} truncate`}>{currentWorkspace?.name}</div>
-              <ChevronRight className='shrink-0 w-[14px] h-[14px] text-gray-500' />
+              <ChevronRight className='shrink-0 w-[14px] h-[14px] text-gray-501' />
             </Menu.Button>
             <Transition
               as={Fragment}

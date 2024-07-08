@@ -39,7 +39,7 @@ const CopyBtn = ({
             setIsCopied(true)
           }}
         >
-          <div className={`w-6 h-6 rounded-md hover:bg-gray-50  ${s.copyIcon} ${isCopied ? s.copied : ''}`}></div>
+          <div className={`w-6 h-6 rounded-md hover:bg-gray-51  ${s.copyIcon} ${isCopied ? s.copied : ''}`}></div>
         </div>
       </Tooltip>
     </div>

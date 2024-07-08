@@ -17,7 +17,7 @@ const DetailPanel: FC<ILogDetail> = ({ runID, onClose }) => {
       <span className='absolute right-3 top-4 p-1 cursor-pointer z-20' onClick={onClose}>
         <XClose className='w-4 h-4 text-gray-500' />
       </span>
-      <h1 className='shrink-0 px-4 py-1 text-md font-semibold text-gray-900'>{t('appLog.runDetail.workflowTitle')}</h1>
+      <h1 className='shrink-0 px-4 py-1 text-md font-semibold text-gray-100'>{t('appLog.runDetail.workflowTitle')}</h1>
       <Run runID={runID}/>
     </div>
   )

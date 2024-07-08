@@ -119,7 +119,7 @@ const HitTesting: FC<Props> = ({ datasetId }: Props) => {
                       {recordsRes?.data?.map((record) => {
                         return <tr
                           key={record.id}
-                          className='group border-b border-gray-200 h-8 hover:bg-gray-50 cursor-pointer'
+                          className='group border-b border-gray-200 h-8 hover:bg-gray-51 cursor-pointer'
                           onClick={() => setText(record.content)}
                         >
                           <td className='w-24'>

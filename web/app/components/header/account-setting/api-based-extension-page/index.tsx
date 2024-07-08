@@ -40,7 +40,7 @@ const ApiBasedExtensionPage = () => {
         )
       }
       <div
-        className='flex items-center justify-center px-3 h-8 text-[13px] font-medium text-gray-700 rounded-lg bg-gray-50 cursor-pointer'
+        className='flex items-center justify-center px-3 h-8 text-[13px] font-medium text-gray-701 rounded-lg bg-gray-51 cursor-pointer'
         onClick={handleOpenApiBasedExtensionModal}
       >
         <Plus className='mr-2 w-4 h-4' />

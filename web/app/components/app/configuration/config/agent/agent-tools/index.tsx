@@ -73,7 +73,7 @@ const AgentTools: FC = () => {
         }
         headerRight={
           <div className='flex items-center'>
-            <div className='leading-[18px] text-xs font-normal text-gray-500'>{tools.filter((item: any) => !!item.enabled).length}/{tools.length}&nbsp;{t('appDebug.agent.tools.enabled')}</div>
+            <div className='leading-[18px] text-xs font-normal text-gray-501'>{tools.filter((item: any) => !!item.enabled).length}/{tools.length}&nbsp;{t('appDebug.agent.tools.enabled')}</div>
             {tools.length < MAX_TOOLS_NUM && (
               <>
                 <div className='ml-3 mr-1 h-3.5 w-px bg-gray-200'></div>
@@ -114,11 +114,11 @@ const AgentTools: FC = () => {
                 <div
                   className={cn((item.isDeleted || item.notAuthor) ? 'line-through opacity-50' : '', 'grow w-0 ml-2 leading-[18px] text-[13px] font-medium text-gray-800  truncate')}
                 >
-                  <span className='text-gray-800 pr-2'>{item.provider_type === CollectionType.builtIn ? item.provider_name : item.tool_label}</span>
+                  <span className='text-gray-100 pr-2'>{item.provider_type === CollectionType.builtIn ? item.provider_name : item.tool_label}</span>
                   <TooltipPlus
                     popupContent={t('tools.toolNameUsageTip')}
                   >
-                    <span className='text-gray-500'>{item.tool_name}</span>
+                    <span className='text-gray-501'>{item.tool_name}</span>
                   </TooltipPlus>
                 </div>
               </div>

@@ -89,7 +89,7 @@ const FormItem: FC<Props> = ({
         {
           type === InputVarType.textInput && (
             <input
-              className="w-full px-3 text-sm leading-8 text-gray-900 border-0 rounded-lg grow h-8 bg-gray-50 focus:outline-none focus:ring-1 focus:ring-inset focus:ring-gray-200"
+              className="w-full px-3 text-sm leading-8 text-gray-100 border-0 rounded-lg grow h-8 bg-gray-51 focus:outline-none focus:ring-1 focus:ring-inset focus:ring-gray-200"
               type="text"
               value={value || ''}
               onChange={e => onChange(e.target.value)}
