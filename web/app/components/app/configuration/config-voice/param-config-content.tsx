@@ -36,11 +36,11 @@ const VoiceParamConfig: FC = () => {
   return (
     <div>
       <div>
-        <div className='leading-6 text-base font-semibold text-gray-800'>{t('appDebug.voice.voiceSettings.title')}</div>
+        <div className='leading-6 text-base font-semibold text-gray-100'>{t('appDebug.voice.voiceSettings.title')}</div>
         <div className='pt-3 space-y-6'>
           <div>
             <div className='mb-2 flex items-center  space-x-1'>
-              <div className='leading-[18px] text-[13px] font-semibold text-gray-800'>{t('appDebug.voice.voiceSettings.language')}</div>
+              <div className='leading-[18px] text-[13px] font-semibold text-gray-700'>{t('appDebug.voice.voiceSettings.language')}</div>
               <Tooltip htmlContent={<div className='w-[180px]' >
                 {t('appDebug.voice.voiceSettings.resolutionTooltip').split('\n').map(item => (
                   <div key={item}>{item}</div>
@@ -112,7 +112,7 @@ const VoiceParamConfig: FC = () => {
           </div>
 
           <div>
-            <div className='mb-2 leading-[18px] text-[13px] font-semibold text-gray-800'>{t('appDebug.voice.voiceSettings.voice')}</div>
+            <div className='mb-2 leading-[18px] text-[13px] font-semibold text-gray-700'>{t('appDebug.voice.voiceSettings.voice')}</div>
             <Listbox
               value={voiceItem}
               disabled={!languageItem}

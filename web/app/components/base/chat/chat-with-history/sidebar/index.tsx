@@ -70,7 +70,7 @@ const Sidebar = () => {
               icon={appData?.site.icon}
               background={appData?.site.icon_background}
             />
-            <div className='py-1 text-base font-semibold text-gray-800'>
+            <div className='py-1 text-base font-semibold text-gray-100'>
               {appData?.site.title}
             </div>
           </div>

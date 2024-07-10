@@ -44,7 +44,7 @@ const ModelName: FC<ModelNameProps> = ({
       `}
     >
       <div
-        className='truncate text-gray-100'
+        className='truncate text-dark-500'
         title={modelItem.label[language] || modelItem.label.en_US}
       >
         {modelItem.label[language] || modelItem.label.en_US}

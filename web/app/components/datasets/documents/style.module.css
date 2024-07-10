@@ -11,7 +11,7 @@
 }
 
 .title {
-  @apply text-xl font-medium text-gray-900;
+  @apply text-xl font-medium text-gray-100;
 }
 
 .desc {

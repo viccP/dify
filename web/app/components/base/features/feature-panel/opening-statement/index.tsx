@@ -248,7 +248,7 @@ const OpeningStatement: FC<OpeningStatementProps> = ({
       <div className='mt-1.5 flex flex-wrap'>
         {notEmptyQuestions.map((question, index) => {
           return (
-            <div key={index} className='mt-1 mr-1 max-w-full truncate last:mr-0 shrink-0 leading-8 items-center px-2.5 rounded-lg border border-gray-200 shadow-xs bg-white text-[13px] font-normal text-gray-900 cursor-pointer'>
+            <div key={index} className='mt-1 mr-1 max-w-full truncate last:mr-0 shrink-0 leading-8 items-center px-2.5 rounded-lg border border-gray-200 bg-gray-200 shadow-xs text-[13px] font-normal text-gray-900 cursor-pointer'>
               {question}
             </div>
           )

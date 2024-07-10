@@ -46,7 +46,7 @@ const RunOnce: FC<IRunOnceProps> = ({
         <form>
           {promptConfig.prompt_variables.map(item => (
             <div className='w-full mt-4' key={item.key}>
-              <label className='text-gray-900 text-sm font-medium'>{item.name}</label>
+              <label className='text-gray-100 text-sm font-medium'>{item.name}</label>
               <div className='mt-2'>
                 {item.type === 'select' && (
                   <Select
@@ -97,7 +97,7 @@ const RunOnce: FC<IRunOnceProps> = ({
           {
             visionConfig?.enabled && (
               <div className="w-full mt-4">
-                <div className="text-gray-900 text-sm font-medium">{t('common.imageUploader.imageUpload')}</div>
+                <div className="text-gray-100 text-sm font-medium">{t('common.imageUploader.imageUpload')}</div>
                 <div className='mt-2'>
                   <TextGenerationImageUploader
                     settings={visionConfig}
