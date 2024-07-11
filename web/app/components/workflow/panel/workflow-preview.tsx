@@ -83,7 +83,7 @@ const WorkflowPreview = ({
     <div className={`
       flex flex-col w-[420px] h-full rounded-l-2xl border-[0.5px] border-gray-200 shadow-xl bg-white
     `}>
-      <div className='flex items-center justify-between p-4 pb-1 text-base font-semibold text-gray-900'>
+      <div className='flex items-center justify-between p-4 pb-1 text-base font-semibold text-gray-100'>
         {`Test Run${!workflowRunningData?.result.sequence_number ? '' : `#${workflowRunningData?.result.sequence_number}`}`}
         <div className='p-1 cursor-pointer' onClick={() => handleCancelDebugAndPreviewPanel()}>
           <XClose className='w-4 h-4 text-gray-500' />

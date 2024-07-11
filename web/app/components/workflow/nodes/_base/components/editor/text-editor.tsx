@@ -52,7 +52,7 @@ const TextEditor: FC<Props> = ({
           onChange={e => onChange(e.target.value)}
           onFocus={setIsFocus}
           onBlur={handleBlur}
-          className='w-full h-full px-3 resize-none bg-transparent border-none focus:outline-none leading-[18px] text-[13px] font-normal text-gray-900 placeholder:text-gray-300'
+          className='w-full h-full px-3 resize-none bg-transparent border-none focus:outline-none leading-[18px] text-[13px] font-normal text-gray-25 placeholder:text-gray-300'
           placeholder={placeholder}
           readOnly={readonly}
         />

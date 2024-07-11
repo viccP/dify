@@ -51,7 +51,7 @@ const DatasetItem: FC<Props> = ({
               <Folder className='w-4 h-4 text-[#444CE7]' />
             </div>
         }
-        <div className='w-0 grow text-[13px] font-normal text-gray-800 truncate'>{payload.name}</div>
+        <div className='w-0 grow text-[13px] font-normal text-gray-25 truncate'>{payload.name}</div>
       </div>
       {!readonly && (
         <div className='hidden group-hover/dataset-item:flex shrink-0 ml-2  items-center space-x-1'>

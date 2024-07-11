@@ -71,7 +71,7 @@
 }
 
 .embeddingStatus {
-  @apply flex items-center justify-between text-gray-900 font-medium text-sm mr-2;
+  @apply flex items-center justify-between text-gray-100 font-medium text-sm mr-2;
 }
 
 .commonIcon {

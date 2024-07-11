@@ -133,7 +133,7 @@ const ChatInput: FC<ChatInputProps> = ({
       <div className='relative'>
         <div
           className={`
-            p-[5.5px] max-h-[150px] bg-white border-[1.5px] border-gray-201 rounded-xl overflow-y-auto
+            p-[5.5px] max-h-[150px] bg-gray-100 border-[1.5px] border-gray-201 rounded-xl overflow-y-auto
             ${isDragActive && 'border-primary-600'} mb-2
           `}
         >
@@ -162,7 +162,7 @@ const ChatInput: FC<ChatInputProps> = ({
           }
           <Textarea
             className={`
-              block w-full px-2 pr-[118px] py-[7px] leading-5 max-h-none text-sm text-gray-700 outline-none appearance-none resize-none
+              block w-full px-2 pr-[118px] py-[7px] bg-gray-100 leading-5 max-h-none text-sm text-gray-700 outline-none appearance-none resize-none
               ${visionConfig?.enabled && 'pl-12'}
             `}
             value={query}
@@ -177,7 +177,7 @@ const ChatInput: FC<ChatInputProps> = ({
             autoSize
           />
           <div className='absolute bottom-[7px] right-2 flex items-center h-8'>
-            <div className='flex items-center px-1 h-5 rounded-md bg-gray-101 text-xs font-medium text-gray-501'>
+            <div className='flex items-center px-1 h-5 rounded-md bg-gray-100 text-xs font-medium text-gray-501'>
               {query.trim().length}
             </div>
             {

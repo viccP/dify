@@ -59,7 +59,7 @@ const ConfigSelect: FC<IConfigSelectProps> = ({
                       return item
                     }))
                   }}
-                  className={'w-full pl-1.5 pr-8 text-sm leading-9 text-gray-900 border-0 grow h-9 bg-transparent focus:outline-none cursor-pointer'}
+                  className={'w-full pl-1.5 pr-8 text-sm leading-9 text-gray-100 border-0 grow h-9 bg-transparent focus:outline-none cursor-pointer'}
                 />
                 <RemoveIcon
                   className={`${s.deleteBtn} absolute top-1/2 translate-y-[-50%] right-1.5 items-center justify-center w-6 h-6 rounded-md cursor-pointer hover:bg-[#FEE4E2]`}

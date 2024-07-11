@@ -69,7 +69,7 @@ const DuplicateAppModal = ({
             <input
               value={name}
               onChange={e => setName(e.target.value)}
-              className='h-10 px-3 text-sm font-normal bg-gray-100 rounded-lg grow text-dark-0'
+              className='h-10 px-3 text-sm font-normal bg-gray-201 rounded-lg grow text-dark-0'
             />
           </div>
           {isAppsFull && <AppsFull loc='app-duplicate-create' />}
