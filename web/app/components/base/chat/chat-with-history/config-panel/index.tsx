@@ -41,7 +41,7 @@ const ConfigPanel = () => {
           {
             showConfigPanelBeforeChat && (
               <>
-                <div className='flex items-center h-8 text-2xl font-semibold text-gray-800'>
+                <div className='flex items-center h-8 text-2xl font-semibold text-gray-100'>
                   <AppIcon
                     icon={appData?.site.icon}
                     background='transparent'

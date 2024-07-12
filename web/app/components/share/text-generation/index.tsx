@@ -462,7 +462,7 @@ const TextGeneration: FC<IMainProps> = ({
       className={
         cn(
           'flex flex-col h-full shrink-0',
-          isPC ? 'px-10 py-8' : 'bg-gray-50',
+          isPC ? 'px-10 py-8 border-r border-gray-100 bg-white' : 'bg-gray-50',
           isTablet && 'p-6', isMobile && 'p-4')
       }
     >
@@ -470,7 +470,7 @@ const TextGeneration: FC<IMainProps> = ({
         <div className='flex items-center justify-between shrink-0'>
           <div className='flex items-center space-x-3'>
             <div className={s.starIcon}></div>
-            <div className='text-lg font-semibold text-gray-800'>{t('share.generation.title')}</div>
+            <div className='text-lg font-semibold text-gray-100'>{t('share.generation.title')}</div>
           </div>
           <div className='flex items-center space-x-2'>
             {allFailedTaskList.length > 0 && (

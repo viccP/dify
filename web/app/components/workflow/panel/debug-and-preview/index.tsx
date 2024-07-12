@@ -40,13 +40,13 @@ const DebugAndPreview = () => {
   return (
     <div
       className={cn(
-        'flex flex-col w-[400px] rounded-l-2xl h-full border border-black/2',
+        'flex flex-col w-[400px] h-full rounded-l-2xl border-[0.5px] border-gray-200 shadow-xl bg-white',
       )}
     // style={{
     //   background: 'linear-gradient(156deg, #141F39 0%, rgba(242, 244, 247, 0.00) 99.43%), var(--white, #FFF)',
     // }}
     >
-      <div className='shrink-0 flex items-center justify-between pl-4 pr-3 pt-3 pb-2 font-semibold text-gray-900'>
+      <div className='shrink-0 flex items-center justify-between pl-4 pr-3 pt-3 pb-2 font-semibold text-gray-100'>
         {t('workflow.common.debugAndPreview').toLocaleUpperCase()}
         <div className='flex items-center'>
           <Button
