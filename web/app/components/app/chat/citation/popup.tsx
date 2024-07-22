@@ -53,14 +53,14 @@ const Popup: FC<PopupProps> = ({
         </div>
       </PortalToFollowElemTrigger>
       <PortalToFollowElemContent style={{ zIndex: 1000 }}>
-        <div className='w-[360px] bg-gray-50 rounded-xl shadow-lg'>
+        <div className='w-[360px] bg-gray-101 rounded-xl shadow-lg border-2'>
           <div className='px-4 pt-3 pb-2'>
             <div className='flex items-center h-[18px]'>
               <FileIcon type={fileType} className='shrink-0 mr-1 w-4 h-4' />
-              <div className='text-xs font-medium text-gray-600 truncate'>{data.documentName}</div>
+              <div className='text-xs font-medium text-gray-100 truncate'>{data.documentName}</div>
             </div>
           </div>
-          <div className='px-4 py-0.5 max-h-[450px] bg-white rounded-lg overflow-auto'>
+          <div className='px-4 py-0.5 max-h-[450px] bg-gray-700 rounded-lg overflow-auto'>
             {
               data.sources.map((source, index) => (
                 <Fragment key={index}>
@@ -83,7 +83,7 @@ const Popup: FC<PopupProps> = ({
                         )
                       }
                     </div>
-                    <div className='text-[13px] text-gray-800'>{source.content}</div>
+                    <div className='text-[13px] text-gray-100'>{source.content}</div>
                     {
                       showHitInfo && (
                         <div className='flex items-center mt-2 text-xs font-medium text-gray-500'>
