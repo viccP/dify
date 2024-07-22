@@ -183,7 +183,7 @@ const SimpleSelect: FC<ISelectProps> = ({
     >
       <div className={`relative h-9 ${wrapperClassName}`}>
         <Listbox.Button className={`w-full h-full text-dark-0 rounded-lg border-0 !bg-gray-101 py-1.5 pl-3 pr-10 sm:text-sm sm:leading-6 focus-visible:outline-none focus-visible:bg-gray-201 group-hover:bg-gray-201 ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} ${className}`}>
-          <span className={classNames('block truncate text-left text-gray-900', !selectedItem?.name && 'text-gray-100')}>{selectedItem?.name ?? localPlaceholder}</span>
+          <span className={classNames('block truncate text-left text-gray-400', !selectedItem?.name && 'text-gray-100')}>{selectedItem?.name ?? localPlaceholder}</span>
           <span className="absolute inset-y-0 right-0 flex items-center pr-2">
             {selectedItem
               ? (

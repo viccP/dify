@@ -71,7 +71,7 @@ const Form = () => {
             key={form.variable}
             className={`flex mb-3 last-of-type:mb-0 text-sm text-gray-100 ${isMobile && '!flex-wrap'}`}
           >
-            <div className={`shrink-0 mr-2 py-2 w-[128px] ${isMobile && '!w-full'}`}>{form.label}</div>
+            <div className={`shrink-0 mr-2 py-2 w-[128px] text-gary-100 ${isMobile && '!w-full'}`}>{form.label}</div>
             {renderField(form)}
           </div>
         ))
