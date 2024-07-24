@@ -43,7 +43,7 @@ const InvitationLink = ({
             content={isCopied ? `${t('appApi.copied')}` : `${t('appApi.copy')}`}
             className='z-10'
           >
-            <div className='absolute top-0 left-0 w-full pl-2 pr-2 truncate cursor-pointer r-0 text-dark-0' onClick={copyHandle}>{value.url}</div>
+            <div className='absolute top-0 left-0 w-full pl-2 pr-2 truncate cursor-pointer r-0 text-gray-900' onClick={copyHandle}>{value.url}</div>
           </Tooltip>
         </div>
         <div className="flex-shrink-0 h-4 bg-gray-200 border" />

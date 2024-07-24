@@ -5,9 +5,7 @@ import { useTranslation } from 'react-i18next'
 import useSWR from 'swr'
 import { useSearchParams } from 'next/navigation'
 import cn from 'classnames'
-import Link from 'next/link'
 import { CheckCircleIcon } from '@heroicons/react/24/solid'
-import style from './style.module.css'
 import Button from '@/app/components/base/button'
 
 import { SimpleSelect } from '@/app/components/base/select'
@@ -119,9 +117,7 @@ const ActivateForm = () => {
       {checkRes && checkRes.is_valid && !showSuccess && (
         <div className='flex flex-col md:w-[400px]'>
           <div className="w-full mx-auto">
-            <div className={`mb-3 flex justify-center items-center w-20 h-20 p-5 rounded-[20px] border border-gray-100 shadow-lg text-[40px] font-bold ${style.logo}`}>
-            </div>
-            <h2 className="text-[32px] font-bold text-gray-900">
+            <h2 className="text-[32px] font-bold text-gray-100">
               {`${t('login.join')} ${checkRes.workspace_name}`}
             </h2>
             <p className='mt-1 text-sm text-gray-500 '>
@@ -133,7 +129,7 @@ const ActivateForm = () => {
             <div className="bg-white">
               {/* username */}
               <div className='mb-5'>
-                <label htmlFor="name" className="my-2 flex items-center justify-between text-sm font-medium text-gray-900">
+                <label htmlFor="name" className="my-2 flex items-center justify-between text-sm font-medium text-gray-501">
                   {t('login.name')}
                 </label>
                 <div className="mt-1 relative rounded-md shadow-sm">
@@ -149,7 +145,7 @@ const ActivateForm = () => {
               </div>
               {/* password */}
               <div className='mb-5'>
-                <label htmlFor="password" className="my-2 flex items-center justify-between text-sm font-medium text-gray-900">
+                <label htmlFor="password" className="my-2 flex items-center justify-between text-sm font-medium text-gray-501">
                   {t('login.password')}
                 </label>
                 <div className="mt-1 relative rounded-md shadow-sm">
@@ -166,7 +162,7 @@ const ActivateForm = () => {
               </div>
               {/* language */}
               <div className='mb-5'>
-                <label htmlFor="name" className="my-2 flex items-center justify-between text-sm font-medium text-gray-900">
+                <label htmlFor="name" className="my-2 flex items-center justify-between text-sm font-medium text-gray-501">
                   {t('login.interfaceLanguage')}
                 </label>
                 <div className="relative mt-1 rounded-md shadow-sm">
@@ -202,15 +198,6 @@ const ActivateForm = () => {
                 >
                   {`${t('login.join')} ${checkRes.workspace_name}`}
                 </Button>
-              </div>
-              <div className="block w-hull mt-2 text-xs text-gray-600">
-                {t('login.license.tip')}
-                &nbsp;
-                <Link
-                  className='text-primary-600'
-                  target='_blank' rel='noopener noreferrer'
-                  href={`https://docs.dify.ai/${language !== LanguagesSupported[1] ? 'user-agreement' : `v/${locale.toLowerCase()}/policies`}/open-source`}
-                >{t('login.license.link')}</Link>
               </div>
             </div>
           </div>
