@@ -99,7 +99,7 @@ const Select: FC<ISelectProps> = ({
                 if (!disabled)
                   setOpen(!open)
               }
-            } className={classNames(optionClassName, `flex items-center h-9 w-full rounded-lg border-0 ${bgClassName} py-1.5 pl-3 pr-10 shadow-sm sm:text-sm sm:leading-6 focus-visible:outline-none focus-visible:bg-gray-200 group-hover:bg-gray-200`)}>
+            } className={classNames(optionClassName, `flex items-center h-9 w-full rounded-lg border-0 ${bgClassName} py-1.5 pl-3 pr-10 shadow-sm sm:text-sm sm:leading-6 focus-visible:outline-none`)}>
               <div className='w-0 grow text-left truncate' title={selectedItem?.name}>{selectedItem?.name}</div>
             </Combobox.Button>}
           <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md text-dark-10 px-2 focus:outline-none" onClick={
@@ -276,7 +276,7 @@ const PortalSelect: FC<PortalSelectProps> = ({
       <PortalToFollowElemTrigger onClick={() => setOpen(v => !v)} className='w-full'>
         <div
           className={`
-            flex items-center justify-between px-2.5 h-9 rounded-lg border-0 bg-gray-100 text-sm cursor-pointer 
+            flex items-center justify-between px-2.5 h-9 rounded-lg border-0 bg-gray-100 text-sm text-gray-900 cursor-pointer 
           `}
           title={selectedItem?.name}
         >

@@ -45,7 +45,7 @@ const InputCopy = ({
             content={isCopied ? `${t('appApi.copied')}` : `${t('appApi.copy')}`}
             className='z-10'
           >
-            <div className='absolute top-0 left-0 w-full pl-2 pr-2 truncate cursor-pointer r-0 text-dark-0' onClick={() => {
+            <div className='absolute top-0 left-0 w-full pl-2 pr-2 truncate cursor-pointer r-0 text-gray-900' onClick={() => {
               copy(value)
               setIsCopied(true)
             }}>{value}</div>
