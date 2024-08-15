@@ -20,7 +20,7 @@ const ResultText: FC<ResultTextProps> = ({
 }) => {
   const { t } = useTranslation()
   return (
-    <div className='bg-gray-50 py-2'>
+    <div className='!bg-[#141f39] py-2'>
       {isRunning && !outputs && (
         <div className='pt-4 pl-[26px]'>
           <LoadingAnim type='text' />
