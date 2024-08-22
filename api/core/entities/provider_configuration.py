@@ -8,6 +8,7 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
+from constants import HIDDEN_VALUE
 from core.entities.model_entities import ModelStatus, ModelWithProviderEntity, SimpleModelProviderEntity
 from core.entities.provider_entities import (
     CustomConfiguration,
@@ -66,8 +67,8 @@ class ProviderConfiguration(BaseModel):
                 original_provider_configurate_methods[self.provider.provider].append(configurate_method)
 
         if original_provider_configurate_methods[self.provider.provider] == [ConfigurateMethod.CUSTOMIZABLE_MODEL]:
-            if (any([len(quota_configuration.restrict_models) > 0
-                     for quota_configuration in self.system_configuration.quota_configurations])
+            if (any(len(quota_configuration.restrict_models) > 0
+                     for quota_configuration in self.system_configuration.quota_configurations)
                     and ConfigurateMethod.PREDEFINED_MODEL not in self.provider.configurate_methods):
                 self.provider.configurate_methods.append(ConfigurateMethod.PREDEFINED_MODEL)
 
@@ -202,12 +203,12 @@ class ProviderConfiguration(BaseModel):
             for key, value in credentials.items():
                 if key in provider_credential_secret_variables:
                     # if send [__HIDDEN__] in secret input, it will be same as original value
-                    if value == '[__HIDDEN__]' and key in original_credentials:
+                    if value == HIDDEN_VALUE and key in original_credentials:
                         credentials[key] = encrypter.decrypt_token(self.tenant_id, original_credentials[key])
 
         credentials = model_provider_factory.provider_credentials_validate(
-            self.provider.provider,
-            credentials
+            provider=self.provider.provider,
+            credentials=credentials
         )
 
         for key, value in credentials.items():
@@ -345,7 +346,7 @@ class ProviderConfiguration(BaseModel):
             for key, value in credentials.items():
                 if key in provider_credential_secret_variables:
                     # if send [__HIDDEN__] in secret input, it will be same as original value
-                    if value == '[__HIDDEN__]' and key in original_credentials:
+                    if value == HIDDEN_VALUE and key in original_credentials:
                         credentials[key] = encrypter.decrypt_token(self.tenant_id, original_credentials[key])
 
         credentials = model_provider_factory.model_credentials_validate(

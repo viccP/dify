@@ -53,7 +53,7 @@ function AppCard({
 }: IAppCardProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const { currentWorkspace, isCurrentWorkspaceManager, isCurrentWorkspaceEditor } = useAppContext()
+  const { isCurrentWorkspaceManager, isCurrentWorkspaceEditor } = useAppContext()
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [showEmbedded, setShowEmbedded] = useState(false)
   const [showCustomizeModal, setShowCustomizeModal] = useState(false)
@@ -183,9 +183,8 @@ function AppCard({
                 <Confirm
                   type='warning'
                   title={t('appOverview.overview.appInfo.regenerate')}
-                  content={''}
+                  content={t('appOverview.overview.appInfo.regenerateNotice')}
                   isShow={showConfirmDelete}
-                  onClose={() => setShowConfirmDelete(false)}
                   onConfirm={() => {
                     onGenCode()
                     setShowConfirmDelete(false)
@@ -221,7 +220,7 @@ function AppCard({
                 : !runningStatus
             return (
               <Button
-                className="mr-2 border-[0.5px] !h-8 hover:outline hover:outline-[0.5px] hover:outline-gray-300 text-gray-700 font-medium bg-white shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)]"
+                className="mr-2"
                 key={op.opName}
                 onClick={genClickFuncByName(op.opName)}
                 disabled={disabled}
@@ -247,12 +246,14 @@ function AppCard({
         ? (
           <>
             <SettingsModal
+              isChat={appMode === 'chat'}
               appInfo={appInfo}
               isShow={showSettingsModal}
               onClose={() => setShowSettingsModal(false)}
               onSave={onSaveSiteConfig}
             />
             <EmbeddedModal
+              siteInfo={appInfo.site}
               isShow={showEmbedded}
               onClose={() => setShowEmbedded(false)}
               appBaseUrl={app_base_url}

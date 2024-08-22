@@ -10,8 +10,9 @@ const translation = {
     create: 'Créer',
     confirm: 'Confirmer',
     cancel: 'Annuler',
-    clear: 'Clair',
+    clear: 'Effacer',
     save: 'Enregistrer',
+    saveAndEnable: 'Enregistrer et Activer',
     edit: 'Modifier',
     add: 'Ajouter',
     added: 'Ajouté',
@@ -119,6 +120,7 @@ const translation = {
   },
   userProfile: {
     settings: 'Paramètres',
+    emailSupport: 'Support par courriel',
     workspace: 'Espace de travail',
     createWorkspace: 'Créer un Espace de Travail',
     helpCenter: 'Aide',
@@ -156,6 +158,9 @@ const translation = {
     langGeniusAccountTip: 'Votre compte Dify et les données utilisateur associées.',
     editName: 'Modifier le nom',
     showAppLength: 'Afficher {{length}} applications',
+    delete: 'Supprimer le compte',
+    deleteTip: 'La suppression de votre compte effacera définitivement toutes vos données et elles ne pourront pas être récupérées.',
+    deleteConfirmTip: 'Pour confirmer, veuillez envoyer ce qui suit depuis votre adresse e-mail enregistrée à ',
   },
   members: {
     team: 'Équipe',
@@ -404,7 +409,7 @@ const translation = {
     latestAvailable: 'Dify {{version}} est la dernière version disponible.',
   },
   appMenus: {
-    overview: 'Aperçu',
+    overview: 'Surveillance',
     promptEng: 'Orchestrer',
     apiAccess: 'Accès API',
     logAndAnn: 'Journaux & Annonces.',

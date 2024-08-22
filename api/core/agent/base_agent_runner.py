@@ -32,7 +32,6 @@ from core.model_runtime.entities.model_entities import ModelFeature
 from core.model_runtime.model_providers.__base.large_language_model import LargeLanguageModel
 from core.model_runtime.utils.encoders import jsonable_encoder
 from core.tools.entities.tool_entities import (
-    ToolInvokeMessage,
     ToolParameter,
     ToolRuntimeVariablePool,
 )
@@ -65,15 +64,19 @@ class BaseAgentRunner(AppRunner):
         """
         Agent runner
         :param tenant_id: tenant id
+        :param application_generate_entity: application generate entity
+        :param conversation: conversation
         :param app_config: app generate entity
         :param model_config: model config
         :param config: dataset config
         :param queue_manager: queue manager
         :param message: message
         :param user_id: user id
-        :param agent_llm_callback: agent llm callback
-        :param callback: callback
         :param memory: memory
+        :param prompt_messages: prompt messages
+        :param variables_pool: variables pool
+        :param db_variables: db variables
+        :param model_instance: model instance
         """
         self.tenant_id = tenant_id
         self.application_generate_entity = application_generate_entity
@@ -141,24 +144,6 @@ class BaseAgentRunner(AppRunner):
             app_generate_entity.app_config.prompt_template.simple_prompt_template = ''
 
         return app_generate_entity
-
-    def _convert_tool_response_to_str(self, tool_response: list[ToolInvokeMessage]) -> str:
-        """
-        Handle tool response
-        """
-        result = ''
-        for response in tool_response:
-            if response.type == ToolInvokeMessage.MessageType.TEXT:
-                result += response.message
-            elif response.type == ToolInvokeMessage.MessageType.LINK:
-                result += f"result link: {response.message}. please tell user to check it."
-            elif response.type == ToolInvokeMessage.MessageType.IMAGE_LINK or \
-                 response.type == ToolInvokeMessage.MessageType.IMAGE:
-                result += "image has been created and sent to user already, you do not need to create it, just tell the user to check it now."
-            else:
-                result += f"tool response: {response.message}."
-
-        return result
     
     def _convert_tool_to_prompt_message_tool(self, tool: AgentToolEntity) -> tuple[PromptMessageTool, Tool]:
         """
@@ -464,7 +449,7 @@ class BaseAgentRunner(AppRunner):
                         try:
                             tool_responses = json.loads(agent_thought.observation)
                         except Exception as e:
-                            tool_responses = { tool: agent_thought.observation for tool in tools }
+                            tool_responses = dict.fromkeys(tools, agent_thought.observation)
 
                         for tool in tools:
                             # generate a uuid for tool call

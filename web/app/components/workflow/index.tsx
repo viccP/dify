@@ -7,11 +7,11 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react'
 import { setAutoFreeze } from 'immer'
 import {
   useEventListener,
-  useKeyPress,
 } from 'ahooks'
 import ReactFlow, {
   Background,
@@ -20,6 +20,8 @@ import ReactFlow, {
   useEdgesState,
   useNodesState,
   useOnViewportChange,
+  useReactFlow,
+  useStoreApi,
 } from 'reactflow'
 import type {
   Viewport,
@@ -28,20 +30,25 @@ import 'reactflow/dist/style.css'
 import './style.css'
 import type {
   Edge,
+  EnvironmentVariable,
   Node,
+} from './types'
+import {
+  ControlMode,
 } from './types'
 import { WorkflowContextProvider } from './context'
 import {
+  useDSL,
   useEdgesInteractions,
   useNodesInteractions,
   useNodesReadOnly,
   useNodesSyncDraft,
   usePanelInteractions,
   useSelectionInteractions,
+  useShortcuts,
   useWorkflow,
   useWorkflowInit,
   useWorkflowReadOnly,
-  useWorkflowStartRun,
   useWorkflowUpdate,
 } from './hooks'
 import Header from './header'
@@ -58,25 +65,29 @@ import CandidateNode from './candidate-node'
 import PanelContextmenu from './panel-contextmenu'
 import NodeContextmenu from './node-contextmenu'
 import SyncingDataModal from './syncing-data-modal'
+import UpdateDSLModal from './update-dsl-modal'
+import DSLExportConfirmModal from './dsl-export-confirm-modal'
 import {
   useStore,
   useWorkflowStore,
 } from './store'
 import {
-  getKeyboardKeyCodeBySystem,
   initialEdges,
   initialNodes,
 } from './utils'
 import {
   CUSTOM_NODE,
+  DSL_EXPORT_CHECK,
   ITERATION_CHILDREN_Z_INDEX,
   WORKFLOW_DATA_UPDATE,
 } from './constants'
+import { WorkflowHistoryProvider } from './workflow-history-store'
 import Loading from '@/app/components/base/loading'
 import { FeaturesProvider } from '@/app/components/base/features'
 import type { Features as FeaturesData } from '@/app/components/base/features/types'
+import { useFeaturesStore } from '@/app/components/base/features/hooks'
 import { useEventEmitterContextContext } from '@/context/event-emitter'
-import Confirm from '@/app/components/base/confirm/common'
+import Confirm from '@/app/components/base/confirm'
 
 const nodeTypes = {
   [CUSTOM_NODE]: CustomNode,
@@ -98,15 +109,21 @@ const Workflow: FC<WorkflowProps> = memo(({
 }) => {
   const workflowContainerRef = useRef<HTMLDivElement>(null)
   const workflowStore = useWorkflowStore()
+  const reactflow = useReactFlow()
+  const featuresStore = useFeaturesStore()
   const [nodes, setNodes] = useNodesState(originalNodes)
   const [edges, setEdges] = useEdgesState(originalEdges)
   const showFeaturesPanel = useStore(state => state.showFeaturesPanel)
   const controlMode = useStore(s => s.controlMode)
   const nodeAnimation = useStore(s => s.nodeAnimation)
   const showConfirm = useStore(s => s.showConfirm)
+  const showImportDSLModal = useStore(s => s.showImportDSLModal)
+
   const {
     setShowConfirm,
     setControlPromptEditorRerenderKey,
+    setShowImportDSLModal,
+    setSyncWorkflowDraftHash,
   } = workflowStore.getState()
   const {
     handleSyncWorkflowDraft,
@@ -115,14 +132,31 @@ const Workflow: FC<WorkflowProps> = memo(({
   const { workflowReadOnly } = useWorkflowReadOnly()
   const { nodesReadOnly } = useNodesReadOnly()
 
+  const [secretEnvList, setSecretEnvList] = useState<EnvironmentVariable[]>([])
+
   const { eventEmitter } = useEventEmitterContextContext()
 
   eventEmitter?.useSubscription((v: any) => {
     if (v.type === WORKFLOW_DATA_UPDATE) {
       setNodes(v.payload.nodes)
       setEdges(v.payload.edges)
+
+      if (v.payload.viewport)
+        reactflow.setViewport(v.payload.viewport)
+
+      if (v.payload.features && featuresStore) {
+        const { setFeatures } = featuresStore.getState()
+
+        setFeatures(v.payload.features)
+      }
+
+      if (v.payload.hash)
+        setSyncWorkflowDraftHash(v.payload.hash)
+
       setTimeout(() => setControlPromptEditorRerenderKey(Date.now()))
     }
+    if (v.type === DSL_EXPORT_CHECK)
+      setSecretEnvList(v.payload.data as EnvironmentVariable[])
   })
 
   useEffect(() => {
@@ -158,6 +192,12 @@ const Workflow: FC<WorkflowProps> = memo(({
   useEventListener('keydown', (e) => {
     if ((e.key === 'd' || e.key === 'D') && (e.ctrlKey || e.metaKey))
       e.preventDefault()
+    if ((e.key === 'z' || e.key === 'Z') && (e.ctrlKey || e.metaKey))
+      e.preventDefault()
+    if ((e.key === 'y' || e.key === 'Y') && (e.ctrlKey || e.metaKey))
+      e.preventDefault()
+    if ((e.key === 's' || e.key === 'S') && (e.ctrlKey || e.metaKey))
+      e.preventDefault()
   })
   useEventListener('mousemove', (e) => {
     const containerClientRect = workflowContainerRef.current?.getBoundingClientRect()
@@ -185,15 +225,12 @@ const Workflow: FC<WorkflowProps> = memo(({
     handleNodeConnectStart,
     handleNodeConnectEnd,
     handleNodeContextMenu,
-    handleNodesCopy,
-    handleNodesPaste,
-    handleNodesDuplicate,
-    handleNodesDelete,
+    handleHistoryBack,
+    handleHistoryForward,
   } = useNodesInteractions()
   const {
     handleEdgeEnter,
     handleEdgeLeave,
-    handleEdgeDelete,
     handleEdgesChange,
   } = useEdgesInteractions()
   const {
@@ -203,11 +240,15 @@ const Workflow: FC<WorkflowProps> = memo(({
   } = useSelectionInteractions()
   const {
     handlePaneContextMenu,
+    handlePaneContextmenuCancel,
   } = usePanelInteractions()
   const {
     isValidConnection,
   } = useWorkflow()
-  const { handleStartWorkflowRun } = useWorkflowStartRun()
+  const {
+    exportCheck,
+    handleExportDSL,
+  } = useDSL()
 
   useOnViewportChange({
     onEnd: () => {
@@ -215,12 +256,16 @@ const Workflow: FC<WorkflowProps> = memo(({
     },
   })
 
-  useKeyPress('delete', handleNodesDelete)
-  useKeyPress(['delete', 'backspace'], handleEdgeDelete)
-  useKeyPress(`${getKeyboardKeyCodeBySystem('ctrl')}.c`, handleNodesCopy, { exactMatch: true, useCapture: true })
-  useKeyPress(`${getKeyboardKeyCodeBySystem('ctrl')}.v`, handleNodesPaste, { exactMatch: true, useCapture: true })
-  useKeyPress(`${getKeyboardKeyCodeBySystem('ctrl')}.d`, handleNodesDuplicate, { exactMatch: true, useCapture: true })
-  useKeyPress(`${getKeyboardKeyCodeBySystem('alt')}.r`, handleStartWorkflowRun, { exactMatch: true, useCapture: true })
+  useShortcuts()
+
+  const store = useStoreApi()
+  if (process.env.NODE_ENV === 'development') {
+    store.getState().onError = (code, message) => {
+      if (code === '002')
+        return
+      console.warn(message)
+    }
+  }
 
   return (
     <div
@@ -236,7 +281,7 @@ const Workflow: FC<WorkflowProps> = memo(({
       <CandidateNode />
       <Header />
       <Panel />
-      <Operator />
+      <Operator handleRedo={handleHistoryForward} handleUndo={handleHistoryBack} />
       {
         showFeaturesPanel && <Features />
       }
@@ -250,8 +295,25 @@ const Workflow: FC<WorkflowProps> = memo(({
             onCancel={() => setShowConfirm(undefined)}
             onConfirm={showConfirm.onConfirm}
             title={showConfirm.title}
-            desc={showConfirm.desc}
-            confirmWrapperClassName='!z-[11]'
+            content={showConfirm.desc}
+          />
+        )
+      }
+      {
+        showImportDSLModal && (
+          <UpdateDSLModal
+            onCancel={() => setShowImportDSLModal(false)}
+            onBackup={exportCheck}
+            onImport={handlePaneContextmenuCancel}
+          />
+        )
+      }
+      {
+        secretEnvList.length > 0 && (
+          <DSLExportConfirmModal
+            envList={secretEnvList}
+            onConfirm={handleExportDSL}
+            onClose={() => setSecretEnvList([])}
           />
         )
       }
@@ -286,14 +348,14 @@ const Workflow: FC<WorkflowProps> = memo(({
         nodesConnectable={!nodesReadOnly}
         nodesFocusable={!nodesReadOnly}
         edgesFocusable={!nodesReadOnly}
-        panOnDrag={controlMode === 'hand' && !workflowReadOnly}
+        panOnDrag={controlMode === ControlMode.Hand && !workflowReadOnly}
         zoomOnPinch={!workflowReadOnly}
         zoomOnScroll={!workflowReadOnly}
         zoomOnDoubleClick={!workflowReadOnly}
         isValidConnection={isValidConnection}
         selectionKeyCode={null}
         selectionMode={SelectionMode.Partial}
-        selectionOnDrag={controlMode === 'pointer' && !workflowReadOnly}
+        selectionOnDrag={controlMode === ControlMode.Pointer && !workflowReadOnly}
         minZoom={0.25}
       >
         <Background
@@ -357,13 +419,17 @@ const WorkflowWrap = memo(() => {
 
   return (
     <ReactFlowProvider>
-      <FeaturesProvider features={initialFeatures}>
-        <Workflow
-          nodes={nodesData}
-          edges={edgesData}
-          viewport={data?.graph.viewport}
-        />
-      </FeaturesProvider>
+      <WorkflowHistoryProvider
+        nodes={nodesData}
+        edges={edgesData} >
+        <FeaturesProvider features={initialFeatures}>
+          <Workflow
+            nodes={nodesData}
+            edges={edgesData}
+            viewport={data?.graph.viewport}
+          />
+        </FeaturesProvider>
+      </WorkflowHistoryProvider>
     </ReactFlowProvider>
   )
 })

@@ -12,6 +12,7 @@ const translation = {
     cancel: 'Cancelar',
     clear: 'Limpar',
     save: 'Salvar',
+    saveAndEnable: 'Salvar e Ativar',
     edit: 'Editar',
     add: 'Adicionar',
     added: 'Adicionado',
@@ -119,6 +120,7 @@ const translation = {
   },
   userProfile: {
     settings: 'Configurações',
+    emailSupport: 'Suporte por e-mail',
     workspace: 'Espaço de trabalho',
     createWorkspace: 'Criar Espaço de Trabalho',
     helpCenter: 'Ajuda',
@@ -156,6 +158,9 @@ const translation = {
     langGeniusAccountTip: 'Sua conta BoncLops e dados de usuário associados.',
     editName: 'Editar Nome',
     showAppLength: 'Mostrar {{length}} apps',
+    delete: 'Excluir conta',
+    deleteTip: 'Excluir sua conta apagará permanentemente todos os seus dados e eles não poderão ser recuperados.',
+    deleteConfirmTip: 'Para confirmar, envie o seguinte do seu e-mail registrado para ',
   },
   members: {
     team: 'Equipe',
@@ -404,7 +409,7 @@ const translation = {
     latestAvailable: 'Bonc LOps  {{version}} é a versão mais recente disponível.',
   },
   appMenus: {
-    overview: 'Visão Geral',
+    overview: 'Monitoramento',
     promptEng: 'Orquestrar',
     apiAccess: 'Acesso à API',
     logAndAnn: 'Logs e Anúncios',

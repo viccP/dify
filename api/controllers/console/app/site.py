@@ -16,10 +16,13 @@ from models.model import Site
 def parse_app_site_args():
     parser = reqparse.RequestParser()
     parser.add_argument('title', type=str, required=False, location='json')
+    parser.add_argument('icon_type', type=str, required=False, location='json')
     parser.add_argument('icon', type=str, required=False, location='json')
     parser.add_argument('icon_background', type=str, required=False, location='json')
     parser.add_argument('description', type=str, required=False, location='json')
     parser.add_argument('default_language', type=supported_language, required=False, location='json')
+    parser.add_argument('chat_color_theme', type=str, required=False, location='json')
+    parser.add_argument('chat_color_theme_inverted', type=bool, required=False, location='json')
     parser.add_argument('customize_domain', type=str, required=False, location='json')
     parser.add_argument('copyright', type=str, required=False, location='json')
     parser.add_argument('privacy_policy', type=str, required=False, location='json')
@@ -28,6 +31,7 @@ def parse_app_site_args():
                         required=False,
                         location='json')
     parser.add_argument('prompt_public', type=bool, required=False, location='json')
+    parser.add_argument('show_workflow_steps', type=bool, required=False, location='json')
     return parser.parse_args()
 
 
@@ -50,16 +54,20 @@ class AppSite(Resource):
 
         for attr_name in [
             'title',
+            'icon_type',
             'icon',
             'icon_background',
             'description',
             'default_language',
+            'chat_color_theme',
+            'chat_color_theme_inverted',
             'customize_domain',
             'copyright',
             'privacy_policy',
             'custom_disclaimer',
             'customize_token_strategy',
-            'prompt_public'
+            'prompt_public',
+            'show_workflow_steps'
         ]:
             value = args.get(attr_name)
             if value is not None:

@@ -12,6 +12,7 @@ const translation = {
     cancel: '취소',
     clear: '지우기',
     save: '저장',
+    saveAndEnable: '저장 및 활성화',
     edit: '편집',
     add: '추가',
     added: '추가됨',
@@ -115,6 +116,7 @@ const translation = {
   },
   userProfile: {
     settings: '설정',
+    emailSupport: '이메일 지원',
     workspace: '작업 공간',
     createWorkspace: '작업 공간 만들기',
     helpCenter: '도움말 센터',
@@ -152,6 +154,9 @@ const translation = {
     langGeniusAccountTip: 'Dify 계정과 관련된 사용자 데이터.',
     editName: '이름 편집',
     showAppLength: '{{length}}개의 앱 표시',
+    delete: '계정 삭제',
+    deleteTip: '계정을 삭제하면 모든 데이터가 영구적으로 지워지며 복구할 수 없습니다.',
+    deleteConfirmTip: '확인하려면 등록된 이메일에서 다음 내용을 로 보내주세요 ',
   },
   members: {
     team: '팀',
@@ -400,7 +405,7 @@ const translation = {
     latestAvailable: 'Dify {{version}} 최신 버전입니다.',
   },
   appMenus: {
-    overview: '개요',
+    overview: '모니터링',
     promptEng: '오케스트레이트',
     apiAccess: 'API 액세스',
     logAndAnn: '로그 및 어노테이션',

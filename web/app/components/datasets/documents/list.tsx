@@ -4,23 +4,25 @@ import type { FC, SVGProps } from 'react'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useBoolean, useDebounceFn } from 'ahooks'
 import { ArrowDownIcon, TrashIcon } from '@heroicons/react/24/outline'
-import { ExclamationCircleIcon } from '@heroicons/react/24/solid'
 import { pick } from 'lodash-es'
+import {
+  RiMoreFill,
+  RiQuestionLine,
+} from '@remixicon/react'
 import { useContext } from 'use-context-selector'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
-import cn from 'classnames'
 import dayjs from 'dayjs'
 import { Edit03 } from '../../base/icons/src/vender/solid/general'
 import TooltipPlus from '../../base/tooltip-plus'
 import { Globe01 } from '../../base/icons/src/vender/line/mapsAndTravel'
 import s from './style.module.css'
 import RenameModal from './rename-modal'
+import cn from '@/utils/classnames'
 import Switch from '@/app/components/base/switch'
 import Divider from '@/app/components/base/divider'
 import Popover from '@/app/components/base/popover'
-import Modal from '@/app/components/base/modal'
-import Button from '@/app/components/base/button'
+import Confirm from '@/app/components/base/confirm'
 import Tooltip from '@/app/components/base/tooltip'
 import { ToastContext } from '@/app/components/base/toast'
 import type { IndicatorProps } from '@/app/components/header/indicator'
@@ -32,7 +34,6 @@ import NotionIcon from '@/app/components/base/notion-icon'
 import ProgressBar from '@/app/components/base/progress-bar'
 import { DataSourceType, type DocumentDisplayStatus, type SimpleDocumentDetail } from '@/models/datasets'
 import type { CommonResponse } from '@/models/common'
-import { DotsHorizontal, HelpCircle } from '@/app/components/base/icons/src/vender/line/general'
 import useTimestamp from '@/hooks/use-timestamp'
 
 export const SettingsIcon = ({ className }: SVGProps<SVGElement>) => {
@@ -98,7 +99,7 @@ export const StatusItem: FC<{
             <div className='max-w-[260px] break-all'>{errorMessage}</div>
           }
         >
-          <HelpCircle className='ml-1 w-[14px] h-[14px] text-gray-700' />
+          <RiQuestionLine className='ml-1 w-[14px] h-[14px] text-gray-700' />
         </Tooltip>
       )
     }
@@ -284,32 +285,23 @@ export const OperationAction: FC<{
         position='br'
         btnElement={
           <div className={cn(s.commonIcon)}>
-            <DotsHorizontal className='w-4 h-4 text-gray-700' />
+            <RiMoreFill className='w-4 h-4 text-gray-700' />
           </div>
         }
         btnClassName={open => cn(isListScene ? s.actionIconWrapperList : s.actionIconWrapperDetail, open ? '!bg-gray-100 !shadow-none' : '!bg-transparent')}
         className={`flex justify-end !w-[200px] h-fit !z-20 ${className}`}
       />
     )}
-    {showModal && <Modal isShow={showModal} onClose={() => setShowModal(false)} className={s.delModal} closable>
-      <div>
-        <div className={s.warningWrapper}>
-          <ExclamationCircleIcon className={s.warningIcon} />
-        </div>
-        <div className='text-xl font-semibold text-gray-900 mb-1'>{t('datasetDocuments.list.delete.title')}</div>
-        <div className='text-sm text-gray-500 mb-10'>{t('datasetDocuments.list.delete.content')}</div>
-        <div className='flex gap-2 justify-end'>
-          <Button onClick={() => setShowModal(false)}>{t('common.operation.cancel')}</Button>
-          <Button
-            type='warning'
-            onClick={() => onOperate('delete')}
-            className='border-red-700 border-[0.5px]'
-          >
-            {t('common.operation.sure')}
-          </Button>
-        </div>
-      </div>
-    </Modal>}
+    {showModal
+      && <Confirm
+        isShow={showModal}
+        title={t('datasetDocuments.list.delete.title')}
+        content={t('datasetDocuments.list.delete.content')}
+        confirmText={t('common.operation.sure')}
+        onConfirm={() => onOperate('delete')}
+        onCancel={() => setShowModal(false)}
+      />
+    }
 
     {isShowRenameModal && currDocument && (
       <RenameModal

@@ -12,6 +12,7 @@ const translation = {
     cancel: 'Abbrechen',
     clear: 'Leeren',
     save: 'Speichern',
+    saveAndEnable: 'Speichern und Aktivieren',
     edit: 'Bearbeiten',
     add: 'Hinzufügen',
     added: 'Hinzugefügt',
@@ -119,6 +120,7 @@ const translation = {
   },
   userProfile: {
     settings: 'Einstellungen',
+    emailSupport: 'E-Mail-Support',
     workspace: 'Arbeitsbereich',
     createWorkspace: 'Arbeitsbereich erstellen',
     helpCenter: 'Hilfe',
@@ -156,6 +158,9 @@ const translation = {
     langGeniusAccountTip: 'Ihr Dify-Konto und zugehörige Benutzerdaten.',
     editName: 'Namen bearbeiten',
     showAppLength: '{{length}} Apps anzeigen',
+    delete: 'Konto löschen',
+    deleteTip: 'Wenn Sie Ihr Konto löschen, werden alle Ihre Daten dauerhaft gelöscht und können nicht wiederhergestellt werden.',
+    deleteConfirmTip: 'Zur Bestätigung senden Sie bitte Folgendes von Ihrer registrierten E-Mail-Adresse an ',
   },
   members: {
     team: 'Team',

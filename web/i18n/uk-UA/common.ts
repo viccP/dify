@@ -12,6 +12,7 @@ const translation = {
     cancel: 'Скасувати',
     clear: 'Очистити',
     save: 'Зберегти',
+    saveAndEnable: 'Зберегти та Увімкнути',
     edit: 'Редагувати',
     add: 'Додати',
     added: 'Додано',
@@ -119,6 +120,7 @@ const translation = {
   },
   userProfile: {
     settings: 'Налаштування',
+    emailSupport: 'Підтримка по електронній пошті',
     workspace: 'Робочий простір',
     createWorkspace: 'Створити робочий простір',
     helpCenter: 'Довідковий центр',
@@ -156,6 +158,9 @@ const translation = {
     langGeniusAccountTip: 'Ваш обліковий запис Bonc LOps  та пов’язані з ним дані користувача.',
     editName: 'Редагувати ім\'я',
     showAppLength: 'Показати {{length}} програм',
+    delete: 'Видалити обліковий запис',
+    deleteTip: 'Видалення вашого облікового запису призведе до остаточного видалення всіх ваших даних, і їх неможливо буде відновити.',
+    deleteConfirmTip: 'Щоб підтвердити, будь ласка, надішліть наступне з вашої зареєстрованої електронної пошти на ',
   },
   members: {
     team: 'Команда',
@@ -404,7 +409,7 @@ const translation = {
     latestAvailable: 'Bonc LOps  {{version}} – це найновіша доступна версія.',
   },
   appMenus: {
-    overview: 'Огляд',
+    overview: 'Моніторинг',
     promptEng: 'Налаштування',
     apiAccess: 'Доступ до API',
     logAndAnn: 'Журнали та Повідомлення.',

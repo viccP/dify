@@ -10,13 +10,14 @@ import Button from '@/app/components/base/button'
 import AppIcon from '@/app/components/base/app-icon'
 import { SimpleSelect } from '@/app/components/base/select'
 import type { AppDetailResponse } from '@/models/app'
-import type { Language } from '@/types/app'
-import EmojiPicker from '@/app/components/base/emoji-picker'
+import type { AppIconType, Language } from '@/types/app'
 import { useToastContext } from '@/app/components/base/toast'
-
 import { languages } from '@/i18n/language'
+import type { AppIconSelection } from '@/app/components/base/app-icon-picker'
+import AppIconPicker from '@/app/components/base/app-icon-picker'
 
 export type ISettingsModalProps = {
+  isChat: boolean
   appInfo: AppDetailResponse
   isShow: boolean
   defaultValue?: string
@@ -28,17 +29,22 @@ export type ConfigParams = {
   title: string
   description: string
   default_language: string
+  chat_color_theme: string
+  chat_color_theme_inverted: boolean
   prompt_public: boolean
   copyright: string
   privacy_policy: string
   custom_disclaimer: string
+  icon_type: AppIconType
   icon: string
-  icon_background: string
+  icon_background?: string
+  show_workflow_steps: boolean
 }
 
 const prefixSettings = 'appOverview.overview.appInfo.settings'
 
 const SettingsModal: FC<ISettingsModalProps> = ({
+  isChat,
   appInfo,
   isShow = false,
   onClose,
@@ -46,20 +52,57 @@ const SettingsModal: FC<ISettingsModalProps> = ({
 }) => {
   const { notify } = useToastContext()
   const [isShowMore, setIsShowMore] = useState(false)
-  const { icon, icon_background } = appInfo
-  const { title, description, copyright, privacy_policy, custom_disclaimer, default_language } = appInfo.site
-  const [inputInfo, setInputInfo] = useState({ title, desc: description, copyright, privacyPolicy: privacy_policy, customDisclaimer: custom_disclaimer })
+  const {
+    title,
+    icon_type,
+    icon,
+    icon_background,
+    icon_url,
+    description,
+    chat_color_theme,
+    chat_color_theme_inverted,
+    copyright,
+    privacy_policy,
+    custom_disclaimer,
+    default_language,
+    show_workflow_steps,
+  } = appInfo.site
+  const [inputInfo, setInputInfo] = useState({
+    title,
+    desc: description,
+    chatColorTheme: chat_color_theme,
+    chatColorThemeInverted: chat_color_theme_inverted,
+    copyright,
+    privacyPolicy: privacy_policy,
+    customDisclaimer: custom_disclaimer,
+    show_workflow_steps,
+  })
   const [language, setLanguage] = useState(default_language)
   const [saveLoading, setSaveLoading] = useState(false)
   const { t } = useTranslation()
-  // Emoji Picker
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
-  const [emoji, setEmoji] = useState({ icon, icon_background })
+
+  const [showAppIconPicker, setShowAppIconPicker] = useState(false)
+  const [appIcon, setAppIcon] = useState<AppIconSelection>(
+    icon_type === 'image'
+      ? { type: 'image', url: icon_url!, fileId: icon }
+      : { type: 'emoji', icon, background: icon_background! },
+  )
 
   useEffect(() => {
-    setInputInfo({ title, desc: description, copyright, privacyPolicy: privacy_policy, customDisclaimer: custom_disclaimer })
+    setInputInfo({
+      title,
+      desc: description,
+      chatColorTheme: chat_color_theme,
+      chatColorThemeInverted: chat_color_theme_inverted,
+      copyright,
+      privacyPolicy: privacy_policy,
+      customDisclaimer: custom_disclaimer,
+      show_workflow_steps,
+    })
     setLanguage(default_language)
-    setEmoji({ icon, icon_background })
+    setAppIcon(icon_type === 'image'
+      ? { type: 'image', url: icon_url!, fileId: icon }
+      : { type: 'emoji', icon, background: icon_background! })
   }, [appInfo])
 
   const onHide = () => {
@@ -74,17 +117,38 @@ const SettingsModal: FC<ISettingsModalProps> = ({
       notify({ type: 'error', message: t('app.newApp.nameNotEmpty') })
       return
     }
+
+    const validateColorHex = (hex: string | null) => {
+      if (hex === null || hex?.length === 0)
+        return true
+
+      const regex = /#([A-Fa-f0-9]{6})/
+      const check = regex.test(hex)
+      return check
+    }
+
+    if (inputInfo !== null) {
+      if (!validateColorHex(inputInfo.chatColorTheme)) {
+        notify({ type: 'error', message: t(`${prefixSettings}.invalidHexMessage`) })
+        return
+      }
+    }
+
     setSaveLoading(true)
     const params = {
       title: inputInfo.title,
       description: inputInfo.desc,
       default_language: language,
+      chat_color_theme: inputInfo.chatColorTheme,
+      chat_color_theme_inverted: inputInfo.chatColorThemeInverted,
       prompt_public: false,
       copyright: inputInfo.copyright,
       privacy_policy: inputInfo.privacyPolicy,
       custom_disclaimer: inputInfo.customDisclaimer,
-      icon: emoji.icon,
-      icon_background: emoji.icon_background,
+      icon_type: appIcon.type,
+      icon: appIcon.type === 'emoji' ? appIcon.icon : appIcon.fileId,
+      icon_background: appIcon.type === 'emoji' ? appIcon.background : undefined,
+      show_workflow_steps: inputInfo.show_workflow_steps,
     }
     await onSave?.(params)
     setSaveLoading(false)
@@ -93,7 +157,13 @@ const SettingsModal: FC<ISettingsModalProps> = ({
 
   const onChange = (field: string) => {
     return (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setInputInfo(item => ({ ...item, [field]: e.target.value }))
+      let value: string | boolean
+      if (e.target.type === 'checkbox')
+        value = (e.target as HTMLInputElement).checked
+      else
+        value = e.target.value
+
+      setInputInfo(item => ({ ...item, [field]: value }))
     }
   }
 
@@ -108,10 +178,12 @@ const SettingsModal: FC<ISettingsModalProps> = ({
         <div className={`mt-6 font-medium ${s.settingTitle} text-gray-900`}>{t(`${prefixSettings}.webName`)}</div>
         <div className='flex mt-2'>
           <AppIcon size='large'
-            onClick={() => { setShowEmojiPicker(true) }}
+            onClick={() => { setShowAppIconPicker(true) }}
             className='cursor-pointer !mr-3 self-center'
-            icon={emoji.icon}
-            background={emoji.icon_background}
+            iconType={appIcon.type}
+            icon={appIcon.type === 'image' ? appIcon.fileId : appIcon.icon}
+            background={appIcon.type === 'image' ? undefined : appIcon.background}
+            imageUrl={appIcon.type === 'image' ? appIcon.url : undefined}
           />
           <input className={`flex-grow rounded-lg h-10 box-border px-3 ${s.projectName} bg-gray-100`}
             value={inputInfo.title}
@@ -134,6 +206,22 @@ const SettingsModal: FC<ISettingsModalProps> = ({
           defaultValue={language}
           onSelect={item => setLanguage(item.value as Language)}
         />
+        {(appInfo.mode === 'workflow' || appInfo.mode === 'advanced-chat') && <>
+          <div className={`mt-6 mb-2 font-medium ${s.settingTitle} text-gray-900 `}>{t(`${prefixSettings}.workflow.title`)}</div>
+          <SimpleSelect
+            items={[{ name: t(`${prefixSettings}.workflow.show`), value: 'true' }, { name: t(`${prefixSettings}.workflow.hide`), value: 'false' }]}
+            defaultValue={inputInfo.show_workflow_steps ? 'true' : 'false'}
+            onSelect={item => setInputInfo({ ...inputInfo, show_workflow_steps: item.value === 'true' })}
+          />
+        </>}
+        {isChat && <> <div className={`mt-8 font-medium ${s.settingTitle} text-gray-900`}>{t(`${prefixSettings}.chatColorTheme`)}</div>
+          <p className={`mt-1 ${s.settingsTip} text-gray-500`}>{t(`${prefixSettings}.chatColorThemeDesc`)}</p>
+          <input className={`w-full mt-2 rounded-lg h-10 box-border px-3 ${s.projectName} bg-gray-100`}
+            value={inputInfo.chatColorTheme ?? ''}
+            onChange={onChange('chatColorTheme')}
+            placeholder= 'E.g #A020F0'
+          />
+        </>}
         {!isShowMore && <div className='w-full cursor-pointer mt-8' onClick={() => setIsShowMore(true)}>
           <div className='flex justify-between'>
             <div className={`font-medium ${s.settingTitle} flex-grow text-gray-900`}>{t(`${prefixSettings}.more.entry`)}</div>
@@ -172,17 +260,19 @@ const SettingsModal: FC<ISettingsModalProps> = ({
           />
         </>}
         <div className='mt-10 flex justify-end'>
-          <Button className='mr-2 flex-shrink-0 !text-sm' onClick={onHide}>{t('common.operation.cancel')}</Button>
-          <Button type='primary' className='flex-shrink-0 !text-sm' onClick={onClickSave} loading={saveLoading}>{t('common.operation.save')}</Button>
+          <Button className='mr-2' onClick={onHide}>{t('common.operation.cancel')}</Button>
+          <Button variant='primary' onClick={onClickSave} loading={saveLoading}>{t('common.operation.save')}</Button>
         </div>
-        {showEmojiPicker && <EmojiPicker
-          onSelect={(icon, icon_background) => {
-            setEmoji({ icon, icon_background })
-            setShowEmojiPicker(false)
+        {showAppIconPicker && <AppIconPicker
+          onSelect={(payload) => {
+            setAppIcon(payload)
+            setShowAppIconPicker(false)
           }}
           onClose={() => {
-            setEmoji({ icon: appInfo.site.icon, icon_background: appInfo.site.icon_background })
-            setShowEmojiPicker(false)
+            setAppIcon(icon_type === 'image'
+              ? { type: 'image', url: icon_url!, fileId: icon }
+              : { type: 'emoji', icon, background: icon_background! })
+            setShowAppIconPicker(false)
           }}
         />}
       </Modal >

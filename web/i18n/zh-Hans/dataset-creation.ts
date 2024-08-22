@@ -13,8 +13,7 @@ const translation = {
   },
   firecrawl: {
     configFirecrawl: '配置 🔥Firecrawl',
-    apiKeyPlaceholder: '从 firecrawl.dev 获取 API Key，以 "fc-" 开头',
-    apiKeyFormatError: 'API Key 应以 "fc-" 开头',
+    apiKeyPlaceholder: '从 firecrawl.dev 获取 API Key',
     getApiKeyLinkText: '从 firecrawl.dev 获取您的 API Key',
   },
   stepOne: {
@@ -63,7 +62,7 @@ const translation = {
       run: '运行',
       firecrawlTitle: '使用 🔥Firecrawl 提取网页内容',
       firecrawlDoc: 'Firecrawl 文档',
-      firecrawlDocLink: 'https://docs.dify.ai/v/zh-hans/guides/knowledge-base/sync_from_website',
+      firecrawlDocLink: 'https://docs.dify.ai/v/zh-hans/guides/knowledge-base/sync-from-website',
       options: '选项',
       crawlSubPage: '爬取子页面',
       limit: '限制数量',

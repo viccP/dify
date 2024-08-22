@@ -1,6 +1,6 @@
 import time
 from collections.abc import Generator
-from typing import Optional, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 from core.app.app_config.entities import ExternalDataVariableEntity, PromptTemplateEntity
 from core.app.apps.base_app_queue_manager import AppQueueManager, PublishFrom
@@ -14,7 +14,6 @@ from core.app.entities.queue_entities import QueueAgentMessageEvent, QueueLLMChu
 from core.app.features.annotation_reply.annotation_reply import AnnotationReplyFeature
 from core.app.features.hosting_moderation.hosting_moderation import HostingModerationFeature
 from core.external_data_tool.external_data_fetch import ExternalDataFetch
-from core.file.file_obj import FileVar
 from core.memory.token_buffer_memory import TokenBufferMemory
 from core.model_manager import ModelInstance
 from core.model_runtime.entities.llm_entities import LLMResult, LLMResultChunk, LLMResultChunkDelta, LLMUsage
@@ -27,13 +26,16 @@ from core.prompt.entities.advanced_prompt_entities import ChatModelMessage, Comp
 from core.prompt.simple_prompt_transform import ModelMode, SimplePromptTransform
 from models.model import App, AppMode, Message, MessageAnnotation
 
+if TYPE_CHECKING:
+    from core.file.file_obj import FileVar
+
 
 class AppRunner:
     def get_pre_calculate_rest_tokens(self, app_record: App,
                                       model_config: ModelConfigWithCredentialsEntity,
                                       prompt_template_entity: PromptTemplateEntity,
                                       inputs: dict[str, str],
-                                      files: list[FileVar],
+                                      files: list["FileVar"],
                                       query: Optional[str] = None) -> int:
         """
         Get pre calculate rest tokens
@@ -126,7 +128,7 @@ class AppRunner:
                                  model_config: ModelConfigWithCredentialsEntity,
                                  prompt_template_entity: PromptTemplateEntity,
                                  inputs: dict[str, str],
-                                 files: list[FileVar],
+                                 files: list["FileVar"],
                                  query: Optional[str] = None,
                                  context: Optional[str] = None,
                                  memory: Optional[TokenBufferMemory] = None) \
@@ -254,6 +256,7 @@ class AppRunner:
         :param invoke_result: invoke result
         :param queue_manager: application queue manager
         :param stream: stream
+        :param agent: agent
         :return:
         """
         if not stream:
@@ -276,6 +279,7 @@ class AppRunner:
         Handle invoke result direct
         :param invoke_result: invoke result
         :param queue_manager: application queue manager
+        :param agent: agent
         :return:
         """
         queue_manager.publish(
@@ -291,6 +295,7 @@ class AppRunner:
         Handle invoke result
         :param invoke_result: invoke result
         :param queue_manager: application queue manager
+        :param agent: agent
         :return:
         """
         model = None
@@ -338,11 +343,14 @@ class AppRunner:
             ), PublishFrom.APPLICATION_MANAGER
         )
 
-    def moderation_for_inputs(self, app_id: str,
-                              tenant_id: str,
-                              app_generate_entity: AppGenerateEntity,
-                              inputs: dict,
-                              query: str) -> tuple[bool, dict, str]:
+    def moderation_for_inputs(
+            self, app_id: str,
+            tenant_id: str,
+            app_generate_entity: AppGenerateEntity,
+            inputs: dict,
+            query: str,
+            message_id: str,
+    ) -> tuple[bool, dict, str]:
         """
         Process sensitive_word_avoidance.
         :param app_id: app id
@@ -350,6 +358,7 @@ class AppRunner:
         :param app_generate_entity: app generate entity
         :param inputs: inputs
         :param query: query
+        :param message_id: message id
         :return:
         """
         moderation_feature = InputModeration()
@@ -358,9 +367,11 @@ class AppRunner:
             tenant_id=tenant_id,
             app_config=app_generate_entity.app_config,
             inputs=inputs,
-            query=query if query else ''
+            query=query if query else '',
+            message_id=message_id,
+            trace_manager=app_generate_entity.trace_manager
         )
-    
+
     def check_hosting_moderation(self, application_generate_entity: EasyUIBasedAppGenerateEntity,
                                  queue_manager: AppQueueManager,
                                  prompt_messages: list[PromptMessage]) -> bool:
@@ -412,7 +423,7 @@ class AppRunner:
             inputs=inputs,
             query=query
         )
-    
+
     def query_app_annotations_to_reply(self, app_record: App,
                                        message: Message,
                                        query: str,

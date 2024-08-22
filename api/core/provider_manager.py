@@ -417,7 +417,7 @@ class ProviderManager:
             model_load_balancing_enabled = cache_result == 'True'
 
         if not model_load_balancing_enabled:
-            return dict()
+            return {}
 
         provider_load_balancing_configs = db.session.query(LoadBalancingModelConfig) \
             .filter(
@@ -451,7 +451,7 @@ class ProviderManager:
             if not provider_records:
                 provider_records = []
 
-            provider_quota_to_provider_record_dict = dict()
+            provider_quota_to_provider_record_dict = {}
             for provider_record in provider_records:
                 if provider_record.provider_type != ProviderType.SYSTEM.value:
                     continue
@@ -661,7 +661,7 @@ class ProviderManager:
         provider_hosting_configuration = hosting_configuration.provider_map.get(provider_entity.provider)
 
         # Convert provider_records to dict
-        quota_type_to_provider_records_dict = dict()
+        quota_type_to_provider_records_dict = {}
         for provider_record in provider_records:
             if provider_record.provider_type != ProviderType.SYSTEM.value:
                 continue
@@ -811,7 +811,7 @@ class ProviderManager:
             -> list[ModelSettings]:
         """
         Convert to model settings.
-
+        :param provider_entity: provider entity
         :param provider_model_settings: provider model settings include enabled, load balancing enabled
         :param load_balancing_model_configs: load balancing model configs
         :return:
