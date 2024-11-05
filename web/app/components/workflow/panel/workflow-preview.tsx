@@ -149,7 +149,7 @@ const WorkflowPreview = ({
               </div>
               <div className={cn(
                 'grow bg-white h-0 overflow-y-auto rounded-b-2xl',
-                (currentTab === 'RESULT' || currentTab === 'TRACING') && '!bg-gray-50',
+                (currentTab === 'TRACING') && '!bg-gray-50',
               )}>
                 {currentTab === 'INPUT' && showInputsPanel && (
                   <InputsPanel onRun={() => switchTab('RESULT')} />
