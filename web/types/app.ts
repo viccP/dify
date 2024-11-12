@@ -6,6 +6,7 @@ import type {
   RerankingModeEnum,
   WeightedScoreEnum,
 } from '@/models/datasets'
+import type { UploadFileSetting } from '@/app/components/workflow/types'
 
 export enum Theme {
   light = 'light',
@@ -212,7 +213,7 @@ export type ModelConfig = {
   user_input_form: UserInputFormItem[]
   dataset_query_variable?: string
   more_like_this: {
-    enabled: boolean
+    enabled?: boolean
   }
   suggested_questions_after_answer: {
     enabled: boolean
@@ -242,9 +243,10 @@ export type ModelConfig = {
   dataset_configs: DatasetConfigs
   file_upload?: {
     image: VisionSettings
-  }
+  } & UploadFileSetting
   files?: VisionFile[]
   created_at?: number
+  updated_at?: number
 }
 
 export type Language = typeof LanguagesSupported[number]
@@ -297,6 +299,7 @@ export type SiteConfig = {
   icon_url: string | null
 
   show_workflow_steps: boolean
+  use_icon_as_answer_icon: boolean
 }
 
 export type AppIconType = 'image' | 'emoji'
@@ -323,6 +326,8 @@ export type App = {
   icon_background: string | null
   /** Icon URL, only available when icon_type is 'image' */
   icon_url: string | null
+  /** Whether to use app icon as answer icon */
+  use_icon_as_answer_icon: boolean
 
   /** Mode */
   mode: AppMode
@@ -346,6 +351,10 @@ export type App = {
   /** api site url */
   api_base_url: string
   tags: Tag[]
+}
+
+export type AppSSO = {
+  enable_sso: boolean
 }
 
 /**

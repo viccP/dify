@@ -19,11 +19,13 @@ import type { AppMode } from '@/types/app'
 import { createApp } from '@/service/apps'
 import Modal from '@/app/components/base/modal'
 import Button from '@/app/components/base/button'
+import Input from '@/app/components/base/input'
+import Textarea from '@/app/components/base/textarea'
 import AppIcon from '@/app/components/base/app-icon'
 import AppsFull from '@/app/components/billing/apps-full-in-dialog'
-import { AiText, ChatBot, CuteRobote } from '@/app/components/base/icons/src/vender/solid/communication'
+import { AiText, ChatBot, CuteRobot } from '@/app/components/base/icons/src/vender/solid/communication'
 import { Route } from '@/app/components/base/icons/src/vender/solid/mapsAndTravel'
-import TooltipPlus from '@/app/components/base/tooltip-plus'
+import Tooltip from '@/app/components/base/tooltip'
 import { NEED_REFRESH_APP_LIST_KEY } from '@/config'
 import { getRedirection } from '@/utils/app-redirection'
 
@@ -100,8 +102,7 @@ const CreateAppModal = ({ show, onSuccess, onClose }: CreateAppDialogProps) => {
       <div className='py-2 px-8'>
         <div className='py-2 text-sm leading-[20px] font-medium text-gray-900'>{t('app.newApp.captionAppType')}</div>
         <div className='flex'>
-          <TooltipPlus
-            hideArrow
+          <Tooltip
             popupContent={
               <div className='max-w-[280px] leading-[18px] text-xs text-gray-700'>{t('app.newApp.chatbotDescription')}</div>
             }
@@ -120,9 +121,8 @@ const CreateAppModal = ({ show, onSuccess, onClose }: CreateAppDialogProps) => {
               <ChatBot className='w-6 h-6 text-[#1570EF]' />
               <div className='h-5 text-[13px] font-medium leading-[18px]'>{t('app.types.chatbot')}</div>
             </div>
-          </TooltipPlus>
-          <TooltipPlus
-            hideArrow
+          </Tooltip>
+          <Tooltip
             popupContent={
               <div className='flex flex-col max-w-[320px] leading-[18px] text-xs'>
                 <div className='text-gray-700'>{t('app.newApp.completionDescription')}</div>
@@ -143,9 +143,8 @@ const CreateAppModal = ({ show, onSuccess, onClose }: CreateAppDialogProps) => {
               <AiText className='w-6 h-6 text-[#0E9384]' />
               <div className='h-5 text-[13px] font-medium leading-[18px]'>{t('app.newApp.completeApp')}</div>
             </div>
-          </TooltipPlus>
-          <TooltipPlus
-            hideArrow
+          </Tooltip>
+          <Tooltip
             popupContent={
               <div className='max-w-[280px] leading-[18px] text-xs text-gray-700'>{t('app.newApp.agentDescription')}</div>
             }
@@ -161,12 +160,11 @@ const CreateAppModal = ({ show, onSuccess, onClose }: CreateAppDialogProps) => {
                 setShowChatBotType(false)
               }}
             >
-              <CuteRobote className='w-6 h-6 text-indigo-600' />
+              <CuteRobot className='w-6 h-6 text-indigo-600' />
               <div className='h-5 text-[13px] font-medium leading-[18px]'>{t('app.types.agent')}</div>
             </div>
-          </TooltipPlus>
-          <TooltipPlus
-            hideArrow
+          </Tooltip>
+          <Tooltip
             popupContent={
               <div className='flex flex-col max-w-[320px] leading-[18px] text-xs'>
                 <div className='text-gray-700'>{t('app.newApp.workflowDescription')}</div>
@@ -188,7 +186,7 @@ const CreateAppModal = ({ show, onSuccess, onClose }: CreateAppDialogProps) => {
               <div className='h-5 text-[13px] font-medium leading-[18px]'>{t('app.types.workflow')}</div>
               <span className='absolute top-[-3px] right-[-3px] px-1 rounded-[5px] bg-white border border-black/8 text-gray-500 text-[10px] leading-[18px] font-medium'>BETA</span>
             </div>
-          </TooltipPlus>
+          </Tooltip>
         </div>
       </div>
       {showChatBotType && (
@@ -279,11 +277,11 @@ const CreateAppModal = ({ show, onSuccess, onClose }: CreateAppDialogProps) => {
             size='large' className='cursor-pointer'
             onClick={() => { setShowAppIconPicker(true) }}
           />
-          <input
+          <Input
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder={t('app.newApp.appNamePlaceholder') || ''}
-            className='grow h-10 px-3 text-sm font-normal bg-gray-100 rounded-lg border border-transparent outline-none appearance-none caret-primary-600 placeholder:text-gray-400 hover:bg-gray-50 hover:border hover:border-gray-300 focus:bg-gray-50 focus:border focus:border-gray-300 focus:shadow-xs'
+            className='grow h-10'
           />
         </div>
         {showAppIconPicker && <AppIconPicker
@@ -299,8 +297,8 @@ const CreateAppModal = ({ show, onSuccess, onClose }: CreateAppDialogProps) => {
       {/* description */}
       <div className='pt-2 px-8'>
         <div className='py-2 text-sm font-medium leading-[20px] text-gray-900'>{t('app.newApp.captionDescription')}</div>
-        <textarea
-          className='w-full px-3 py-2 text-sm font-normal bg-gray-100 rounded-lg border border-transparent outline-none appearance-none caret-primary-600 placeholder:text-gray-400 hover:bg-gray-50 hover:border hover:border-gray-300 focus:bg-gray-50 focus:border focus:border-gray-300 focus:shadow-xs h-[80px] resize-none'
+        <Textarea
+          className='resize-none'
           placeholder={t('app.newApp.appDescriptionPlaceholder') || ''}
           value={description}
           onChange={e => setDescription(e.target.value)}

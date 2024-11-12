@@ -8,6 +8,7 @@ import ObjectValueList from '@/app/components/workflow/panel/chat-variable-panel
 import { DEFAULT_OBJECT_VALUE } from '@/app/components/workflow/panel/chat-variable-panel/components/object-value-item'
 import ArrayValueList from '@/app/components/workflow/panel/chat-variable-panel/components/array-value-list'
 import Button from '@/app/components/base/button'
+import Input from '@/app/components/base/input'
 import CodeEditor from '@/app/components/workflow/nodes/_base/components/editor/code-editor'
 import { ToastContext } from '@/app/components/base/toast'
 import { useStore } from '@/app/components/workflow/store'
@@ -15,6 +16,7 @@ import type { ConversationVariable } from '@/app/components/workflow/types'
 import { CodeLanguage } from '@/app/components/workflow/nodes/code/types'
 import { ChatVarType } from '@/app/components/workflow/panel/chat-variable-panel/type'
 import cn from '@/utils/classnames'
+import { checkKeys } from '@/utils/var'
 
 export type ModalPropsType = {
   chatVar?: ConversationVariable
@@ -128,14 +130,16 @@ const ChatVariableModal = ({
     }
   }
 
-  const handleNameChange = (v: string) => {
-    if (!v)
-      return setName('')
-    if (!/^[a-zA-Z0-9_]+$/.test(v))
-      return notify({ type: 'error', message: 'name is can only contain letters, numbers and underscores' })
-    if (/^[0-9]/.test(v))
-      return notify({ type: 'error', message: 'name can not start with a number' })
-    setName(v)
+  const checkVariableName = (value: string) => {
+    const { isValid, errorMessageKey } = checkKeys([value], false)
+    if (!isValid) {
+      notify({
+        type: 'error',
+        message: t(`appDebug.varKeyError.${errorMessageKey}`, { key: t('workflow.env.modal.name') }),
+      })
+      return false
+    }
+    return true
   }
 
   const handleTypeChange = (v: ChatVarType) => {
@@ -211,8 +215,8 @@ const ChatVariableModal = ({
   }
 
   const handleSave = () => {
-    if (!name)
-      return notify({ type: 'error', message: 'name can not be empty' })
+    if (!checkVariableName(name))
+      return
     if (!chatVar && varList.some(chatVar => chatVar.name === name))
       return notify({ type: 'error', message: 'name is existed' })
     // if (type !== ChatVarType.Object && !value)
@@ -267,12 +271,11 @@ const ChatVariableModal = ({
         <div className='mb-4'>
           <div className='mb-1 h-6 flex items-center text-text-secondary system-sm-semibold'>{t('workflow.chatVariable.modal.name')}</div>
           <div className='flex'>
-            <input
-              tabIndex={0}
-              className='block px-3 w-full h-8 bg-components-input-bg-normal system-sm-regular radius-md border border-transparent appearance-none outline-none caret-primary-600 hover:border-components-input-border-hover hover:bg-components-input-bg-hover focus:bg-components-input-bg-active focus:border-components-input-border-active focus:shadow-xs placeholder:system-sm-regular placeholder:text-components-input-text-placeholder'
+            <Input
               placeholder={t('workflow.chatVariable.modal.namePlaceholder') || ''}
               value={name}
-              onChange={e => handleNameChange(e.target.value)}
+              onChange={e => setName(e.target.value || '')}
+              onBlur={e => checkVariableName(e.target.value)}
               type='text'
             />
           </div>
@@ -318,16 +321,14 @@ const ChatVariableModal = ({
           </div>
           <div className='flex'>
             {type === ChatVarType.String && (
-              <input
-                className='block px-3 w-full h-8 bg-components-input-bg-normal system-sm-regular radius-md border border-transparent appearance-none outline-none caret-primary-600 hover:border-components-input-border-hover hover:bg-components-input-bg-hover focus:bg-components-input-bg-active focus:border-components-input-border-active focus:shadow-xs placeholder:system-sm-regular placeholder:text-components-input-text-placeholder'
+              <Input
                 placeholder={t('workflow.chatVariable.modal.valuePlaceholder') || ''}
                 value={value}
                 onChange={e => setValue(e.target.value)}
               />
             )}
             {type === ChatVarType.Number && (
-              <input
-                className='block px-3 w-full h-8 bg-components-input-bg-normal system-sm-regular radius-md border border-transparent appearance-none outline-none caret-primary-600 hover:border-components-input-border-hover hover:bg-components-input-bg-hover focus:bg-components-input-bg-active focus:border-components-input-border-active focus:shadow-xs placeholder:system-sm-regular placeholder:text-components-input-text-placeholder'
+              <Input
                 placeholder={t('workflow.chatVariable.modal.valuePlaceholder') || ''}
                 value={value}
                 onChange={e => setValue(Number(e.target.value))}

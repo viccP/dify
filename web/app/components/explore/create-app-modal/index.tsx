@@ -5,6 +5,9 @@ import { RiCloseLine } from '@remixicon/react'
 import AppIconPicker from '../../base/app-icon-picker'
 import Modal from '@/app/components/base/modal'
 import Button from '@/app/components/base/button'
+import Input from '@/app/components/base/input'
+import Textarea from '@/app/components/base/textarea'
+import Switch from '@/app/components/base/switch'
 import Toast from '@/app/components/base/toast'
 import AppIcon from '@/app/components/base/app-icon'
 import { useProviderContext } from '@/context/provider-context'
@@ -20,12 +23,15 @@ export type CreateAppModalProps = {
   appIcon: string
   appIconBackground?: string | null
   appIconUrl?: string | null
+  appMode?: string
+  appUseIconAsAnswerIcon?: boolean
   onConfirm: (info: {
     name: string
     icon_type: AppIconType
     icon: string
     icon_background?: string
     description: string
+    use_icon_as_answer_icon?: boolean
   }) => Promise<void>
   onHide: () => void
 }
@@ -39,6 +45,8 @@ const CreateAppModal = ({
   appIconUrl,
   appName,
   appDescription,
+  appMode,
+  appUseIconAsAnswerIcon,
   onConfirm,
   onHide,
 }: CreateAppModalProps) => {
@@ -52,6 +60,7 @@ const CreateAppModal = ({
   )
   const [showAppIconPicker, setShowAppIconPicker] = useState(false)
   const [description, setDescription] = useState(appDescription || '')
+  const [useIconAsAnswerIcon, setUseIconAsAnswerIcon] = useState(appUseIconAsAnswerIcon || false)
 
   const { plan, enableBilling } = useProviderContext()
   const isAppsFull = (enableBilling && plan.usage.buildApps >= plan.total.buildApps)
@@ -67,6 +76,7 @@ const CreateAppModal = ({
       icon: appIcon.type === 'emoji' ? appIcon.icon : appIcon.fileId,
       icon_background: appIcon.type === 'emoji' ? appIcon.background! : undefined,
       description,
+      use_icon_as_answer_icon: useIconAsAnswerIcon,
     })
     onHide()
   }
@@ -101,24 +111,37 @@ const CreateAppModal = ({
                 background={appIcon.type === 'image' ? undefined : appIcon.background}
                 imageUrl={appIcon.type === 'image' ? appIcon.url : undefined}
               />
-              <input
+              <Input
                 value={name}
                 onChange={e => setName(e.target.value)}
                 placeholder={t('app.newApp.appNamePlaceholder') || ''}
-                className='grow h-10 px-3 text-sm font-normal bg-gray-100 rounded-lg border border-transparent outline-none appearance-none caret-primary-600 placeholder:text-gray-400 hover:bg-gray-50 hover:border hover:border-gray-300 focus:bg-gray-50 focus:border focus:border-gray-300 focus:shadow-xs'
+                className='grow h-10'
               />
             </div>
           </div>
           {/* description */}
           <div className='pt-2'>
             <div className='py-2 text-sm font-medium leading-[20px] text-gray-900'>{t('app.newApp.captionDescription')}</div>
-            <textarea
-              className='w-full h-10 px-3 py-2 text-sm font-normal bg-gray-100 rounded-lg border border-transparent outline-none appearance-none caret-primary-600 placeholder:text-gray-400 hover:bg-gray-50 hover:border hover:border-gray-300 focus:bg-gray-50 focus:border focus:border-gray-300 focus:shadow-xs h-[80px] resize-none'
+            <Textarea
+              className='resize-none'
               placeholder={t('app.newApp.appDescriptionPlaceholder') || ''}
               value={description}
               onChange={e => setDescription(e.target.value)}
             />
           </div>
+          {/* answer icon */}
+          {isEditModal && (appMode === 'chat' || appMode === 'advanced-chat' || appMode === 'agent-chat') && (
+            <div className='pt-2'>
+              <div className='flex justify-between items-center'>
+                <div className='py-2 text-sm font-medium leading-[20px] text-gray-900'>{t('app.answerIcon.title')}</div>
+                <Switch
+                  defaultValue={useIconAsAnswerIcon}
+                  onChange={v => setUseIconAsAnswerIcon(v)}
+                />
+              </div>
+              <p className='body-xs-regular text-gray-500'>{t('app.answerIcon.descriptionInExplore')}</p>
+            </div>
+          )}
           {!isEditModal && isAppsFull && <AppsFull loc='app-explore-create' />}
         </div>
         <div className='flex flex-row-reverse'>

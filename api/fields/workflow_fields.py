@@ -1,7 +1,7 @@
 from flask_restful import fields
 
-from core.app.segments import SecretVariable, SegmentType, Variable
 from core.helper import encrypter
+from core.variables import SecretVariable, SegmentType, Variable
 from fields.member_fields import simple_account_fields
 from libs.helper import TimestampField
 
@@ -52,4 +52,12 @@ workflow_fields = {
     "tool_published": fields.Boolean,
     "environment_variables": fields.List(EnvironmentVariableField()),
     "conversation_variables": fields.List(fields.Nested(conversation_variable_fields)),
+}
+
+workflow_partial_fields = {
+    "id": fields.String,
+    "created_by": fields.String,
+    "created_at": TimestampField,
+    "updated_by": fields.String,
+    "updated_at": TimestampField,
 }

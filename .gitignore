@@ -54,7 +54,6 @@ coverage.xml
 # Translations
 *.mo
 *.pot
-*.iml
 
 # Django stuff:
 *.log
@@ -142,7 +141,6 @@ web/.vscode/settings.json
 *.iml
 api/.idea
 
-api/.idea/*
 api/.env
 api/storage/*
 
@@ -155,6 +153,9 @@ docker-legacy/volumes/etcd/*
 docker-legacy/volumes/minio/*
 docker-legacy/volumes/milvus/*
 docker-legacy/volumes/chroma/*
+docker-legacy/volumes/opensearch/data/*
+docker-legacy/volumes/pgvectors/data/*
+docker-legacy/volumes/pgvector/data/*
 
 docker/volumes/app/storage/*
 docker/volumes/certbot/*
@@ -166,9 +167,19 @@ docker/volumes/etcd/*
 docker/volumes/minio/*
 docker/volumes/milvus/*
 docker/volumes/chroma/*
-docker/volumes/neo4j/*
+docker/volumes/opensearch/data/*
+docker/volumes/myscale/data/*
+docker/volumes/myscale/log/*
+docker/volumes/unstructured/*
+docker/volumes/pgvector/data/*
+docker/volumes/pgvecto_rs/data/*
+docker/volumes/couchbase/*
+docker/volumes/oceanbase/*
+!docker/volumes/oceanbase/init.d
 
 docker/nginx/conf.d/default.conf
+docker/nginx/ssl/*
+!docker/nginx/ssl/.gitkeep
 docker/middleware.env
 
 sdks/python-client/build
@@ -181,3 +192,4 @@ pyrightconfig.json
 api/.vscode
 
 .idea/
+.vscode
