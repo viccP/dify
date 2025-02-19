@@ -619,8 +619,3 @@ networks:
   ssrf_proxy_network:
     driver: bridge
     internal: true
-  milvus:
-    driver: bridge
-  opensearch-net:
-    driver: bridge
-    internal: true
