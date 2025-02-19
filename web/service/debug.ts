@@ -3,10 +3,16 @@ import type { IOnCompleted, IOnData, IOnError, IOnFile, IOnMessageEnd, IOnMessag
 import type { ChatPromptConfig, CompletionPromptConfig } from '@/models/debug'
 import type { ModelModeType } from '@/types/app'
 import type { ModelParameterRule } from '@/app/components/header/account-setting/model-provider-page/declarations'
-export type AutomaticRes = {
+export interface AutomaticRes {
   prompt: string
   variables: string[]
   opening_statement: string
+  error?: string
+}
+export interface CodeGenRes {
+  code: string
+  language: string[]
+  error?: string
 }
 
 export const sendChatMessage = async (appId: string, body: Record<string, any>, { onData, onCompleted, onThought, onFile, onError, getAbortController, onMessageEnd, onMessageReplace }: {
@@ -55,7 +61,7 @@ export const fetchSuggestedQuestions = (appId: string, messageId: string, getAbo
   )
 }
 
-export const fetchConvesationMessages = (appId: string, conversation_id: string, getAbortController?: any) => {
+export const fetchConversationMessages = (appId: string, conversation_id: string, getAbortController?: any) => {
   return get(`apps/${appId}/chat-messages`, {
     params: {
       conversation_id,
@@ -67,6 +73,11 @@ export const fetchConvesationMessages = (appId: string, conversation_id: string,
 
 export const generateRule = (body: Record<string, any>) => {
   return post<AutomaticRes>('/rule-generate', {
+    body,
+  })
+}
+export const generateRuleCode = (body: Record<string, any>) => {
+  return post<CodeGenRes>('/rule-code-generate', {
     body,
   })
 }
@@ -95,9 +106,9 @@ export const fetchPromptTemplate = ({
   })
 }
 
-export const fetchTextGenerationMessge = ({
+export const fetchTextGenerationMessage = ({
   appId,
   messageId,
 }: { appId: string; messageId: string }) => {
-  return get<Promise<{ message: [] }>>(`/apps/${appId}/messages/${messageId}`)
+  return get<Promise<any>>(`/apps/${appId}/messages/${messageId}`)
 }

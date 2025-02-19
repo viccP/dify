@@ -4,14 +4,21 @@ const translation = {
   dateTimeFormat: 'MM/DD/YYYY hh:mm A',
   table: {
     header: {
-      time: 'Time',
-      endUser: 'End User',
+      updatedTime: 'Updated time',
+      time: 'Created time',
+      endUser: 'End User or Account',
       input: 'Input',
       output: 'Output',
       summary: 'Title',
       messageCount: 'Message Count',
       userRate: 'User Rate',
       adminRate: 'Op. Rate',
+      startTime: 'START TIME',
+      status: 'STATUS',
+      runtime: 'RUN TIME',
+      tokens: 'TOKENS',
+      user: 'End User or Account',
+      version: 'VERSION',
     },
     pagination: {
       previous: 'Prev',
@@ -45,6 +52,7 @@ const translation = {
     },
     variables: 'Variables',
     uploadImages: 'Uploaded Images',
+    modelParams: 'Model parameters',
   },
   filter: {
     period: {
@@ -63,6 +71,27 @@ const translation = {
       annotated: 'Annotated Improvements ({{count}} items)',
       not_annotated: 'Not Annotated',
     },
+    sortBy: 'Sort by:',
+    descending: 'descending',
+    ascending: 'ascending',
+  },
+  workflowTitle: 'Workflow Logs',
+  workflowSubtitle: 'The log recorded the operation of Automate.',
+  runDetail: {
+    title: 'Conversation Log',
+    workflowTitle: 'Log Detail',
+    fileListLabel: 'File Details',
+    fileListDetail: 'Detail',
+  },
+  promptLog: 'Prompt Log',
+  agentLog: 'Agent Log',
+  viewLog: 'View Log',
+  agentLogDetail: {
+    agentMode: 'Agent Mode',
+    toolUsed: 'Tool Used',
+    iterations: 'Iterations',
+    iteration: 'Iteration',
+    finalProcessing: 'Final Processing',
   },
 }
 

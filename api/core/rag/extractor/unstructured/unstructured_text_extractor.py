@@ -14,11 +14,7 @@ class UnstructuredTextExtractor(BaseExtractor):
         file_path: Path to the file to load.
     """
 
-    def __init__(
-        self,
-        file_path: str,
-        api_url: str
-    ):
+    def __init__(self, file_path: str, api_url: str):
         """Initialize with file path."""
         self._file_path = file_path
         self._api_url = api_url
@@ -26,9 +22,10 @@ class UnstructuredTextExtractor(BaseExtractor):
     def extract(self) -> list[Document]:
         from unstructured.partition.text import partition_text
 
-        elements = partition_text(filename=self._file_path, api_url=self._api_url)
+        elements = partition_text(filename=self._file_path)
         from unstructured.chunking.title import chunk_by_title
-        chunks = chunk_by_title(elements, max_characters=2000, combine_text_under_n_chars=0)
+
+        chunks = chunk_by_title(elements, max_characters=2000, combine_text_under_n_chars=2000)
         documents = []
         for chunk in chunks:
             text = chunk.text.strip()

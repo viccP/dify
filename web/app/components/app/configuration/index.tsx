@@ -1,26 +1,27 @@
 'use client'
 import type { FC } from 'react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import useSWR from 'swr'
 import { useTranslation } from 'react-i18next'
 import { useContext } from 'use-context-selector'
 import { usePathname } from 'next/navigation'
 import produce from 'immer'
 import { useBoolean, useGetState } from 'ahooks'
-import cn from 'classnames'
 import { clone, isEqual } from 'lodash-es'
 import { CodeBracketIcon } from '@heroicons/react/20/solid'
-import Button from '../../base/button'
-import Loading from '../../base/loading'
-import useAdvancedPromptConfig from './hooks/use-advanced-prompt-config'
-import EditHistoryModal from './config-prompt/conversation-histroy/edit-modal'
+import { useShallow } from 'zustand/react/shallow'
+import AgentSettingButton from '@/app/components/app/configuration/config/agent-setting-button'
+import useAdvancedPromptConfig from '@/app/components/app/configuration/hooks/use-advanced-prompt-config'
+import EditHistoryModal from '@/app/components/app/configuration/config-prompt/conversation-history/edit-modal'
 import {
   useDebugWithSingleOrMultipleModel,
   useFormattingChangedDispatcher,
-} from './debug/hooks'
-import type { ModelAndParameter } from './debug/types'
-import { APP_SIDEBAR_SHOULD_COLLAPSE } from './debug/types'
-import PublishWithMultipleModel from './debug/debug-with-multiple-model/publish-with-multiple-model'
-import AssistantTypePicker from './config/assistant-type-picker'
+} from '@/app/components/app/configuration/debug/hooks'
+import type { ModelAndParameter } from '@/app/components/app/configuration/debug/types'
+import Button from '@/app/components/base/button'
+import Divider from '@/app/components/base/divider'
+import Loading from '@/app/components/base/loading'
+import AppPublisher from '@/app/components/app/app-publisher/features-wrapper'
 import type {
   AnnotationReplyConfig,
   DatasetConfigs,
@@ -39,7 +40,7 @@ import ConfigContext from '@/context/debug-configuration'
 import Config from '@/app/components/app/configuration/config'
 import Debug from '@/app/components/app/configuration/debug'
 import Confirm from '@/app/components/base/confirm'
-import { ModelFeatureEnum } from '@/app/components/header/account-setting/model-provider-page/declarations'
+import { ModelFeatureEnum, ModelTypeEnum } from '@/app/components/header/account-setting/model-provider-page/declarations'
 import { ToastContext } from '@/app/components/base/toast'
 import { fetchAppDetail, updateAppModelConfig } from '@/service/apps'
 import { promptVariablesToUserInputsForm, userInputsFormToPromptVariables } from '@/utils/model-config'
@@ -47,19 +48,37 @@ import { fetchDatasets } from '@/service/datasets'
 import { useProviderContext } from '@/context/provider-context'
 import { AgentStrategy, AppType, ModelModeType, RETRIEVE_TYPE, Resolution, TransferMethod } from '@/types/app'
 import { PromptMode } from '@/models/debug'
-import { ANNOTATION_DEFAULT, DEFAULT_AGENT_SETTING, DEFAULT_CHAT_PROMPT_CONFIG, DEFAULT_COMPLETION_PROMPT_CONFIG } from '@/config'
+import { ANNOTATION_DEFAULT, DATASET_DEFAULT, DEFAULT_AGENT_SETTING, DEFAULT_CHAT_PROMPT_CONFIG, DEFAULT_COMPLETION_PROMPT_CONFIG } from '@/config'
 import SelectDataSet from '@/app/components/app/configuration/dataset-config/select-dataset'
 import { useModalContext } from '@/context/modal-context'
 import useBreakpoints, { MediaType } from '@/hooks/use-breakpoints'
 import Drawer from '@/app/components/base/drawer'
 import ModelParameterModal from '@/app/components/header/account-setting/model-provider-page/model-parameter-modal'
 import type { FormValue } from '@/app/components/header/account-setting/model-provider-page/declarations'
-import { useTextGenerationCurrentProviderAndModelAndModelList } from '@/app/components/header/account-setting/model-provider-page/hooks'
+import {
+  useModelListAndDefaultModelAndCurrentProviderAndModel,
+  useTextGenerationCurrentProviderAndModelAndModelList,
+} from '@/app/components/header/account-setting/model-provider-page/hooks'
 import { fetchCollectionList } from '@/service/tools'
-import { type Collection } from '@/app/components/tools/types'
-import { useEventEmitterContextContext } from '@/context/event-emitter'
+import type { Collection } from '@/app/components/tools/types'
+import { useStore as useAppStore } from '@/app/components/app/store'
+import {
+  getMultipleRetrievalConfig,
+  getSelectedDatasetsMode,
+} from '@/app/components/workflow/nodes/knowledge-retrieval/utils'
+import { FeaturesProvider } from '@/app/components/base/features'
+import type { Features as FeaturesData, FileUpload } from '@/app/components/base/features/types'
+import { FILE_EXTS } from '@/app/components/base/prompt-editor/constants'
+import { SupportUploadFileTypes } from '@/app/components/workflow/types'
+import NewFeaturePanel from '@/app/components/base/features/new-feature-panel'
+import { fetchFileUploadConfig } from '@/service/common'
+import {
+  correctModelProvider,
+  correctToolProvider,
+} from '@/utils'
+import PluginDependency from '@/app/components/workflow/plugin-dependency'
 
-type PublichConfig = {
+type PublishConfig = {
   modelConfig: ModelConfig
   completionParams: FormValue
 }
@@ -67,6 +86,15 @@ type PublichConfig = {
 const Configuration: FC = () => {
   const { t } = useTranslation()
   const { notify } = useContext(ToastContext)
+  const { appDetail, showAppConfigureFeaturesModal, setAppSiderbarExpand, setShowAppConfigureFeaturesModal } = useAppStore(useShallow(state => ({
+    appDetail: state.appDetail,
+    setAppSiderbarExpand: state.setAppSiderbarExpand,
+    showAppConfigureFeaturesModal: state.showAppConfigureFeaturesModal,
+    setShowAppConfigureFeaturesModal: state.setShowAppConfigureFeaturesModal,
+  })))
+  const { data: fileUploadConfigResponse } = useSWR({ url: '/files/upload' }, fetchFileUploadConfig)
+
+  const latestPublishedAt = useMemo(() => appDetail?.model_config.updated_at, [appDetail])
   const [formattingChanged, setFormattingChanged] = useState(false)
   const { setShowAccountSettingModal } = useModalContext()
   const [hasFetchedDetail, setHasFetchedDetail] = useState(false)
@@ -75,7 +103,7 @@ const Configuration: FC = () => {
   const matched = pathname.match(/\/app\/([^/]+)/)
   const appId = (matched?.length && matched[1]) ? matched[1] : ''
   const [mode, setMode] = useState('')
-  const [publishedConfig, setPublishedConfig] = useState<PublichConfig | null>(null)
+  const [publishedConfig, setPublishedConfig] = useState<PublishConfig | null>(null)
 
   const [conversationId, setConversationId] = useState<string | null>('')
 
@@ -130,11 +158,11 @@ const Configuration: FC = () => {
   const [inputs, setInputs] = useState<Inputs>({})
   const [query, setQuery] = useState('')
   const [completionParams, doSetCompletionParams] = useState<FormValue>({})
-  const [tempStop, setTempStop, getTempStop] = useGetState<string[]>([])
+  const [_, setTempStop, getTempStop] = useGetState<string[]>([])
   const setCompletionParams = (value: FormValue) => {
     const params = { ...value }
 
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    // eslint-disable-next-line ts/no-use-before-define
     if ((!params.stop || params.stop.length === 0) && (modeModeTypeRef.current === ModelModeType.completion)) {
       params.stop = getTempStop()
       setTempStop([])
@@ -143,47 +171,44 @@ const Configuration: FC = () => {
   }
 
   const [modelConfig, doSetModelConfig] = useState<ModelConfig>({
-    provider: 'openai',
+    provider: 'langgenius/openai/openai',
     model_id: 'gpt-3.5-turbo',
     mode: ModelModeType.unset,
     configs: {
       prompt_template: '',
       prompt_variables: [] as PromptVariable[],
     },
-    opening_statement: '',
     more_like_this: null,
-    suggested_questions_after_answer: null,
+    opening_statement: '',
+    suggested_questions: [],
+    sensitive_word_avoidance: null,
     speech_to_text: null,
     text_to_speech: null,
+    file_upload: null,
+    suggested_questions_after_answer: null,
     retriever_resource: null,
-    sensitive_word_avoidance: null,
+    annotation_reply: null,
     dataSets: [],
     agentConfig: DEFAULT_AGENT_SETTING,
   })
 
-  const isChatApp = mode === AppType.chat
-  const isAgent = modelConfig.agentConfig?.enabled
-  const setIsAgent = (value: boolean) => {
-    const newModelConfig = produce(modelConfig, (draft: ModelConfig) => {
-      draft.agentConfig.enabled = value
-    })
-    doSetModelConfig(newModelConfig)
-  }
-  const isOpenAI = modelConfig.provider === 'openai'
+  const isAgent = mode === 'agent-chat'
+
+  const isOpenAI = modelConfig.provider === 'langgenius/openai/openai'
 
   const [collectionList, setCollectionList] = useState<Collection[]>([])
   useEffect(() => {
 
   }, [])
   const [datasetConfigs, setDatasetConfigs] = useState<DatasetConfigs>({
-    retrieval_model: RETRIEVE_TYPE.oneWay,
+    retrieval_model: RETRIEVE_TYPE.multiWay,
     reranking_model: {
       reranking_provider_name: '',
       reranking_model_name: '',
     },
-    top_k: 2,
+    top_k: DATASET_DEFAULT.top_k,
     score_threshold_enabled: false,
-    score_threshold: 0.7,
+    score_threshold: DATASET_DEFAULT.score_threshold,
     datasets: {
       datasets: [],
     },
@@ -204,6 +229,11 @@ const Configuration: FC = () => {
   const hasSetContextVar = !!contextVar
   const [isShowSelectDataSet, { setTrue: showSelectDataSet, setFalse: hideSelectDataSet }] = useBoolean(false)
   const selectedIds = dataSets.map(item => item.id)
+  const [rerankSettingModalOpen, setRerankSettingModalOpen] = useState(false)
+  const {
+    currentModel: currentRerankModel,
+    currentProvider: currentRerankProvider,
+  } = useModelListAndDefaultModelAndCurrentProviderAndModel(ModelTypeEnum.rerank)
   const handleSelect = (data: DataSet[]) => {
     if (isEqual(data.map(item => item.id), dataSets.map(item => item.id))) {
       hideSelectDataSet()
@@ -211,6 +241,7 @@ const Configuration: FC = () => {
     }
 
     formattingChangedDispatcher()
+    let newDatasets = data
     if (data.find(item => !item.name)) { // has not loaded selected dataset
       const newSelected = produce(data, (draft: any) => {
         data.forEach((item, index) => {
@@ -222,21 +253,64 @@ const Configuration: FC = () => {
         })
       })
       setDataSets(newSelected)
+      newDatasets = newSelected
     }
     else {
       setDataSets(data)
     }
     hideSelectDataSet()
+    const {
+      allExternal,
+      allInternal,
+      mixtureInternalAndExternal,
+      mixtureHighQualityAndEconomic,
+      inconsistentEmbeddingModel,
+    } = getSelectedDatasetsMode(newDatasets)
+
+    if (
+      (allInternal && (mixtureHighQualityAndEconomic || inconsistentEmbeddingModel))
+      || mixtureInternalAndExternal
+      || allExternal
+    )
+      setRerankSettingModalOpen(true)
+
+    const { datasets, retrieval_model, score_threshold_enabled, ...restConfigs } = datasetConfigs
+
+    const retrievalConfig = getMultipleRetrievalConfig({
+      top_k: restConfigs.top_k,
+      score_threshold: restConfigs.score_threshold,
+      reranking_model: restConfigs.reranking_model && {
+        provider: restConfigs.reranking_model.reranking_provider_name,
+        model: restConfigs.reranking_model.reranking_model_name,
+      },
+      reranking_mode: restConfigs.reranking_mode,
+      weights: restConfigs.weights,
+      reranking_enable: restConfigs.reranking_enable,
+    }, newDatasets, dataSets, {
+      provider: currentRerankProvider?.provider,
+      model: currentRerankModel?.model,
+    })
+
+    setDatasetConfigs({
+      ...retrievalConfig,
+      reranking_model: {
+        reranking_provider_name: retrievalConfig?.reranking_model?.provider || '',
+        reranking_model_name: retrievalConfig?.reranking_model?.model || '',
+      },
+      retrieval_model,
+      score_threshold_enabled,
+      datasets,
+    })
   }
 
   const [isShowHistoryModal, { setTrue: showHistoryModal, setFalse: hideHistoryModal }] = useBoolean(false)
 
-  const syncToPublishedConfig = (_publishedConfig: PublichConfig) => {
+  const syncToPublishedConfig = (_publishedConfig: PublishConfig) => {
     const modelConfig = _publishedConfig.modelConfig
     setModelConfig(_publishedConfig.modelConfig)
     setCompletionParams(_publishedConfig.completionParams)
     setDataSets(modelConfig.dataSets || [])
-    // feature
+    // reset feature
     setIntroduction(modelConfig.opening_statement!)
     setMoreLikeThisConfig(modelConfig.more_like_this || {
       enabled: false,
@@ -257,7 +331,7 @@ const Configuration: FC = () => {
     })
   }
 
-  const { hasSettedApiKey } = useProviderContext()
+  const { isAPIKeySet } = useProviderContext()
   const {
     currentModel: currModel,
     textGenerationModelList,
@@ -293,7 +367,7 @@ const Configuration: FC = () => {
   const [canReturnToSimpleMode, setCanReturnToSimpleMode] = useState(true)
   const setPromptMode = async (mode: PromptMode) => {
     if (mode === PromptMode.advanced) {
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      // eslint-disable-next-line ts/no-use-before-define
       await migrateToDefaultPrompt()
       setCanReturnToSimpleMode(true)
     }
@@ -352,12 +426,12 @@ const Configuration: FC = () => {
       const appMode = mode
 
       if (modeMode === ModelModeType.completion) {
-        if (appMode === AppType.chat) {
-          if (!completionPromptConfig.prompt.text || !completionPromptConfig.conversation_histories_role.assistant_prefix || !completionPromptConfig.conversation_histories_role.user_prefix)
+        if (appMode !== AppType.completion) {
+          if (!completionPromptConfig.prompt?.text || !completionPromptConfig.conversation_histories_role.assistant_prefix || !completionPromptConfig.conversation_histories_role.user_prefix)
             await migrateToDefaultPrompt(true, ModelModeType.completion)
         }
         else {
-          if (!completionPromptConfig.prompt.text)
+          if (!completionPromptConfig.prompt?.text)
             await migrateToDefaultPrompt(true, ModelModeType.completion)
         }
       }
@@ -383,6 +457,50 @@ const Configuration: FC = () => {
   }
 
   const isShowVisionConfig = !!currModel?.features?.includes(ModelFeatureEnum.vision)
+  const isShowDocumentConfig = !!currModel?.features?.includes(ModelFeatureEnum.document)
+  const isAllowVideoUpload = !!currModel?.features?.includes(ModelFeatureEnum.video)
+  // *** web app features ***
+  const featuresData: FeaturesData = useMemo(() => {
+    return {
+      moreLikeThis: modelConfig.more_like_this || { enabled: false },
+      opening: {
+        enabled: !!modelConfig.opening_statement,
+        opening_statement: modelConfig.opening_statement || '',
+        suggested_questions: modelConfig.suggested_questions || [],
+      },
+      moderation: modelConfig.sensitive_word_avoidance || { enabled: false },
+      speech2text: modelConfig.speech_to_text || { enabled: false },
+      text2speech: modelConfig.text_to_speech || { enabled: false },
+      file: {
+        image: {
+          detail: modelConfig.file_upload?.image?.detail || Resolution.high,
+          enabled: !!modelConfig.file_upload?.image?.enabled,
+          number_limits: modelConfig.file_upload?.image?.number_limits || 3,
+          transfer_methods: modelConfig.file_upload?.image?.transfer_methods || ['local_file', 'remote_url'],
+        },
+        enabled: !!(modelConfig.file_upload?.enabled || modelConfig.file_upload?.image?.enabled),
+        allowed_file_types: modelConfig.file_upload?.allowed_file_types || [],
+        allowed_file_extensions: modelConfig.file_upload?.allowed_file_extensions || [...FILE_EXTS[SupportUploadFileTypes.image], ...FILE_EXTS[SupportUploadFileTypes.video]].map(ext => `.${ext}`),
+        allowed_file_upload_methods: modelConfig.file_upload?.allowed_file_upload_methods || modelConfig.file_upload?.image?.transfer_methods || ['local_file', 'remote_url'],
+        number_limits: modelConfig.file_upload?.number_limits || modelConfig.file_upload?.image?.number_limits || 3,
+        fileUploadConfig: fileUploadConfigResponse,
+      } as FileUpload,
+      suggested: modelConfig.suggested_questions_after_answer || { enabled: false },
+      citation: modelConfig.retriever_resource || { enabled: false },
+      annotationReply: modelConfig.annotation_reply || { enabled: false },
+    }
+  }, [fileUploadConfigResponse, modelConfig])
+  const handleFeaturesChange = useCallback((flag: any) => {
+    setShowAppConfigureFeaturesModal(true)
+    if (flag)
+      formattingChangedDispatcher()
+  }, [formattingChangedDispatcher, setShowAppConfigureFeaturesModal])
+  const handleAddPromptVariable = useCallback((variable: PromptVariable[]) => {
+    const newModelConfig = produce(modelConfig, (draft: ModelConfig) => {
+      draft.configs.prompt_variables = [...draft.configs.prompt_variables, ...variable]
+    })
+    setModelConfig(newModelConfig)
+  }, [modelConfig])
 
   useEffect(() => {
     (async () => {
@@ -394,7 +512,10 @@ const Configuration: FC = () => {
         const promptMode = modelConfig.prompt_type === PromptMode.advanced ? PromptMode.advanced : PromptMode.simple
         doSetPromptMode(promptMode)
         if (promptMode === PromptMode.advanced) {
-          setChatPromptConfig(modelConfig.chat_prompt_config || clone(DEFAULT_CHAT_PROMPT_CONFIG) as any)
+          if (modelConfig.chat_prompt_config && modelConfig.chat_prompt_config.prompt.length > 0)
+            setChatPromptConfig(modelConfig.chat_prompt_config)
+          else
+            setChatPromptConfig(clone(DEFAULT_CHAT_PROMPT_CONFIG) as any)
           setCompletionPromptConfig(modelConfig.completion_prompt_config || clone(DEFAULT_COMPLETION_PROMPT_CONFIG) as any)
           setCanReturnToSimpleMode(false)
         }
@@ -432,8 +553,19 @@ const Configuration: FC = () => {
         if (modelConfig.retriever_resource)
           setCitationConfig(modelConfig.retriever_resource)
 
-        if (modelConfig.annotation_reply)
-          setAnnotationConfig(modelConfig.annotation_reply, true)
+        if (modelConfig.annotation_reply) {
+          let annotationConfig = modelConfig.annotation_reply
+          if (modelConfig.annotation_reply.enabled) {
+            annotationConfig = {
+              ...modelConfig.annotation_reply,
+              embedding_model: {
+                ...modelConfig.annotation_reply.embedding_model,
+                embedding_provider_name: correctModelProvider(modelConfig.annotation_reply.embedding_model.embedding_provider_name),
+              },
+            }
+          }
+          setAnnotationConfig(annotationConfig, true)
+        }
 
         if (modelConfig.sensitive_word_avoidance)
           setModerationConfig(modelConfig.sensitive_word_avoidance)
@@ -443,11 +575,11 @@ const Configuration: FC = () => {
 
         const config = {
           modelConfig: {
-            provider: model.provider,
+            provider: correctModelProvider(model.provider),
             model_id: model.name,
             mode: model.mode,
             configs: {
-              prompt_template: modelConfig.pre_prompt,
+              prompt_template: modelConfig.pre_prompt || '',
               prompt_variables: userInputsFormToPromptVariables(
                 [
                   ...modelConfig.user_input_form,
@@ -473,17 +605,19 @@ const Configuration: FC = () => {
                 modelConfig.dataset_query_variable,
               ),
             },
-            opening_statement: modelConfig.opening_statement,
             more_like_this: modelConfig.more_like_this,
-            suggested_questions_after_answer: modelConfig.suggested_questions_after_answer,
+            opening_statement: modelConfig.opening_statement,
+            suggested_questions: modelConfig.suggested_questions,
+            sensitive_word_avoidance: modelConfig.sensitive_word_avoidance,
             speech_to_text: modelConfig.speech_to_text,
             text_to_speech: modelConfig.text_to_speech,
+            file_upload: modelConfig.file_upload,
+            suggested_questions_after_answer: modelConfig.suggested_questions_after_answer,
             retriever_resource: modelConfig.retriever_resource,
-            sensitive_word_avoidance: modelConfig.sensitive_word_avoidance,
+            annotation_reply: modelConfig.annotation_reply,
             external_data_tools: modelConfig.external_data_tools,
             dataSets: datasets || [],
-            // eslint-disable-next-line multiline-ternary
-            agentConfig: res.is_agent ? {
+            agentConfig: res.mode === 'agent-chat' ? {
               max_iteration: DEFAULT_AGENT_SETTING.max_iteration,
               ...modelConfig.agent_mode,
               // remove dataset
@@ -493,8 +627,12 @@ const Configuration: FC = () => {
               }).map((tool: any) => {
                 return {
                   ...tool,
-                  isDeleted: res.deleted_tools?.includes(tool.tool_name),
+                  isDeleted: res.deleted_tools?.some((deletedTool: any) => deletedTool.id === tool.id && deletedTool.tool_name === tool.tool_name),
                   notAuthor: collectionList.find(c => tool.provider_id === c.id)?.is_team_authorization === false,
+                  ...(tool.provider_type === 'builtin' ? {
+                    provider_id: correctToolProvider(tool.provider_name),
+                    provider_name: correctToolProvider(tool.provider_name),
+                  } : {}),
                 }
               }),
             } : DEFAULT_AGENT_SETTING,
@@ -507,17 +645,29 @@ const Configuration: FC = () => {
 
         syncToPublishedConfig(config)
         setPublishedConfig(config)
+        const retrievalConfig = getMultipleRetrievalConfig(modelConfig.dataset_configs, datasets, datasets, {
+          provider: currentRerankProvider?.provider,
+          model: currentRerankModel?.model,
+        })
         setDatasetConfigs({
-          retrieval_model: RETRIEVE_TYPE.oneWay,
+          retrieval_model: RETRIEVE_TYPE.multiWay,
           ...modelConfig.dataset_configs,
+          ...retrievalConfig,
+          ...(retrievalConfig.reranking_model ? {
+            reranking_model: {
+              ...retrievalConfig.reranking_model,
+              reranking_provider_name: correctModelProvider(modelConfig.dataset_configs.reranking_model.reranking_provider_name),
+            },
+          } : {}),
         })
         setHasFetchedDetail(true)
       })
     })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appId])
 
   const promptEmpty = (() => {
-    if (mode === AppType.chat)
+    if (mode !== AppType.completion)
       return false
 
     if (isAdvancedMode) {
@@ -525,13 +675,13 @@ const Configuration: FC = () => {
         return chatPromptConfig.prompt.every(({ text }: any) => !text)
 
       else
-        return !completionPromptConfig.prompt.text
+        return !completionPromptConfig.prompt?.text
     }
 
     else { return !modelConfig.configs.prompt_template }
   })()
   const cannotPublish = (() => {
-    if (mode === AppType.chat) {
+    if (mode !== AppType.completion) {
       if (!isAdvancedMode)
         return false
 
@@ -547,29 +697,29 @@ const Configuration: FC = () => {
     else { return promptEmpty }
   })()
   const contextVarEmpty = mode === AppType.completion && dataSets.length > 0 && !hasSetContextVar
-  const handlePublish = async (isSilence?: boolean, modelAndParameter?: ModelAndParameter) => {
+  const onPublish = async (modelAndParameter?: ModelAndParameter, features?: FeaturesData) => {
     const modelId = modelAndParameter?.model || modelConfig.model_id
     const promptTemplate = modelConfig.configs.prompt_template
     const promptVariables = modelConfig.configs.prompt_variables
 
     if (promptEmpty) {
-      notify({ type: 'error', message: t('appDebug.otherError.promptNoBeEmpty'), duration: 3000 })
+      notify({ type: 'error', message: t('appDebug.otherError.promptNoBeEmpty') })
       return
     }
-    if (isAdvancedMode && mode === AppType.chat) {
+    if (isAdvancedMode && mode !== AppType.completion) {
       if (modelModeType === ModelModeType.completion) {
         if (!hasSetBlockStatus.history) {
-          notify({ type: 'error', message: t('appDebug.otherError.historyNoBeEmpty'), duration: 3000 })
+          notify({ type: 'error', message: t('appDebug.otherError.historyNoBeEmpty') })
           return
         }
         if (!hasSetBlockStatus.query) {
-          notify({ type: 'error', message: t('appDebug.otherError.queryNoBeEmpty'), duration: 3000 })
+          notify({ type: 'error', message: t('appDebug.otherError.queryNoBeEmpty') })
           return
         }
       }
     }
     if (contextVarEmpty) {
-      notify({ type: 'error', message: t('appDebug.feature.dataSet.queryVariable.contextVarNotEmpty'), duration: 3000 })
+      notify({ type: 'error', message: t('appDebug.feature.dataSet.queryVariable.contextVarNotEmpty') })
       return
     }
     const postDatasets = dataSets.map(({ id }) => ({
@@ -578,6 +728,9 @@ const Configuration: FC = () => {
         id,
       },
     }))
+
+    const fileUpload = { ...features?.file }
+    delete fileUpload?.fileUploadConfig
 
     // new model config data struct
     const data: BackendModelConfig = {
@@ -588,14 +741,16 @@ const Configuration: FC = () => {
       completion_prompt_config: {},
       user_input_form: promptVariablesToUserInputsForm(promptVariables),
       dataset_query_variable: contextVar || '',
-      opening_statement: introduction || '',
-      suggested_questions: suggestedQuestions || [],
-      more_like_this: moreLikeThisConfig,
-      suggested_questions_after_answer: suggestedQuestionsAfterAnswerConfig,
-      speech_to_text: speechToTextConfig,
-      text_to_speech: textToSpeechConfig,
-      retriever_resource: citationConfig,
-      sensitive_word_avoidance: moderationConfig,
+      //  features
+      more_like_this: features?.moreLikeThis as any,
+      opening_statement: features?.opening?.enabled ? (features.opening?.opening_statement || '') : '',
+      suggested_questions: features?.opening?.enabled ? (features.opening?.suggested_questions || []) : [],
+      sensitive_word_avoidance: features?.moderation as any,
+      speech_to_text: features?.speech2text as any,
+      text_to_speech: features?.text2speech as any,
+      file_upload: fileUpload as any,
+      suggested_questions_after_answer: features?.suggested as any,
+      retriever_resource: features?.citation as any,
       agent_mode: {
         ...modelConfig.agentConfig,
         strategy: isFunctionCall ? AgentStrategy.functionCall : AgentStrategy.react,
@@ -611,9 +766,6 @@ const Configuration: FC = () => {
         datasets: {
           datasets: [...postDatasets],
         } as any,
-      },
-      file_upload: {
-        image: visionConfig,
       },
     }
 
@@ -636,22 +788,14 @@ const Configuration: FC = () => {
       modelConfig: newModelConfig,
       completionParams,
     })
-    if (!isSilence)
-      notify({ type: 'success', message: t('common.api.success'), duration: 3000 })
+    notify({ type: 'success', message: t('common.api.success') })
 
     setCanReturnToSimpleMode(false)
     return true
   }
 
-  const [showConfirm, setShowConfirm] = useState(false)
-  const resetAppConfig = () => {
-    syncToPublishedConfig(publishedConfig!)
-    setShowConfirm(false)
-  }
-
   const [showUseGPT4Confirm, setShowUseGPT4Confirm] = useState(false)
 
-  const { eventEmitter } = useEventEmitterContextContext()
   const {
     debugWithMultipleModel,
     multipleModelConfigs,
@@ -666,13 +810,11 @@ const Configuration: FC = () => {
         { id: `${Date.now()}-no-repeat`, model: '', provider: '', parameters: {} },
       ],
     )
-    eventEmitter?.emit({
-      type: APP_SIDEBAR_SHOULD_COLLAPSE,
-    } as any)
+    setAppSiderbarExpand('collapse')
   }
 
   if (isLoading) {
-    return <div className='flex h-full items-center justify-center'>
+    return <div className='flex items-center justify-center h-full'>
       <Loading type='area' />
     </div>
   }
@@ -680,7 +822,7 @@ const Configuration: FC = () => {
   return (
     <ConfigContext.Provider value={{
       appId,
-      hasSetAPIKEY: hasSettedApiKey,
+      isAPIKeySet,
       isTrailFinished: false,
       mode,
       modelModeType,
@@ -746,174 +888,167 @@ const Configuration: FC = () => {
       isShowVisionConfig,
       visionConfig,
       setVisionConfig: handleSetVisionConfig,
+      isAllowVideoUpload,
+      isShowDocumentConfig,
+      rerankSettingModalOpen,
+      setRerankSettingModalOpen,
     }}
     >
-      <>
-        <div className="flex flex-col h-full">
-          <div className='flex grow h-[200px]'>
-            <div className={`w-full sm:w-1/2 shrink-0 flex flex-col h-full ${debugWithMultipleModel && 'max-w-[560px]'}`}>
-              {/* Header Left */}
-              <div className='flex justify-between items-center px-6 h-14'>
-                <div className='flex items-center'>
-                  <div className='leading-6 text-base font-semibold text-gray-900'>{t('appDebug.orchestrate')}</div>
-                  <div className='flex items-center h-[14px] space-x-1 text-xs'>
-                    {isAdvancedMode && (
-                      <div className='ml-1 flex items-center h-5 px-1.5 border border-gray-100 rounded-md text-[11px] font-medium text-gray-500 uppercase'>{t('appDebug.promptMode.advanced')}</div>
+      <FeaturesProvider features={featuresData}>
+        <>
+          <div className="flex flex-col h-full">
+            <div className='relative flex grow h-[200px] pt-14'>
+              {/* Header */}
+              <div className='absolute top-0 left-0 w-full bg-default-subtle h-14'>
+                <div className='flex items-center justify-between px-6 h-14'>
+                  <div className='flex items-center'>
+                    <div className='system-xl-semibold text-text-primary'>{t('appDebug.orchestrate')}</div>
+                    <div className='flex items-center h-[14px] space-x-1 text-xs'>
+                      {isAdvancedMode && (
+                        <div className='ml-1 flex items-center h-5 px-1.5 border border-components-button-secondary-border rounded-md system-xs-medium-uppercase text-text-tertiary uppercase'>{t('appDebug.promptMode.advanced')}</div>
+                      )}
+                    </div>
+                  </div>
+                  <div className='flex items-center'>
+                    {/* Agent Setting */}
+                    {isAgent && (
+                      <AgentSettingButton
+                        isChatModel={modelConfig.mode === ModelModeType.chat}
+                        agentConfig={modelConfig.agentConfig}
+
+                        isFunctionCall={isFunctionCall}
+                        onAgentSettingChange={(config) => {
+                          const nextConfig = produce(modelConfig, (draft: ModelConfig) => {
+                            draft.agentConfig = config
+                          })
+                          setModelConfig(nextConfig)
+                        }}
+                      />
                     )}
+                    {/* Model and Parameters */}
+                    {!debugWithMultipleModel && (
+                      <>
+                        <ModelParameterModal
+                          isAdvancedMode={isAdvancedMode}
+                          mode={mode}
+                          provider={modelConfig.provider}
+                          completionParams={completionParams}
+                          modelId={modelConfig.model_id}
+                          setModel={setModel as any}
+                          onCompletionParamsChange={(newParams: FormValue) => {
+                            setCompletionParams(newParams)
+                          }}
+                          debugWithMultipleModel={debugWithMultipleModel}
+                          onDebugWithMultipleModelChange={handleDebugWithMultipleModelChange}
+                        />
+                        <Divider type='vertical' className='mx-2 h-[14px]' />
+                      </>
+                    )}
+                    {isMobile && (
+                      <Button className='mr-2 !h-8 !text-[13px] font-medium' onClick={showDebugPanel}>
+                        <span className='mr-1'>{t('appDebug.operation.debugConfig')}</span>
+                        <CodeBracketIcon className="w-4 h-4 text-text-tertiary" />
+                      </Button>
+                    )}
+                    <AppPublisher {...{
+                      publishDisabled: cannotPublish,
+                      publishedAt: (latestPublishedAt || 0) * 1000,
+                      debugWithMultipleModel,
+                      multipleModelConfigs,
+                      onPublish,
+                      publishedConfig: publishedConfig!,
+                      resetAppConfig: () => syncToPublishedConfig(publishedConfig!),
+                    }} />
                   </div>
                 </div>
-                {isChatApp && (
-                  <AssistantTypePicker
-                    value={isAgent ? 'agent' : 'assistant'}
-                    disabled={isAdvancedMode && !canReturnToSimpleMode}
-                    onChange={(value: string) => {
-                      setIsAgent(value === 'agent')
-                      if (value === 'agent')
-                        setPromptMode(PromptMode.simple)
+              </div>
+              <div className={`w-full sm:w-1/2 shrink-0 flex flex-col h-full ${debugWithMultipleModel && 'max-w-[560px]'}`}>
+                <Config />
+              </div>
+              {!isMobile && <div className="relative flex flex-col w-1/2 h-full overflow-y-auto grow " style={{ borderColor: 'rgba(0, 0, 0, 0.02)' }}>
+                <div className='grow flex flex-col border-t-[0.5px] border-l-[0.5px] rounded-tl-2xl border-components-panel-border bg-chatbot-bg '>
+                  <Debug
+                    isAPIKeySet={isAPIKeySet}
+                    onSetting={() => setShowAccountSettingModal({ payload: 'provider' })}
+                    inputs={inputs}
+                    modelParameterParams={{
+                      setModel: setModel as any,
+                      onCompletionParamsChange: setCompletionParams,
                     }}
-                    isFunctionCall={isFunctionCall}
-                    isChatModel={modelConfig.mode === ModelModeType.chat}
-                    agentConfig={modelConfig.agentConfig}
-                    onAgentSettingChange={(config) => {
-                      const nextConfig = produce(modelConfig, (draft: ModelConfig) => {
-                        draft.agentConfig = config
-                      })
-                      setModelConfig(nextConfig)
-                    }}
+                    debugWithMultipleModel={debugWithMultipleModel}
+                    multipleModelConfigs={multipleModelConfigs}
+                    onMultipleModelConfigsChange={handleMultipleModelConfigsChange}
                   />
-                )}
-              </div>
-              <Config />
+                </div>
+              </div>}
             </div>
-            {!isMobile && <div className="grow relative w-1/2  h-full overflow-y-auto  flex flex-col " style={{ borderColor: 'rgba(0, 0, 0, 0.02)' }}>
-              {/* Header Right */}
-              <div className='flex justify-end items-center flex-wrap px-6 h-14 space-x-2'>
-                {/* Model and Parameters */}
-                {
-                  !debugWithMultipleModel && (
-                    <>
-                      <ModelParameterModal
-                        isAdvancedMode={isAdvancedMode}
-                        mode={mode}
-                        provider={modelConfig.provider}
-                        completionParams={completionParams}
-                        modelId={modelConfig.model_id}
-                        setModel={setModel as any}
-                        onCompletionParamsChange={(newParams: FormValue) => {
-                          setCompletionParams(newParams)
-                        }}
-                        debugWithMultipleModel={debugWithMultipleModel}
-                        onDebugWithMultipleModelChange={handleDebugWithMultipleModelChange}
-                      />
-                      <div className='w-[1px] h-[14px] bg-gray-200'></div>
-                    </>
-                  )
-                }
-                <Button onClick={() => setShowConfirm(true)} className='shrink-0 mr-2 w-[70px] !h-8 !text-[13px] font-medium'>{t('appDebug.operation.resetConfig')}</Button>
-                {isMobile && (
-                  <Button className='!h-8 !text-[13px] font-medium' onClick={showDebugPanel}>
-                    <span className='mr-1'>{t('appDebug.operation.debugConfig')}</span>
-                    <CodeBracketIcon className="h-4 w-4 text-gray-500" />
-                  </Button>
-                )}
-                {
-                  debugWithMultipleModel
-                    ? (
-                      <PublishWithMultipleModel
-                        multipleModelConfigs={multipleModelConfigs}
-                        onSelect={item => handlePublish(false, item)}
-                      />
-                    )
-                    : (
-                      <Button
-                        type='primary'
-                        onClick={() => handlePublish(false)}
-                        className={cn(cannotPublish && '!bg-primary-200 !cursor-not-allowed', 'shrink-0 w-[70px] !h-8 !text-[13px] font-medium')}
-                      >
-                        {t('appDebug.operation.applyConfig')}
-                      </Button>
-                    )
-                }
-              </div>
-              <div className='flex flex-col grow h-0 rounded-tl-2xl border-t border-l bg-gray-50 '>
-                <Debug
-                  hasSetAPIKEY={hasSettedApiKey}
-                  onSetting={() => setShowAccountSettingModal({ payload: 'provider' })}
-                  inputs={inputs}
-                  modelParameterParams={{
-                    setModel: setModel as any,
-                    onCompletionParamsChange: setCompletionParams,
-                  }}
-                  debugWithMultipleModel={debugWithMultipleModel}
-                  multipleModelConfigs={multipleModelConfigs}
-                  onMultipleModelConfigsChange={handleMultipleModelConfigsChange}
-                />
-              </div>
-            </div>}
           </div>
-        </div>
-        {showConfirm && (
-          <Confirm
-            title={t('appDebug.resetConfig.title')}
-            content={t('appDebug.resetConfig.message')}
-            isShow={showConfirm}
-            onClose={() => setShowConfirm(false)}
-            onConfirm={resetAppConfig}
-            onCancel={() => setShowConfirm(false)}
-          />
-        )}
-        {showUseGPT4Confirm && (
-          <Confirm
-            title={t('appDebug.trailUseGPT4Info.title')}
-            content={t('appDebug.trailUseGPT4Info.description')}
-            isShow={showUseGPT4Confirm}
-            onClose={() => setShowUseGPT4Confirm(false)}
-            onConfirm={() => {
-              setShowAccountSettingModal({ payload: 'provider' })
-              setShowUseGPT4Confirm(false)
-            }}
-            onCancel={() => setShowUseGPT4Confirm(false)}
-          />
-        )}
-
-        {isShowSelectDataSet && (
-          <SelectDataSet
-            isShow={isShowSelectDataSet}
-            onClose={hideSelectDataSet}
-            selectedIds={selectedIds}
-            onSelect={handleSelect}
-          />
-        )}
-
-        {isShowHistoryModal && (
-          <EditHistoryModal
-            isShow={isShowHistoryModal}
-            saveLoading={false}
-            onClose={hideHistoryModal}
-            data={completionPromptConfig.conversation_histories_role}
-            onSave={(data) => {
-              setConversationHistoriesRole(data)
-              hideHistoryModal()
-            }}
-          />
-        )}
-        {isMobile && (
-          <Drawer showClose isOpen={isShowDebugPanel} onClose={hideDebugPanel} mask footer={null} panelClassname='!bg-gray-50'>
-            <Debug
-              hasSetAPIKEY={hasSettedApiKey}
-              onSetting={() => setShowAccountSettingModal({ payload: 'provider' })}
-              inputs={inputs}
-              modelParameterParams={{
-                setModel: setModel as any,
-                onCompletionParamsChange: setCompletionParams,
+          {showUseGPT4Confirm && (
+            <Confirm
+              title={t('appDebug.trailUseGPT4Info.title')}
+              content={t('appDebug.trailUseGPT4Info.description')}
+              isShow={showUseGPT4Confirm}
+              onConfirm={() => {
+                setShowAccountSettingModal({ payload: 'provider' })
+                setShowUseGPT4Confirm(false)
               }}
-              debugWithMultipleModel={debugWithMultipleModel}
-              multipleModelConfigs={multipleModelConfigs}
-              onMultipleModelConfigsChange={handleMultipleModelConfigsChange}
+              onCancel={() => setShowUseGPT4Confirm(false)}
             />
-          </Drawer>
-        )}
-      </>
+          )}
+
+          {isShowSelectDataSet && (
+            <SelectDataSet
+              isShow={isShowSelectDataSet}
+              onClose={hideSelectDataSet}
+              selectedIds={selectedIds}
+              onSelect={handleSelect}
+            />
+          )}
+
+          {isShowHistoryModal && (
+            <EditHistoryModal
+              isShow={isShowHistoryModal}
+              saveLoading={false}
+              onClose={hideHistoryModal}
+              data={completionPromptConfig.conversation_histories_role}
+              onSave={(data) => {
+                setConversationHistoriesRole(data)
+                hideHistoryModal()
+              }}
+            />
+          )}
+          {isMobile && (
+            <Drawer showClose isOpen={isShowDebugPanel} onClose={hideDebugPanel} mask footer={null}>
+              <Debug
+                isAPIKeySet={isAPIKeySet}
+                onSetting={() => setShowAccountSettingModal({ payload: 'provider' })}
+                inputs={inputs}
+                modelParameterParams={{
+                  setModel: setModel as any,
+                  onCompletionParamsChange: setCompletionParams,
+                }}
+                debugWithMultipleModel={debugWithMultipleModel}
+                multipleModelConfigs={multipleModelConfigs}
+                onMultipleModelConfigsChange={handleMultipleModelConfigsChange}
+              />
+            </Drawer>
+          )}
+          {showAppConfigureFeaturesModal && (
+            <NewFeaturePanel
+              show
+              inWorkflow={false}
+              showFileUpload={false}
+              isChatMode={mode !== 'completion'}
+              disabled={false}
+              onChange={handleFeaturesChange}
+              onClose={() => setShowAppConfigureFeaturesModal(false)}
+              promptVariables={modelConfig.configs.prompt_variables}
+              onAutoAddPromptVariable={handleAddPromptVariable}
+            />
+          )}
+          <PluginDependency />
+        </>
+      </FeaturesProvider>
     </ConfigContext.Provider>
   )
 }

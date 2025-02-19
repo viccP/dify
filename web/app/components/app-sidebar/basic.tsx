@@ -1,15 +1,13 @@
 import React from 'react'
-import {
-  InformationCircleIcon,
-} from '@heroicons/react/24/outline'
-import Tooltip from '../base/tooltip'
+import { useTranslation } from 'react-i18next'
 import AppIcon from '../base/app-icon'
-import { randomString } from '@/utils'
+import Tooltip from '@/app/components/base/tooltip'
 
 export type IAppBasicProps = {
   iconType?: 'app' | 'api' | 'dataset' | 'webapp' | 'notion'
   icon?: string
-  icon_background?: string
+  icon_background?: string | null
+  isExternal?: boolean
   name: string
   type: string | React.ReactNode
   hoverTip?: string
@@ -56,29 +54,41 @@ const ICON_MAP = {
   notion: <AppIcon innerIcon={NotionSvg} className='!border-[0.5px] !border-indigo-100 !bg-white' />,
 }
 
-export default function AppBasic({ icon, icon_background, name, type, hoverTip, textStyle, mode = 'expand', iconType = 'app' }: IAppBasicProps) {
+export default function AppBasic({ icon, icon_background, name, isExternal, type, hoverTip, textStyle, mode = 'expand', iconType = 'app' }: IAppBasicProps) {
+  const { t } = useTranslation()
+
   return (
-    <div className="flex items-start">
+    <div className="flex items-center grow">
       {icon && icon_background && iconType === 'app' && (
-        <div className='flex-shrink-0 mr-3'>
+        <div className='shrink-0 mr-3'>
           <AppIcon icon={icon} background={icon_background} />
         </div>
       )}
       {iconType !== 'app'
-        && <div className='flex-shrink-0 mr-3'>
+        && <div className='shrink-0 mr-3'>
           {ICON_MAP[iconType]}
         </div>
 
       }
       {mode === 'expand' && <div className="group">
-        <div className={`flex flex-row items-center text-sm font-semibold text-gray-700 group-hover:text-gray-900 break-all ${textStyle?.main ?? ''}`}>
-          {name}
+        <div className={`flex flex-row items-center system-md-semibold text-text-secondary group-hover:text-text-primary ${textStyle?.main ?? ''}`}>
+          <div className="max-w-[180px] truncate">
+            {name}
+          </div>
           {hoverTip
-            && <Tooltip content={hoverTip} selector={`a${randomString(16)}`}>
-              <InformationCircleIcon className='w-4 h-4 ml-1 text-gray-400' />
-            </Tooltip>}
+            && <Tooltip
+              popupContent={
+                <div className='w-[240px]'>
+                  {hoverTip}
+                </div>
+              }
+              popupClassName='ml-1'
+              triggerClassName='w-4 h-4 ml-1'
+              position='top'
+            />
+          }
         </div>
-        <div className={`text-xs font-normal text-gray-500 group-hover:text-gray-700 break-all ${textStyle?.extra ?? ''}`}>{type}</div>
+        <div className='text-text-tertiary system-2xs-medium-uppercase'>{isExternal ? t('dataset.externalTag') : ''}</div>
       </div>}
     </div>
   )

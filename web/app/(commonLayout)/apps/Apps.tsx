@@ -1,32 +1,50 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import useSWRInfinite from 'swr/infinite'
 import { useTranslation } from 'react-i18next'
 import { useDebounceFn } from 'ahooks'
+import {
+  RiApps2Line,
+  RiExchange2Line,
+  RiMessage3Line,
+  RiRobot3Line,
+} from '@remixicon/react'
 import AppCard from './AppCard'
 import NewAppCard from './NewAppCard'
+import useAppsQueryState from './hooks/useAppsQueryState'
 import type { AppListResponse } from '@/models/app'
 import { fetchAppList } from '@/service/apps'
 import { useAppContext } from '@/context/app-context'
 import { NEED_REFRESH_APP_LIST_KEY } from '@/config'
 import { CheckModal } from '@/hooks/use-pay'
+import TabSliderNew from '@/app/components/base/tab-slider-new'
 import { useTabSearchParams } from '@/hooks/use-tab-searchparams'
-import TabSlider from '@/app/components/base/tab-slider'
-import { SearchLg } from '@/app/components/base/icons/src/vender/line/general'
-import { XCircle } from '@/app/components/base/icons/src/vender/solid/general'
+import Input from '@/app/components/base/input'
+import { useStore as useTagStore } from '@/app/components/base/tag-management/store'
+import TagManagementModal from '@/app/components/base/tag-management'
+import TagFilter from '@/app/components/base/tag-management/filter'
+import CheckboxWithLabel from '@/app/components/datasets/create/website/base/checkbox-with-label'
 
 const getKey = (
   pageIndex: number,
   previousPageData: AppListResponse,
   activeTab: string,
+  isCreatedByMe: boolean,
+  tags: string[],
   keywords: string,
 ) => {
   if (!pageIndex || previousPageData.has_more) {
-    const params: any = { url: 'apps', params: { page: pageIndex + 1, limit: 30, name: keywords } }
+    const params: any = { url: 'apps', params: { page: pageIndex + 1, limit: 30, name: keywords, is_created_by_me: isCreatedByMe } }
 
     if (activeTab !== 'all')
       params.params.mode = activeTab
+    else
+      delete params.params.mode
+
+    if (tags.length)
+      params.params.tag_ids = tags
 
     return params
   }
@@ -35,24 +53,35 @@ const getKey = (
 
 const Apps = () => {
   const { t } = useTranslation()
-  const { isCurrentWorkspaceManager } = useAppContext()
+  const router = useRouter()
+  const { isCurrentWorkspaceEditor, isCurrentWorkspaceDatasetOperator } = useAppContext()
+  const showTagManagementModal = useTagStore(s => s.showTagManagementModal)
   const [activeTab, setActiveTab] = useTabSearchParams({
     defaultTab: 'all',
   })
-  const [keywords, setKeywords] = useState('')
-  const [searchKeywords, setSearchKeywords] = useState('')
+  const { query: { tagIDs = [], keywords = '' }, setQuery } = useAppsQueryState()
+  const [isCreatedByMe, setIsCreatedByMe] = useState(false)
+  const [tagFilterValue, setTagFilterValue] = useState<string[]>(tagIDs)
+  const [searchKeywords, setSearchKeywords] = useState(keywords)
+  const setKeywords = useCallback((keywords: string) => {
+    setQuery(prev => ({ ...prev, keywords }))
+  }, [setQuery])
+  const setTagIDs = useCallback((tagIDs: string[]) => {
+    setQuery(prev => ({ ...prev, tagIDs }))
+  }, [setQuery])
 
   const { data, isLoading, setSize, mutate } = useSWRInfinite(
-    (pageIndex: number, previousPageData: AppListResponse) => getKey(pageIndex, previousPageData, activeTab, searchKeywords),
+    (pageIndex: number, previousPageData: AppListResponse) => getKey(pageIndex, previousPageData, activeTab, isCreatedByMe, tagIDs, searchKeywords),
     fetchAppList,
-    { revalidateFirstPage: false },
+    { revalidateFirstPage: true },
   )
 
   const anchorRef = useRef<HTMLDivElement>(null)
   const options = [
-    { value: 'all', text: t('app.types.all') },
-    { value: 'chat', text: t('app.types.assistant') },
-    { value: 'completion', text: t('app.types.completion') },
+    { value: 'all', text: t('app.types.all'), icon: <RiApps2Line className='w-[14px] h-[14px] mr-1' /> },
+    { value: 'chat', text: t('app.types.chatbot'), icon: <RiMessage3Line className='w-[14px] h-[14px] mr-1' /> },
+    { value: 'agent-chat', text: t('app.types.agent'), icon: <RiRobot3Line className='w-[14px] h-[14px] mr-1' /> },
+    { value: 'workflow', text: t('app.types.workflow'), icon: <RiExchange2Line className='w-[14px] h-[14px] mr-1' /> },
   ]
 
   useEffect(() => {
@@ -64,77 +93,103 @@ const Apps = () => {
   }, [mutate, t])
 
   useEffect(() => {
+    if (isCurrentWorkspaceDatasetOperator)
+      return router.replace('/datasets')
+  }, [router, isCurrentWorkspaceDatasetOperator])
+
+  useEffect(() => {
+    const hasMore = data?.at(-1)?.has_more ?? true
     let observer: IntersectionObserver | undefined
     if (anchorRef.current) {
       observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && !isLoading)
+        if (entries[0].isIntersecting && !isLoading && hasMore)
           setSize((size: number) => size + 1)
       }, { rootMargin: '100px' })
       observer.observe(anchorRef.current)
     }
     return () => observer?.disconnect()
-  }, [isLoading, setSize, anchorRef, mutate])
+  }, [isLoading, setSize, anchorRef, mutate, data])
 
   const { run: handleSearch } = useDebounceFn(() => {
     setSearchKeywords(keywords)
   }, { wait: 500 })
-
   const handleKeywordsChange = (value: string) => {
     setKeywords(value)
     handleSearch()
   }
 
-  const handleClear = () => {
-    handleKeywordsChange('')
+  const { run: handleTagsUpdate } = useDebounceFn(() => {
+    setTagIDs(tagFilterValue)
+  }, { wait: 500 })
+  const handleTagsChange = (value: string[]) => {
+    setTagFilterValue(value)
+    handleTagsUpdate()
   }
 
   return (
     <>
-      <div className='sticky top-0 flex justify-between items-center pt-4 px-12 pb-2 leading-[56px] bg-gray-100 z-10 flex-wrap gap-y-2'>
-        <div className="flex items-center px-2 w-[200px] h-8 rounded-lg bg-gray-200">
-          <div className="pointer-events-none shrink-0 flex items-center mr-1.5 justify-center w-4 h-4">
-            <SearchLg className="h-3.5 w-3.5 text-gray-500" aria-hidden="true" />
-          </div>
-          <input
-            type="text"
-            name="query"
-            className="grow block h-[18px] bg-gray-200 rounded-md border-0 text-gray-600 text-[13px] placeholder:text-gray-500 appearance-none outline-none"
-            placeholder={t('common.operation.search')!}
-            value={keywords}
-            onChange={(e) => {
-              handleKeywordsChange(e.target.value)
-            }}
-            autoComplete="off"
-          />
-          {
-            keywords && (
-              <div
-                className='shrink-0 flex items-center justify-center w-4 h-4 cursor-pointer'
-                onClick={handleClear}
-              >
-                <XCircle className='w-3.5 h-3.5 text-gray-400' />
-              </div>
-            )
-          }
-        </div>
-        <TabSlider
+      <div className='sticky top-0 flex justify-between items-center pt-4 px-12 pb-2 leading-[56px] bg-background-body z-10 flex-wrap gap-y-2'>
+        <TabSliderNew
           value={activeTab}
           onChange={setActiveTab}
           options={options}
         />
-
+        <div className='flex items-center gap-2'>
+          <CheckboxWithLabel
+            className='mr-2'
+            label={t('app.showMyCreatedAppsOnly')}
+            isChecked={isCreatedByMe}
+            onChange={() => setIsCreatedByMe(!isCreatedByMe)}
+          />
+          <TagFilter type='app' value={tagFilterValue} onChange={handleTagsChange} />
+          <Input
+            showLeftIcon
+            showClearIcon
+            wrapperClassName='w-[200px]'
+            value={keywords}
+            onChange={e => handleKeywordsChange(e.target.value)}
+            onClear={() => handleKeywordsChange('')}
+          />
+        </div>
       </div>
-      <nav className='grid content-start grid-cols-1 gap-4 px-12 pt-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grow shrink-0'>
-        {isCurrentWorkspaceManager
-          && <NewAppCard onSuccess={mutate} />}
-        {data?.map(({ data: apps }: any) => apps.map((app: any) => (
-          <AppCard key={app.id} app={app} onRefresh={mutate} />
-        )))}
-        <CheckModal />
-      </nav>
+      {(data && data[0].total > 0)
+        ? <div className='grid content-start grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 2k:grid-cols-6 gap-4 px-12 pt-2 grow relative'>
+          {isCurrentWorkspaceEditor
+            && <NewAppCard onSuccess={mutate} />}
+          {data.map(({ data: apps }) => apps.map(app => (
+            <AppCard key={app.id} app={app} onRefresh={mutate} />
+          )))}
+        </div>
+        : <div className='grid content-start grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 2k:grid-cols-6 gap-4 px-12 pt-2 grow relative overflow-hidden'>
+          {isCurrentWorkspaceEditor
+            && <NewAppCard className='z-10' onSuccess={mutate} />}
+          <NoAppsFound />
+        </div>}
+      <CheckModal />
       <div ref={anchorRef} className='h-0'> </div>
+      {showTagManagementModal && (
+        <TagManagementModal type='app' show={showTagManagementModal} />
+      )}
     </>
   )
 }
 
 export default Apps
+
+function NoAppsFound() {
+  const { t } = useTranslation()
+  function renderDefaultCard() {
+    const defaultCards = Array.from({ length: 36 }, (_, index) => (
+      <div key={index} className='h-[160px] inline-flex rounded-xl bg-background-default-lighter'></div>
+    ))
+    return defaultCards
+  }
+  return (
+    <>
+      {renderDefaultCard()}
+      <div className='absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gradient-to-t from-background-body to-transparent'>
+        <span className='system-md-medium text-text-tertiary'>{t('app.newApp.noAppsFound')}</span>
+      </div>
+    </>
+  )
+}

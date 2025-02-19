@@ -1,5 +1,6 @@
 import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
+import { RiArrowDownSLine } from '@remixicon/react'
 import type {
   Model,
   ModelItem,
@@ -9,10 +10,11 @@ import { MODEL_STATUS_TEXT } from '../declarations'
 import { useLanguage } from '../hooks'
 import ModelIcon from '../model-icon'
 import ModelName from '../model-name'
+import cn from '@/utils/classnames'
 import { useProviderContext } from '@/context/provider-context'
 import { SlidersH } from '@/app/components/base/icons/src/vender/line/mediaAndDevices'
 import { AlertTriangle } from '@/app/components/base/icons/src/vender/line/alertsAndFeedback'
-import TooltipPlus from '@/app/components/base/tooltip-plus'
+import Tooltip from '@/app/components/base/tooltip'
 
 export type TriggerProps = {
   open?: boolean
@@ -23,6 +25,7 @@ export type TriggerProps = {
   modelId?: string
   hasDeprecated?: boolean
   modelDisabled?: boolean
+  isInWorkflow?: boolean
 }
 const Trigger: FC<TriggerProps> = ({
   disabled,
@@ -32,6 +35,7 @@ const Trigger: FC<TriggerProps> = ({
   modelId,
   hasDeprecated,
   modelDisabled,
+  isInWorkflow,
 }) => {
   const { t } = useTranslation()
   const language = useLanguage()
@@ -39,10 +43,12 @@ const Trigger: FC<TriggerProps> = ({
 
   return (
     <div
-      className={`
-        flex items-center px-2 h-8 rounded-lg border cursor-pointer hover:border-[1.5px]
-        ${disabled ? 'border-[#F79009] bg-[#FFFAEB]' : 'border-[#444CE7] bg-primary-50'}
-      `}
+      className={cn(
+        'relative flex items-center px-2 h-8 rounded-lg  cursor-pointer',
+        !isInWorkflow && 'border ring-inset hover:ring-[0.5px]',
+        !isInWorkflow && (disabled ? 'border-text-warning ring-text-warning bg-state-warning-hover' : 'border-util-colors-indigo-indigo-600 ring-util-colors-indigo-indigo-600 bg-state-accent-hover'),
+        isInWorkflow && 'pr-[30px] bg-workflow-block-parma-bg border border-workflow-block-parma-bg  hover:border-gray-200',
+      )}
     >
       {
         currentProvider && (
@@ -65,18 +71,16 @@ const Trigger: FC<TriggerProps> = ({
       {
         currentModel && (
           <ModelName
-            className='mr-1.5 text-gray-900'
+            className='mr-1.5 text-text-primary'
             modelItem={currentModel}
             showMode
-            modeClassName='!text-[#444CE7] !border-[#A4BCFD]'
             showFeatures
-            featuresClassName='!text-[#444CE7] !border-[#A4BCFD]'
           />
         )
       }
       {
         !currentModel && (
-          <div className='mr-1 text-[13px] font-medium text-gray-900 truncate'>
+          <div className='mr-1 text-[13px] font-medium text-text-primary truncate'>
             {modelId}
           </div>
         )
@@ -84,7 +88,7 @@ const Trigger: FC<TriggerProps> = ({
       {
         disabled
           ? (
-            <TooltipPlus
+            <Tooltip
               popupContent={
                 hasDeprecated
                   ? t('common.modelProvider.deprecated')
@@ -94,12 +98,13 @@ const Trigger: FC<TriggerProps> = ({
               }
             >
               <AlertTriangle className='w-4 h-4 text-[#F79009]' />
-            </TooltipPlus>
+            </Tooltip>
           )
           : (
-            <SlidersH className='w-4 h-4 text-indigo-600' />
+            <SlidersH className={cn(!isInWorkflow ? 'text-indigo-600' : 'text-text-tertiary', 'shrink-0 w-4 h-4')} />
           )
       }
+      {isInWorkflow && (<RiArrowDownSLine className='absolute top-[9px] right-2 w-3.5 h-3.5 text-text-tertiary' />)}
     </div>
   )
 }

@@ -18,7 +18,7 @@ const translation = {
   apps: {
     title: 'Explore Apps by Bonc LOps ',
     description: 'Use these template apps instantly or customize your own apps based on the templates.',
-    allCategories: 'All Categories',
+    allCategories: 'Recommended',
   },
   appCard: {
     addToWorkspace: 'Add to Workspace',
@@ -30,11 +30,13 @@ const translation = {
     nameRequired: 'App name is required',
   },
   category: {
+    Agent: 'Agent',
     Assistant: 'Assistant',
     Writing: 'Writing',
     Translate: 'Translate',
     Programming: 'Programming',
     HR: 'HR',
+    Workflow: 'Workflow',
   },
 }
 

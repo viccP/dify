@@ -18,7 +18,7 @@ const translation = {
   apps: {
     title: 'Вивчайте програми від Bonc LOps ',
     description: 'Використовуйте ці шаблони миттєво або налаштуйте власні програми на основі шаблонів.',
-    allCategories: 'Усі категорії',
+    allCategories: 'Рекомендовані',
   },
   appCard: {
     addToWorkspace: 'Додати до робочого простору',
@@ -35,6 +35,8 @@ const translation = {
     Translate: 'Переклад',
     Programming: 'Програмування',
     HR: 'HR',
+    Workflow: 'Робочий процес',
+    Agent: 'Агент',
   },
 }
 

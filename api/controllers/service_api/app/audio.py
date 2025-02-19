@@ -1,7 +1,7 @@
 import logging
 
 from flask import request
-from flask_restful import reqparse
+from flask_restful import Resource, reqparse  # type: ignore
 from werkzeug.exceptions import InternalServerError
 
 import services
@@ -17,10 +17,10 @@ from controllers.service_api.app.error import (
     ProviderQuotaExceededError,
     UnsupportedAudioTypeError,
 )
-from controllers.service_api.wraps import AppApiResource
+from controllers.service_api.wraps import FetchUserArg, WhereisUserArg, validate_app_token
 from core.errors.error import ModelCurrentlyNotSupportError, ProviderTokenNotInitError, QuotaExceededError
 from core.model_runtime.errors.invoke import InvokeError
-from models.model import App, AppModelConfig
+from models.model import App, AppMode, EndUser
 from services.audio_service import AudioService
 from services.errors.audio import (
     AudioTooLargeServiceError,
@@ -30,21 +30,13 @@ from services.errors.audio import (
 )
 
 
-class AudioApi(AppApiResource):
-    def post(self, app_model: App, end_user):
-        app_model_config: AppModelConfig = app_model.app_model_config
-
-        if not app_model_config.speech_to_text_dict['enabled']:
-            raise AppUnavailableError()
-
-        file = request.files['file']
+class AudioApi(Resource):
+    @validate_app_token(fetch_user_arg=FetchUserArg(fetch_from=WhereisUserArg.FORM))
+    def post(self, app_model: App, end_user: EndUser):
+        file = request.files["file"]
 
         try:
-            response = AudioService.transcript_asr(
-                tenant_id=app_model.tenant_id,
-                file=file,
-                end_user=end_user
-            )
+            response = AudioService.transcript_asr(app_model=app_model, file=file, end_user=end_user)
 
             return response
         except services.errors.app_model_config.AppModelConfigBrokenError:
@@ -73,21 +65,33 @@ class AudioApi(AppApiResource):
             raise InternalServerError()
 
 
-class TextApi(AppApiResource):
-    def post(self, app_model: App, end_user):
-        parser = reqparse.RequestParser()
-        parser.add_argument('text', type=str, required=True, nullable=False, location='json')
-        parser.add_argument('user', type=str, required=True, nullable=False, location='json')
-        parser.add_argument('streaming', type=bool, required=False, nullable=False, location='json')
-        args = parser.parse_args()
-
+class TextApi(Resource):
+    @validate_app_token(fetch_user_arg=FetchUserArg(fetch_from=WhereisUserArg.JSON))
+    def post(self, app_model: App, end_user: EndUser):
         try:
+            parser = reqparse.RequestParser()
+            parser.add_argument("message_id", type=str, required=False, location="json")
+            parser.add_argument("voice", type=str, location="json")
+            parser.add_argument("text", type=str, location="json")
+            parser.add_argument("streaming", type=bool, location="json")
+            args = parser.parse_args()
+
+            message_id = args.get("message_id", None)
+            text = args.get("text", None)
+            if (
+                app_model.mode in {AppMode.ADVANCED_CHAT.value, AppMode.WORKFLOW.value}
+                and app_model.workflow
+                and app_model.workflow.features_dict
+            ):
+                text_to_speech = app_model.workflow.features_dict.get("text_to_speech", {})
+                voice = args.get("voice") or text_to_speech.get("voice")
+            else:
+                try:
+                    voice = args.get("voice") or app_model.app_model_config.text_to_speech_dict.get("voice")
+                except Exception:
+                    voice = None
             response = AudioService.transcript_tts(
-                tenant_id=app_model.tenant_id,
-                text=args['text'],
-                end_user=args['user'],
-                voice=app_model.app_model_config.text_to_speech_dict.get('voice'),
-                streaming=args['streaming']
+                app_model=app_model, message_id=message_id, end_user=end_user.external_user_id, voice=voice, text=text
             )
 
             return response
@@ -117,5 +121,5 @@ class TextApi(AppApiResource):
             raise InternalServerError()
 
 
-api.add_resource(AudioApi, '/audio-to-text')
-api.add_resource(TextApi, '/text-to-audio')
+api.add_resource(AudioApi, "/audio-to-text")
+api.add_resource(TextApi, "/text-to-audio")

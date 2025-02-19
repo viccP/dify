@@ -1,43 +1,45 @@
 import type { I18nText } from '@/i18n/language'
 
-export type CommonResponse = {
+export interface CommonResponse {
   result: 'success' | 'fail'
 }
 
-export type OauthResponse = {
+export interface OauthResponse {
   redirect_url: string
 }
 
-export type SetupStatusResponse = {
+export interface SetupStatusResponse {
   step: 'finished' | 'not_started'
   setup_at?: Date
 }
 
-export type InitValidateStatusResponse = {
+export interface InitValidateStatusResponse {
   status: 'finished' | 'not_started'
 }
 
-export type UserProfileResponse = {
+export interface UserProfileResponse {
   id: string
   name: string
   email: string
   avatar: string
+  avatar_url: string | null
   is_password_set: boolean
   interface_language?: string
   interface_theme?: string
   timezone?: string
   last_login_at?: string
+  last_active_at?: string
   last_login_ip?: string
   created_at?: string
 }
 
-export type UserProfileOriginResponse = {
+export interface UserProfileOriginResponse {
   json: () => Promise<UserProfileResponse>
   bodyUsed: boolean
   headers: any
 }
 
-export type LangGeniusVersionResponse = {
+export interface LangGeniusVersionResponse {
   current_version: string
   latest_version: string
   version: string
@@ -47,7 +49,7 @@ export type LangGeniusVersionResponse = {
   current_env: string
 }
 
-export type TenantInfoResponse = {
+export interface TenantInfoResponse {
   name: string
   created_at: string
   providers: Array<{
@@ -61,10 +63,10 @@ export type TenantInfoResponse = {
   trial_end_reason: null | 'trial_exceeded' | 'using_custom'
 }
 
-export type Member = Pick<UserProfileResponse, 'id' | 'name' | 'email' | 'last_login_at' | 'created_at'> & {
+export type Member = Pick<UserProfileResponse, 'id' | 'name' | 'email' | 'last_login_at' | 'last_active_at' | 'created_at' | 'avatar_url'> & {
   avatar: string
   status: 'pending' | 'active' | 'banned' | 'closed'
-  role: 'owner' | 'admin' | 'normal'
+  role: 'owner' | 'admin' | 'editor' | 'normal' | 'dataset_operator'
 }
 
 export enum ProviderName {
@@ -78,14 +80,14 @@ export enum ProviderName {
   Tongyi = 'tongyi',
   ChatGLM = 'chatglm',
 }
-export type ProviderAzureToken = {
+export interface ProviderAzureToken {
   openai_api_base?: string
   openai_api_key?: string
 }
-export type ProviderAnthropicToken = {
+export interface ProviderAnthropicToken {
   anthropic_api_key?: string
 }
-export type ProviderTokenType = {
+export interface ProviderTokenType {
   [ProviderName.OPENAI]: string
   [ProviderName.AZURE_OPENAI]: ProviderAzureToken
   [ProviderName.ANTHROPIC]: ProviderAnthropicToken
@@ -108,14 +110,14 @@ export type ProviderHosted = Provider & {
   quota_used: number
 }
 
-export type AccountIntegrate = {
+export interface AccountIntegrate {
   provider: 'google' | 'github'
   created_at: number
   is_bound: boolean
   link: string
 }
 
-export type IWorkspace = {
+export interface IWorkspace {
   id: string
   name: string
   plan: string
@@ -125,7 +127,7 @@ export type IWorkspace = {
 }
 
 export type ICurrentWorkspace = Omit<IWorkspace, 'current'> & {
-  role: 'normal' | 'admin' | 'owner'
+  role: 'owner' | 'admin' | 'editor' | 'dataset_operator' | 'normal'
   providers: Provider[]
   in_trail: boolean
   trial_end_reason?: string
@@ -135,7 +137,7 @@ export type ICurrentWorkspace = Omit<IWorkspace, 'current'> & {
   }
 }
 
-export type DataSourceNotionPage = {
+export interface DataSourceNotionPage {
   page_icon: null | {
     type: string | null
     url: string | null
@@ -154,7 +156,7 @@ export type NotionPage = DataSourceNotionPage & {
 
 export type DataSourceNotionPageMap = Record<string, DataSourceNotionPage & { workspace_id: string }>
 
-export type DataSourceNotionWorkspace = {
+export interface DataSourceNotionWorkspace {
   workspace_name: string
   workspace_id: string
   workspace_icon: string | null
@@ -164,18 +166,44 @@ export type DataSourceNotionWorkspace = {
 
 export type DataSourceNotionWorkspaceMap = Record<string, DataSourceNotionWorkspace>
 
-export type DataSourceNotion = {
+export interface DataSourceNotion {
   id: string
   provider: string
   is_bound: boolean
   source_info: DataSourceNotionWorkspace
 }
 
-export type GithubRepo = {
+export enum DataSourceCategory {
+  website = 'website',
+}
+export enum DataSourceProvider {
+  fireCrawl = 'firecrawl',
+  jinaReader = 'jinareader',
+}
+
+export interface FirecrawlConfig {
+  api_key: string
+  base_url: string
+}
+
+export interface DataSourceItem {
+  id: string
+  category: DataSourceCategory
+  provider: DataSourceProvider
+  disabled: boolean
+  created_at: number
+  updated_at: number
+}
+
+export interface DataSources {
+  sources: DataSourceItem[]
+}
+
+export interface GithubRepo {
   stargazers_count: number
 }
 
-export type PluginProvider = {
+export interface PluginProvider {
   tool_name: string
   is_enabled: boolean
   credentials: {
@@ -183,10 +211,13 @@ export type PluginProvider = {
   } | null
 }
 
-export type FileUploadConfigResponse = {
-  file_size_limit: number
+export interface FileUploadConfigResponse {
   batch_count_limit: number
-  image_file_size_limit?: number | string
+  image_file_size_limit?: number | string // default is 10MB
+  file_size_limit: number // default is 15MB
+  audio_file_size_limit?: number // default is 50MB
+  video_file_size_limit?: number // default is 100MB
+  workflow_file_upload_limit?: number // default is 10
 }
 
 export type InvitationResult = {
@@ -203,14 +234,14 @@ export type InvitationResponse = CommonResponse & {
   invitation_results: InvitationResult[]
 }
 
-export type ApiBasedExtension = {
+export interface ApiBasedExtension {
   id?: string
   name?: string
   api_endpoint?: string
   api_key?: string
 }
 
-export type CodeBasedExtensionForm = {
+export interface CodeBasedExtensionForm {
   type: string
   label: I18nText
   variable: string
@@ -221,17 +252,17 @@ export type CodeBasedExtensionForm = {
   max_length?: number
 }
 
-export type CodeBasedExtensionItem = {
+export interface CodeBasedExtensionItem {
   name: string
   label: any
   form_schema: CodeBasedExtensionForm[]
 }
-export type CodeBasedExtension = {
+export interface CodeBasedExtension {
   module: string
   data: CodeBasedExtensionItem[]
 }
 
-export type ExternalDataTool = {
+export interface ExternalDataTool {
   type?: string
   label?: string
   icon?: string
@@ -243,7 +274,7 @@ export type ExternalDataTool = {
   } & Partial<Record<string, any>>
 }
 
-export type ModerateResponse = {
+export interface ModerateResponse {
   flagged: boolean
   text: string
 }
