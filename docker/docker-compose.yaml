@@ -2,7 +2,7 @@ version: '3'
 services:
   # API service
   api:
-    image: bonclops-backend:panzhi
+    image: bonclops-backend:0.6.8-panzhi
     privileged: true
     restart: always
     environment:
@@ -181,7 +181,7 @@ services:
   # worker service
   # The Celery worker for processing the queue.
   worker:
-    image: bonclops-backend:panzhi
+    image: bonclops-backend:0.6.8-panzhi
     privileged: true
     restart: always
     environment:
