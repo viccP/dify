@@ -322,6 +322,9 @@ services:
       SECRET_KEY: sk-9f73s3ljTXVcMT3Blb3ljTqtsKiGHXVcMT3BlbkFJLK7U
       CONSOLE_WEB_URL: ''
       TOKEN_TIME_OUT: 300
+      DB_URL: jdbc:postgresql://localhost:5432/dify
+      DB_USR: postgres
+      DB_PWD: difyai123456
     depends_on:
       - db
       - redis
