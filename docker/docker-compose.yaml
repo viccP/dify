@@ -321,6 +321,7 @@ services:
     environment:
       SECRET_KEY: sk-9f73s3ljTXVcMT3Blb3ljTqtsKiGHXVcMT3BlbkFJLK7U
       CONSOLE_WEB_URL: ''
+      TOKEN_TIME_OUT: 300
     depends_on:
       - db
       - redis
