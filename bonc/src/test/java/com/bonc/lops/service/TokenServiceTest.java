@@ -27,7 +27,7 @@ public class TokenServiceTest {
 
     @Test
     public void generateTest() {
-        String token = tokenService.generate("test111@test.com");
+        String token = tokenService.generate("李博强");
         System.out.println(token);
     }
 

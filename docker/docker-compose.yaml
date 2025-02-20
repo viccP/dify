@@ -320,7 +320,7 @@ services:
     restart: always
     environment:
       SECRET_KEY: sk-9f73s3ljTXVcMT3Blb3ljTqtsKiGHXVcMT3BlbkFJLK7U
-      CONSOLE_WEB_URL: ''
+      CONSOLE_WEB_URL: http://localhost/
       TOKEN_TIME_OUT: 300
       DB_URL: jdbc:postgresql://db:5432/dify
       DB_USR: postgres
