@@ -318,6 +318,9 @@ services:
   custom:
     image: bonclops-custom:0.6.8-panzhi
     restart: always
+    environment:
+      SECRET_KEY: sk-9f73s3ljTXVcMT3Blb3ljTqtsKiGHXVcMT3BlbkFJLK7U
+      CONSOLE_WEB_URL: ''
     depends_on:
       - db
       - redis
