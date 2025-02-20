@@ -1,5 +1,5 @@
 # 使用一个基础镜像，例如 OpenJDK 8 JRE
-FROM artifactory.dep.devops.cmit.cloud:20101/dtt/centos7:jdk8-newapm
+FROM centos7:jdk8-newapm
 
 # 设置工作目录
 WORKDIR /app
