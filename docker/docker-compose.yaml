@@ -297,7 +297,7 @@ services:
 
   # Frontend web application.
   web:
-    image: bonclops-web:2.7.3
+    image: bonclops-web:0.6.8-panzhi
     restart: always
     environment:
       # The base URL of console application api server, refers to the Console base URL of WEB service if console domain is
@@ -313,6 +313,15 @@ services:
     # uncomment to expose dify-web port to host
     # ports:
     #  - "3000:3000"
+
+  # The redis cache.
+  custom:
+    image: bonclops-custom:0.6.8-panzhi
+    restart: always
+    depends_on:
+      - db
+      - redis
+
 
   # The postgres database.
   db:
@@ -462,6 +471,7 @@ services:
     depends_on:
       - api
       - web
+      - custom
     ports:
       - "80:80"
       #- "443:443"
