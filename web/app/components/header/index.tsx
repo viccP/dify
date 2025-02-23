@@ -52,7 +52,7 @@ const Header = () => {
         </div>}
         {!isMobile && <>
           <Link href="/apps" className='flex items-center mr-4 h-15'>
-            <LogoSite className='object-contain h-11 w-28' />
+            <LogoSite className='object-contain h-11 w-30' />
           </Link>
           {/* <GithubStar /> */}
         </>}
