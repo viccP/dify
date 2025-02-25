@@ -107,8 +107,8 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
             appid = credentials['panzhi_appid']
             appKey = credentials['panzhi_appkey']
             appName = credentials['panzhi_appname']
-            logger.info("original appid=%s",appName)
-            logger.info("model is=%s",model)
+            logger.info("original appid=%s", appName)
+            logger.info("model is=%s", model)
             rndId = "".join(str(uuid.uuid4()).split("-"))
             for _ in range(24 - len(appName)):
                 appName += "0"
@@ -121,14 +121,24 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
             xCurTime = str(math.floor(time.time()))
             xServerParam = str(base64.b64encode(json.dumps(tmp_xServerParam).encode('utf-8')), encoding="utf8")
             xCheckSum = hashlib.md5(bytes(appKey + xCurTime + xServerParam, encoding="utf8")).hexdigest()
-            logger.info("xCurTime=%s，xServerParam=%s,xCheckSum=%s",xCurTime,xServerParam,xCheckSum)
+            logger.info("xCurTime=%s，xServerParam=%s,xCheckSum=%s", xCurTime, xServerParam, xCheckSum)
+
+            # 解析 customHeader
+            customHeader = credentials['custom_header']
+            custom_header_dict = {}
+            for item in customHeader.split(';'):
+                key, value = item.split(':')
+                custom_header_dict[key] = value
+
             headers = {
                 "appKey": appKey,
                 "X-Server-Param": xServerParam,
                 "X-CurTime": xCurTime,
                 "X-CheckSum": xCheckSum,
-                "content-type": "application/json"
+                "content-type": "application/json",
             }
+            headers.update(custom_header_dict)
+            logger.info("headers=%s", headers)
 
             # headers = {
             #     'Content-Type': 'application/json'
@@ -139,7 +149,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
             #     headers["Authorization"] = f"Bearer {api_key}"
 
             endpoint_url = credentials['endpoint_url']
-            logger.info("appid=%s,appKey=%s,appName=%s,csid=%s",appid,appKey,appName,csid)
+            logger.info("appid=%s,appKey=%s,appName=%s,csid=%s", appid, appKey, appName, csid)
             if not endpoint_url.endswith('/'):
                 endpoint_url += '/'
 
@@ -159,7 +169,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
                     },
                 ]
                 endpoint_url = urljoin(endpoint_url, 'chat/completions')
-                logger.info("final chat endpoint_url=%s",endpoint_url)
+                logger.info("final chat endpoint_url=%s", endpoint_url)
             elif completion_type is LLMMode.COMPLETION:
                 data['prompt'] = 'ping'
                 endpoint_url = urljoin(endpoint_url, 'completions')
@@ -173,6 +183,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
                 json=data,
                 timeout=(10, 300)
             )
+            logger.info("response=%s", response.json())
 
             if response.status_code != 200:
                 raise CredentialsValidateFailedError(
@@ -513,7 +524,8 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
 
                     if 'tool_calls' in delta and credentials.get('function_calling_type', 'no_call') == 'tool_call':
                         assistant_message_tool_calls = delta.get('tool_calls', None)
-                    elif 'function_call' in delta and credentials.get('function_calling_type', 'no_call') == 'function_call':
+                    elif 'function_call' in delta and credentials.get('function_calling_type',
+                                                                      'no_call') == 'function_call':
                         assistant_message_tool_calls = [{
                             'id': 'tool_call_id',
                             'type': 'function',

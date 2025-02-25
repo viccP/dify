@@ -57,7 +57,7 @@ const Datasets = ({
 
   useEffect(() => {
     loadingStateRef.current = isLoading
-    document.title = `${t('dataset.knowledge')} - Bonc LOps`
+    document.title = `${t('dataset.knowledge')} - AIRITA`
   }, [isLoading])
 
   useEffect(() => {

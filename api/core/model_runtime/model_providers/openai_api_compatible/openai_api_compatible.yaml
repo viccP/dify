@@ -18,13 +18,22 @@ model_credential_schema:
       en_US: Enter full model name
       zh_Hans: 输入模型全称
   credential_form_schemas:
-    - variable: panzhi_appname
+    - variable: custom_header
       label:
-        en_US: Panzhi App Name
+        en_US: Custom Http Header(Split by semicolon)
+        zh_Hans: 自定义Http请求头(分号分隔)
       type: text-input
       required: false
       placeholder:
-        zh_Hans: 在此输入您的磐智 APP Name
+        zh_Hans: 请输入自定义HTTP请求头
+        en_US: Enter Custom Http Header
+    - variable: panzhi_appname
+      label:
+        en_US: Panzhi Api Name
+      type: text-input
+      required: false
+      placeholder:
+        zh_Hans: 在此输入您的磐智 Api 名称
         en_US: Enter your Panzhi App Name
     - variable: panzhi_appkey
       label:
