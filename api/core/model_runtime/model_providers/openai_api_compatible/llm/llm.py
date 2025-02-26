@@ -344,13 +344,24 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
         xCurTime = str(math.floor(time.time()))
         xServerParam = str(base64.b64encode(json.dumps(tmp_xServerParam).encode('utf-8')), encoding="utf8")
         xCheckSum = hashlib.md5(bytes(appKey + xCurTime + xServerParam, encoding="utf8")).hexdigest()
+
+        # 解析 customHeader
+        customHeader = credentials['custom_header']
+        custom_header_dict = {}
+        for item in customHeader.split(';'):
+            key, value = item.split(':')
+            custom_header_dict[key] = value
+
         headers = {
             "appKey": appKey,
             "X-Server-Param": xServerParam,
             "X-CurTime": xCurTime,
             "X-CheckSum": xCheckSum,
-            "content-type": "application/json"
+            "content-type": "application/json",
         }
+        headers.update(custom_header_dict)
+        logger.info("headers(_generate)=%s", headers)
+
 
         endpoint_url = credentials["endpoint_url"]
         if not endpoint_url.endswith('/'):
@@ -404,6 +415,8 @@ class OAIAPICompatLargeLanguageModel(_CommonOAI_API_Compat, LargeLanguageModel):
             timeout=(10, 300),
             stream=stream
         )
+
+        logger.info("response=%s", response)
 
         if response.encoding is None or response.encoding == 'ISO-8859-1':
             response.encoding = 'utf-8'
