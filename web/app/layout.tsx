@@ -8,7 +8,7 @@ import './styles/globals.css'
 import './styles/markdown.scss'
 
 export const metadata = {
-  title: 'Bonc LOps',
+  title: 'AIRITA',
 }
 
 export const viewport: Viewport = {

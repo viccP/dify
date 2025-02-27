@@ -8,7 +8,7 @@ const Layout: FC = () => {
   const { t } = useTranslation()
 
   useEffect(() => {
-    document.title = `${t('tools.title')} - Bonc LOps`
+    document.title = `${t('tools.title')} - AIRITA`
   }, [])
 
   return <ToolProviderList />
