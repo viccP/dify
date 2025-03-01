@@ -75,7 +75,6 @@ const Header = () => {
       )}
       {!isMobile && (
         <div className='flex items-center'>
-          {!isCurrentWorkspaceDatasetOperator && <ExploreNav className={navClassName} />}
           {!isCurrentWorkspaceDatasetOperator && <AppNav />}
           {(isCurrentWorkspaceEditor || isCurrentWorkspaceDatasetOperator) && <DatasetNav />}
           {!isCurrentWorkspaceDatasetOperator && <ToolsNav className={navClassName} />}
@@ -95,7 +94,6 @@ const Header = () => {
       </div>
       {(isMobile && isShowNavMenu) && (
         <div className='w-full flex flex-col p-2 gap-y-1'>
-          {!isCurrentWorkspaceDatasetOperator && <ExploreNav className={navClassName} />}
           {!isCurrentWorkspaceDatasetOperator && <AppNav />}
           {(isCurrentWorkspaceEditor || isCurrentWorkspaceDatasetOperator) && <DatasetNav />}
           {!isCurrentWorkspaceDatasetOperator && <ToolsNav className={navClassName} />}

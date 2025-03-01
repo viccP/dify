@@ -214,12 +214,6 @@ function CreateApp({ onClose, onSuccess, onCreateFromTemplate }: CreateAppProps)
             </div>
           </div>
           <div className='pt-5 pb-10 flex justify-between items-center'>
-            <div className='flex gap-1 items-center system-xs-regular text-text-tertiary cursor-pointer' onClick={onCreateFromTemplate}>
-              <span>{t('app.newApp.noIdeaTip')}</span>
-              <div className='p-[1px]'>
-                <RiArrowRightLine className='w-3.5 h-3.5' />
-              </div>
-            </div>
             <div className='flex gap-2'>
               <Button onClick={onClose}>{t('app.newApp.Cancel')}</Button>
               <Button disabled={isAppsFull || !name} className='gap-1' variant="primary" onClick={handleCreateApp}>
@@ -312,17 +306,17 @@ function AppPreview({ mode }: { mode: AppMode }) {
     'chat': {
       title: t('app.types.chatbot'),
       description: t('app.newApp.chatbotUserDescription'),
-      link: 'https://docs.dify.ai/guides/application-orchestrate/conversation-application?fallback=true',
+      link: 'https://docs.airita.ai/guides/application-orchestrate/conversation-application?fallback=true',
     },
     'advanced-chat': {
       title: t('app.types.advanced'),
       description: t('app.newApp.advancedUserDescription'),
-      link: 'https://docs.dify.ai/guides/workflow',
+      link: 'https://docs.airita.ai/guides/workflow',
     },
     'agent-chat': {
       title: t('app.types.agent'),
       description: t('app.newApp.agentUserDescription'),
-      link: 'https://docs.dify.ai/guides/application-orchestrate/agent',
+      link: 'https://docs.airita.ai/guides/application-orchestrate/agent',
     },
     'completion': {
       title: t('app.newApp.completeApp'),
@@ -332,7 +326,7 @@ function AppPreview({ mode }: { mode: AppMode }) {
     'workflow': {
       title: t('app.types.workflow'),
       description: t('app.newApp.workflowUserDescription'),
-      link: 'https://docs.dify.ai/guides/workflow',
+      link: 'https://docs.airita.ai/guides/workflow',
     },
   }
   const previewInfo = modeToPreviewInfoMap[mode]
@@ -340,7 +334,7 @@ function AppPreview({ mode }: { mode: AppMode }) {
     <h4 className='system-sm-semibold-uppercase text-text-secondary'>{previewInfo.title}</h4>
     <div className='mt-1 system-xs-regular text-text-tertiary max-w-96 min-h-8'>
       <span>{previewInfo.description}</span>
-      {previewInfo.link && <Link target='_blank' href={previewInfo.link} className='text-text-accent ml-1'>{t('app.newApp.learnMore')}</Link>}
+
     </div>
   </div>
 }
