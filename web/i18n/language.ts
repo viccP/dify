@@ -24,13 +24,13 @@ export const getLanguage = (locale: string) => {
 export const NOTICE_I18N = {
   title: {
     en_US: 'Important Notice',
-    zh_Hans: '重要公告'
+    zh_Hans: '重要公告',
   },
   desc: {
     en_US:
-      'Our system will be unavailable from 19:00 to 24:00 UTC on August 28 for an upgrade. For questions, kindly contact our support team (support@dify.ai). We value your patience.',
+      'Our system will be unavailable from 19:00 to 24:00 UTC on August 28 for an upgrade. For questions, kindly contact our support team (support@Airita.ai). We value your patience.',
     zh_Hans:
-      '为了有效提升数据检索能力及稳定性，Dify 将于 2023 年 8 月 29 日 03:00 至 08:00 期间进行服务升级，届时 Dify 云端版及应用将无法访问。感谢您的耐心与支持。'
+      '为了有效提升数据检索能力及稳定性，Airita 将于 2023 年 8 月 29 日 03:00 至 08:00 期间进行服务升级，届时 Airita 云端版及应用将无法访问。感谢您的耐心与支持。',
   },
   href: '#',
 }
