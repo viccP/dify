@@ -1,7 +1,7 @@
 from typing import cast
 
 import flask_login  # type: ignore
-from flask import request
+from flask import request, redirect
 from flask_restful import Resource, reqparse  # type: ignore
 
 import services
@@ -33,6 +33,23 @@ from services.errors.account import AccountRegisterError
 from services.errors.workspace import WorkSpaceNotAllowedCreateError
 from services.feature_service import FeatureService
 
+
+class LoginApiSinglePoint(Resource):
+    @setup_required
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("email", type=email, required=True, location="args")
+        args = parser.parse_args()
+
+        email_ = args.get("email")
+
+        account = Account.query.filter_by(email=email_).first()
+        token_pair = AccountService.login(account=account, ip_address=extract_remote_ip(request))
+        AccountService.reset_login_error_rate_limit(email_)
+
+        my_url = f"{dify_config.CONSOLE_WEB_URL}?access_token={token_pair.access_token}&refresh_token={token_pair.refresh_token}"
+        # print(my_url)
+        return redirect(my_url)
 
 class LoginApi(Resource):
     """Resource for user login."""
@@ -231,6 +248,7 @@ class RefreshTokenApi(Resource):
             return {"result": "fail", "data": str(e)}, 401
 
 
+api.add_resource(LoginApiSinglePoint, "/login-single-point")
 api.add_resource(LoginApi, "/login")
 api.add_resource(LogoutApi, "/logout")
 api.add_resource(EmailCodeLoginSendEmailApi, "/email-code-login")
