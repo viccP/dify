@@ -4,6 +4,12 @@ from collections.abc import Generator
 from decimal import Decimal
 from typing import Optional, Union, cast
 from urllib.parse import urljoin
+import uuid
+import base64
+import hashlib
+import logging
+import math
+import time
 
 import requests
 
@@ -38,6 +44,7 @@ from core.model_runtime.model_providers.__base.large_language_model import Large
 from core.model_runtime.model_providers.openai_api_compatible._common import _CommonOaiApiCompat
 from core.model_runtime.utils import helper
 
+logger = logging.getLogger(__name__)
 
 class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
     """
@@ -109,12 +116,47 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
         :return:
         """
         try:
-            headers = {"Content-Type": "application/json"}
+            appid = credentials['panzhi_appid']
+            appKey = credentials['panzhi_appkey']
+            appName = credentials['panzhi_apiname']
+            customHeader= credentials['custom_header']
 
+            rndId = "".join(str(uuid.uuid4()).split("-"))
+            for _ in range(24 - len(appName)):
+                appName += "0"
+            capabilityname = appName
+            csid = appid + capabilityname + rndId
+            tmp_xServerParam = {
+                "appid": appid,
+                "csid": csid
+            }
+            xCurTime = str(math.floor(time.time()))
+            xServerParam = str(base64.b64encode(json.dumps(tmp_xServerParam).encode('utf-8')), encoding="utf8")
+            xCheckSum = hashlib.md5(bytes(appKey + xCurTime + xServerParam, encoding="utf8")).hexdigest()
+            logger.info("xCurTime=%s，xServerParam=%s,xCheckSum=%s",xCurTime,xServerParam,xCheckSum)
+            headers = {
+                "appKey": appKey,
+                "X-Server-Param": xServerParam,
+                "X-CurTime": xCurTime,
+                "X-CheckSum": xCheckSum,
+                "content-type": "application/json"
+            }
+
+            if customHeader:
+                custom_headers = customHeader.split(';')
+                parsed_headers = {}
+                for header in custom_headers:
+                    key_value = header.split(':')
+                    if len(key_value) == 2:
+                        parsed_headers[key_value[0].strip()] = key_value[1].strip()
+                headers.update(parsed_headers)
+
+#             headers = {"Content-Type": "application/json"}
+#
             api_key = credentials.get("api_key")
             if api_key:
                 headers["Authorization"] = f"Bearer {api_key}"
-
+            logger.info(f"headers={headers}")
             endpoint_url = credentials["endpoint_url"]
             if not endpoint_url.endswith("/"):
                 endpoint_url += "/"
@@ -311,10 +353,43 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
         :param user: unique user id
         :return: full response or stream response chunk generator result
         """
+        appid = credentials['panzhi_appid']
+        appKey = credentials['panzhi_appkey']
+        appName = credentials['panzhi_apiname']
+        customHeader= credentials['custom_header']
+        rndId = "".join(str(uuid.uuid4()).split("-"))
+        for _ in range(24 - len(appName)):
+            appName += "0"
+        capabilityname = appName
+        csid = appid + capabilityname + rndId
+        tmp_xServerParam = {
+            "appid": appid,
+            "csid": csid
+        }
+        xCurTime = str(math.floor(time.time()))
+        xServerParam = str(base64.b64encode(json.dumps(tmp_xServerParam).encode('utf-8')), encoding="utf8")
+        xCheckSum = hashlib.md5(bytes(appKey + xCurTime + xServerParam, encoding="utf8")).hexdigest()
+        logger.info("xCurTime=%s，xServerParam=%s,xCheckSum=%s",xCurTime,xServerParam,xCheckSum)
         headers = {
-            "Content-Type": "application/json",
+            "appKey": appKey,
+            "X-Server-Param": xServerParam,
+            "X-CurTime": xCurTime,
+            "X-CheckSum": xCheckSum,
+            "content-type": "application/json",
             "Accept-Charset": "utf-8",
         }
+        if customHeader:
+            custom_headers = customHeader.split(';')
+            parsed_headers = {}
+            for header in custom_headers:
+                key_value = header.split(':')
+                if len(key_value) == 2:
+                    parsed_headers[key_value[0].strip()] = key_value[1].strip()
+            headers.update(parsed_headers)
+#         headers = {
+#             "Content-Type": "application/json",
+#             "Accept-Charset": "utf-8",
+#         }
         extra_headers = credentials.get("extra_headers")
         if extra_headers is not None:
             headers = {
@@ -326,6 +401,7 @@ class OAIAPICompatLargeLanguageModel(_CommonOaiApiCompat, LargeLanguageModel):
         if api_key:
             headers["Authorization"] = f"Bearer {api_key}"
 
+        logger.info(f"headers={headers}")
         endpoint_url = credentials["endpoint_url"]
         if not endpoint_url.endswith("/"):
             endpoint_url += "/"

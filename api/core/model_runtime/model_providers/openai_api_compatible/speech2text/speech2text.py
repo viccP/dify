@@ -1,6 +1,11 @@
 from typing import IO, Optional
 from urllib.parse import urljoin
-
+import uuid
+import base64
+import hashlib
+import logging
+import math
+import time
 import requests
 
 from core.model_runtime.entities.common_entities import I18nObject
@@ -10,7 +15,7 @@ from core.model_runtime.errors.validate import CredentialsValidateFailedError
 from core.model_runtime.model_providers.__base.speech2text_model import Speech2TextModel
 from core.model_runtime.model_providers.openai_api_compatible._common import _CommonOaiApiCompat
 
-
+logger = logging.getLogger(__name__)
 class OAICompatSpeech2TextModel(_CommonOaiApiCompat, Speech2TextModel):
     """
     Model class for OpenAI Compatible Speech to text model.
@@ -26,7 +31,38 @@ class OAICompatSpeech2TextModel(_CommonOaiApiCompat, Speech2TextModel):
         :param user: unique user id
         :return: text for given audio file
         """
-        headers = {}
+#         headers = {}
+        appid = credentials['panzhi_appid']
+        appKey = credentials['panzhi_appkey']
+        appName = credentials['panzhi_apiname']
+        customHeader= credentials['custom_header']
+        rndId = "".join(str(uuid.uuid4()).split("-"))
+        for _ in range(24 - len(appName)):
+            appName += "0"
+        capabilityname = appName
+        csid = appid + capabilityname + rndId
+        tmp_xServerParam = {
+            "appid": appid,
+            "csid": csid
+        }
+        xCurTime = str(math.floor(time.time()))
+        xServerParam = str(base64.b64encode(json.dumps(tmp_xServerParam).encode('utf-8')), encoding="utf8")
+        xCheckSum = hashlib.md5(bytes(appKey + xCurTime + xServerParam, encoding="utf8")).hexdigest()
+        logger.info("xCurTime=%s，xServerParam=%s,xCheckSum=%s",xCurTime,xServerParam,xCheckSum)
+        headers = {
+            "appKey": appKey,
+            "X-Server-Param": xServerParam,
+            "X-CurTime": xCurTime,
+            "X-CheckSum": xCheckSum
+        }
+        if customHeader:
+            custom_headers = customHeader.split(';')
+            parsed_headers = {}
+            for header in custom_headers:
+                key_value = header.split(':')
+                if len(key_value) == 2:
+                    parsed_headers[key_value[0].strip()] = key_value[1].strip()
+            headers.update(parsed_headers)
 
         api_key = credentials.get("api_key")
         if api_key:

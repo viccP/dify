@@ -3,7 +3,12 @@ import time
 from decimal import Decimal
 from typing import Optional
 from urllib.parse import urljoin
-
+import uuid
+import base64
+import hashlib
+import logging
+import math
+import time
 import numpy as np
 import requests
 
@@ -22,7 +27,7 @@ from core.model_runtime.errors.validate import CredentialsValidateFailedError
 from core.model_runtime.model_providers.__base.text_embedding_model import TextEmbeddingModel
 from core.model_runtime.model_providers.openai_api_compatible._common import _CommonOaiApiCompat
 
-
+logger = logging.getLogger(__name__)
 class OAICompatEmbeddingModel(_CommonOaiApiCompat, TextEmbeddingModel):
     """
     Model class for an OpenAI API-compatible text embedding model.
@@ -46,9 +51,41 @@ class OAICompatEmbeddingModel(_CommonOaiApiCompat, TextEmbeddingModel):
         :param input_type: input type
         :return: embeddings result
         """
+        appid = credentials['panzhi_appid']
+        appKey = credentials['panzhi_appkey']
+        appName = credentials['panzhi_apiname']
+        customHeader= credentials['custom_header']
+        rndId = "".join(str(uuid.uuid4()).split("-"))
+        for _ in range(24 - len(appName)):
+            appName += "0"
+        capabilityname = appName
+        csid = appid + capabilityname + rndId
+        tmp_xServerParam = {
+            "appid": appid,
+            "csid": csid
+        }
+        xCurTime = str(math.floor(time.time()))
+        xServerParam = str(base64.b64encode(json.dumps(tmp_xServerParam).encode('utf-8')), encoding="utf8")
+        xCheckSum = hashlib.md5(bytes(appKey + xCurTime + xServerParam, encoding="utf8")).hexdigest()
+        logger.info("xCurTime=%s，xServerParam=%s,xCheckSum=%s",xCurTime,xServerParam,xCheckSum)
+        headers = {
+            "appKey": appKey,
+            "X-Server-Param": xServerParam,
+            "X-CurTime": xCurTime,
+            "X-CheckSum": xCheckSum,
+            "content-type": "application/json"
+        }
+        if customHeader:
+            custom_headers = customHeader.split(';')
+            parsed_headers = {}
+            for header in custom_headers:
+                key_value = header.split(':')
+                if len(key_value) == 2:
+                    parsed_headers[key_value[0].strip()] = key_value[1].strip()
+            headers.update(parsed_headers)
 
         # Prepare headers and payload for the request
-        headers = {"Content-Type": "application/json"}
+#         headers = {"Content-Type": "application/json"}
 
         api_key = credentials.get("api_key")
         if api_key:
@@ -133,7 +170,40 @@ class OAICompatEmbeddingModel(_CommonOaiApiCompat, TextEmbeddingModel):
         :return:
         """
         try:
-            headers = {"Content-Type": "application/json"}
+            appid = credentials['panzhi_appid']
+            appKey = credentials['panzhi_appkey']
+            appName = credentials['panzhi_apiname']
+            customHeader= credentials['custom_header']
+            rndId = "".join(str(uuid.uuid4()).split("-"))
+            for _ in range(24 - len(appName)):
+                appName += "0"
+            capabilityname = appName
+            csid = appid + capabilityname + rndId
+            tmp_xServerParam = {
+                "appid": appid,
+                "csid": csid
+            }
+            xCurTime = str(math.floor(time.time()))
+            xServerParam = str(base64.b64encode(json.dumps(tmp_xServerParam).encode('utf-8')), encoding="utf8")
+            xCheckSum = hashlib.md5(bytes(appKey + xCurTime + xServerParam, encoding="utf8")).hexdigest()
+            logger.info("xCurTime=%s，xServerParam=%s,xCheckSum=%s",xCurTime,xServerParam,xCheckSum)
+            headers = {
+                "appKey": appKey,
+                "X-Server-Param": xServerParam,
+                "X-CurTime": xCurTime,
+                "X-CheckSum": xCheckSum,
+                "content-type": "application/json"
+            }
+            if customHeader:
+                custom_headers = customHeader.split(';')
+                parsed_headers = {}
+                for header in custom_headers:
+                    key_value = header.split(':')
+                    if len(key_value) == 2:
+                        parsed_headers[key_value[0].strip()] = key_value[1].strip()
+                headers.update(parsed_headers)
+
+#             headers = {"Content-Type": "application/json"}
 
             api_key = credentials.get("api_key")
 
