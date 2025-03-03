@@ -25,6 +25,7 @@ from controllers.console.error import (
 from controllers.console.wraps import setup_required
 from events.tenant_event import tenant_was_created
 from libs.helper import email, extract_remote_ip
+from libs.passport import PassportService
 from libs.password import valid_password
 from models.account import Account
 from services.account_service import AccountService, RegisterService, TenantService
@@ -38,15 +39,22 @@ class LoginApiSinglePoint(Resource):
     @setup_required
     def get(self):
         parser = reqparse.RequestParser()
-        parser.add_argument("email", type=email, required=True, location="args")
+        parser.add_argument("token", type=str, required=True, location="args")
         args = parser.parse_args()
 
-        email_ = args.get("email")
-
-        account = Account.query.filter_by(email=email_).first()
+        # 参数toekn
+        token_ = args.get("token")
+        # token解析后的内容
+        payload_ = PassportService().verify(token_)
+        # 获取name
+        name = payload_["name"]
+        # 用name获取account
+        account: Account = Account.query.filter_by(name=name).first()
+        # 获取登录toekn
         token_pair = AccountService.login(account=account, ip_address=extract_remote_ip(request))
-        AccountService.reset_login_error_rate_limit(email_)
-
+        # 重置登录错误次数
+        AccountService.reset_login_error_rate_limit(account.email)
+        # 重定向到首页
         my_url = f"{dify_config.CONSOLE_WEB_URL}?access_token={token_pair.access_token}&refresh_token={token_pair.refresh_token}"
         # print(my_url)
         return redirect(my_url)
