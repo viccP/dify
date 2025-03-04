@@ -1,3 +1,4 @@
+import logging
 from typing import cast
 
 import flask_login  # type: ignore
@@ -35,17 +36,20 @@ from services.errors.workspace import WorkSpaceNotAllowedCreateError
 from services.feature_service import FeatureService
 
 
+logger = logging.getLogger(__name__)
+
 class LoginApiSinglePoint(Resource):
     @setup_required
     def get(self):
         parser = reqparse.RequestParser()
-        parser.add_argument("token", type=str, required=True, location="args")
+        parser.add_argument("single_token", type=str, required=True, location="args")
         args = parser.parse_args()
+        logger.info(f"开始进行单点登录 参数为:{args}")
 
         # 参数toekn
-        token_ = args.get("token")
+        single_token = args.get("single_token")
         # token解析后的内容
-        payload_ = PassportService().verify(token_)
+        payload_ = PassportService().verify(single_token)
         # 获取name
         name = payload_["name"]
         # 用name获取account
@@ -55,8 +59,8 @@ class LoginApiSinglePoint(Resource):
         # 重置登录错误次数
         AccountService.reset_login_error_rate_limit(account.email)
         # 重定向到首页
-        my_url = f"{dify_config.CONSOLE_WEB_URL}?access_token={token_pair.access_token}&refresh_token={token_pair.refresh_token}"
-        # print(my_url)
+        my_url = f"{dify_config.APP_WEB_URL}?access_token={token_pair.access_token}&refresh_token={token_pair.refresh_token}"
+        logger.info(f"单点登录跳转url：{my_url}")
         return redirect(my_url)
 
 class LoginApi(Resource):
