@@ -14,7 +14,7 @@ from core.model_runtime.entities.model_entities import AIModelEntity, FetchFrom,
 from core.model_runtime.errors.invoke import InvokeBadRequestError
 from core.model_runtime.errors.validate import CredentialsValidateFailedError
 from core.model_runtime.model_providers.__base.tts_model import TTSModel
-from core.model_runtime.model_providers.openai_api_compatible._common import _CommonOaiApiCompat
+from core.model_runtime.model_providers.panzhi._common import _CommonOaiApiCompat
 
 logger = logging.getLogger(__name__)
 class OAICompatText2SpeechModel(_CommonOaiApiCompat, TTSModel):

@@ -25,7 +25,7 @@ from core.model_runtime.entities.model_entities import (
 from core.model_runtime.entities.text_embedding_entities import EmbeddingUsage, TextEmbeddingResult
 from core.model_runtime.errors.validate import CredentialsValidateFailedError
 from core.model_runtime.model_providers.__base.text_embedding_model import TextEmbeddingModel
-from core.model_runtime.model_providers.openai_api_compatible._common import _CommonOaiApiCompat
+from core.model_runtime.model_providers.panzhi._common import _CommonOaiApiCompat
 
 logger = logging.getLogger(__name__)
 class OAICompatEmbeddingModel(_CommonOaiApiCompat, TextEmbeddingModel):

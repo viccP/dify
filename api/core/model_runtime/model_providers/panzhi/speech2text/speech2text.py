@@ -13,7 +13,7 @@ from core.model_runtime.entities.model_entities import AIModelEntity, FetchFrom,
 from core.model_runtime.errors.invoke import InvokeBadRequestError
 from core.model_runtime.errors.validate import CredentialsValidateFailedError
 from core.model_runtime.model_providers.__base.speech2text_model import Speech2TextModel
-from core.model_runtime.model_providers.openai_api_compatible._common import _CommonOaiApiCompat
+from core.model_runtime.model_providers.panzhi._common import _CommonOaiApiCompat
 
 logger = logging.getLogger(__name__)
 class OAICompatSpeech2TextModel(_CommonOaiApiCompat, Speech2TextModel):
